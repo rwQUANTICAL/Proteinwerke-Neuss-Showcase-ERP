@@ -54,7 +54,13 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification'
+  Verification: 'Verification',
+  Mitarbeiter: 'Mitarbeiter',
+  Zuteilung: 'Zuteilung',
+  Zeitbuchung: 'Zeitbuchung',
+  Praemie: 'Praemie',
+  Zeitplan: 'Zeitplan',
+  Urlaubsantrag: 'Urlaubsantrag'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -134,6 +140,84 @@ export const VerificationScalarFieldEnum = {
 } as const
 
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
+
+
+export const MitarbeiterScalarFieldEnum = {
+  id: 'id',
+  referenzNummer: 'referenzNummer',
+  name: 'name',
+  skills: 'skills',
+  weeklyWorkRequirement: 'weeklyWorkRequirement',
+  urlaubsAnspruch: 'urlaubsAnspruch',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MitarbeiterScalarFieldEnum = (typeof MitarbeiterScalarFieldEnum)[keyof typeof MitarbeiterScalarFieldEnum]
+
+
+export const ZuteilungScalarFieldEnum = {
+  id: 'id',
+  mitarbeiterId: 'mitarbeiterId',
+  teilanlage: 'teilanlage',
+  datum: 'datum',
+  schicht: 'schicht',
+  erstelltAm: 'erstelltAm',
+  erstelltVonId: 'erstelltVonId',
+  zeitplanId: 'zeitplanId'
+} as const
+
+export type ZuteilungScalarFieldEnum = (typeof ZuteilungScalarFieldEnum)[keyof typeof ZuteilungScalarFieldEnum]
+
+
+export const ZeitbuchungScalarFieldEnum = {
+  id: 'id',
+  mitarbeiterId: 'mitarbeiterId',
+  datum: 'datum',
+  von: 'von',
+  bis: 'bis',
+  schicht: 'schicht',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ZeitbuchungScalarFieldEnum = (typeof ZeitbuchungScalarFieldEnum)[keyof typeof ZeitbuchungScalarFieldEnum]
+
+
+export const PraemieScalarFieldEnum = {
+  id: 'id',
+  mitarbeiterId: 'mitarbeiterId',
+  typ: 'typ',
+  zuteilungId: 'zuteilungId',
+  createdAt: 'createdAt'
+} as const
+
+export type PraemieScalarFieldEnum = (typeof PraemieScalarFieldEnum)[keyof typeof PraemieScalarFieldEnum]
+
+
+export const ZeitplanScalarFieldEnum = {
+  id: 'id',
+  jahr: 'jahr',
+  kalenderwoche: 'kalenderwoche',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ZeitplanScalarFieldEnum = (typeof ZeitplanScalarFieldEnum)[keyof typeof ZeitplanScalarFieldEnum]
+
+
+export const UrlaubsantragScalarFieldEnum = {
+  id: 'id',
+  mitarbeiterId: 'mitarbeiterId',
+  von: 'von',
+  bis: 'bis',
+  genehmigtVonId: 'genehmigtVonId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UrlaubsantragScalarFieldEnum = (typeof UrlaubsantragScalarFieldEnum)[keyof typeof UrlaubsantragScalarFieldEnum]
 
 
 export const SortOrder = {

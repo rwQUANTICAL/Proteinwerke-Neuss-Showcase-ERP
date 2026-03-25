@@ -61,3 +61,33 @@ export type Account = Prisma.AccountModel
  * 
  */
 export type Verification = Prisma.VerificationModel
+/**
+ * Model Mitarbeiter
+ * 
+ */
+export type Mitarbeiter = Prisma.MitarbeiterModel
+/**
+ * Model Zuteilung
+ * 
+ */
+export type Zuteilung = Prisma.ZuteilungModel
+/**
+ * Model Zeitbuchung
+ * 
+ */
+export type Zeitbuchung = Prisma.ZeitbuchungModel
+/**
+ * Model Praemie
+ * 
+ */
+export type Praemie = Prisma.PraemieModel
+/**
+ * Model Zeitplan
+ * 
+ */
+export type Zeitplan = Prisma.ZeitplanModel
+/**
+ * Model Urlaubsantrag
+ * 
+ */
+export type Urlaubsantrag = Prisma.UrlaubsantragModel

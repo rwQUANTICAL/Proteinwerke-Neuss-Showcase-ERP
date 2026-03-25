@@ -1,0 +1,121 @@
+enum MitarbeiterSkill {
+	MUEHLE
+	WALZE
+	EXTRAKTION
+	LECITHIN
+}
+
+enum Teilanlage {
+	MUEHLE
+	WALZE
+	EXTRAKTION
+	LECITHIN
+	SPRINGER
+}
+
+enum SchichtTyp {
+	FRUEH
+	SPAET
+	NACHT
+	SPRINGER
+	URLAUB
+	KRANK
+	X_FREI
+}
+
+model Mitarbeiter {
+	id                    String           @id @default(cuid())
+	referenzNummer        String           @unique
+	name                  String
+	skills                MitarbeiterSkill[]
+	weeklyWorkRequirement Decimal          @db.Decimal(5, 2)
+	urlaubsAnspruch       Int
+	userId                String?          @unique
+	user                  User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+	zuteilungen           Zuteilung[]
+	zeitbuchungen         Zeitbuchung[]
+	urlaubsantraege       Urlaubsantrag[]
+	praemien              Praemie[]
+	createdAt             DateTime         @default(now())
+	updatedAt             DateTime         @updatedAt
+
+	@@map("mitarbeiter")
+}
+
+model Zuteilung {
+	id            String      @id @default(cuid())
+	mitarbeiterId String
+	teilanlage    Teilanlage
+	datum         DateTime    @db.Date
+	schicht       SchichtTyp
+	erstelltAm    DateTime    @default(now())
+	erstelltVonId String
+	zeitplanId    String
+	mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
+	erstelltVon   User        @relation("ZuteilungErstelltVon", fields: [erstelltVonId], references: [id], onDelete: Restrict)
+	zeitplan      Zeitplan    @relation(fields: [zeitplanId], references: [id], onDelete: Cascade)
+	praemien      Praemie[]
+
+	@@unique([mitarbeiterId, datum])
+	@@index([datum])
+	@@index([zeitplanId])
+	@@index([erstelltVonId])
+	@@map("zuteilung")
+}
+
+model Zeitbuchung {
+	id            String      @id @default(cuid())
+	mitarbeiterId String
+	datum         DateTime    @db.Date
+	von           DateTime    @db.Time(0)
+	bis           DateTime    @db.Time(0)
+	schicht       SchichtTyp
+	mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
+	createdAt     DateTime    @default(now())
+	updatedAt     DateTime    @updatedAt
+
+	@@index([mitarbeiterId, datum])
+	@@map("zeitbuchung")
+}
+
+model Praemie {
+	id            String      @id @default(cuid())
+	mitarbeiterId String
+	typ           String
+	zuteilungId   String
+	mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
+	zuteilung     Zuteilung   @relation(fields: [zuteilungId], references: [id], onDelete: Cascade)
+	createdAt     DateTime    @default(now())
+
+	@@index([mitarbeiterId])
+	@@index([zuteilungId])
+	@@map("praemie")
+}
+
+model Zeitplan {
+	id             String      @id @default(cuid())
+	jahr           Int
+	kalenderwoche  Int
+	zuteilungen    Zuteilung[]
+	createdAt      DateTime    @default(now())
+	updatedAt      DateTime    @updatedAt
+
+	@@unique([jahr, kalenderwoche])
+	@@map("zeitplan")
+}
+
+model Urlaubsantrag {
+	id              String      @id @default(cuid())
+	mitarbeiterId   String
+	von             DateTime    @db.Date
+	bis             DateTime    @db.Date
+	genehmigtVonId  String?
+	mitarbeiter     Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
+	genehmigtVon    User?       @relation("UrlaubsantragGenehmigtVon", fields: [genehmigtVonId], references: [id], onDelete: SetNull)
+	createdAt       DateTime    @default(now())
+	updatedAt       DateTime    @updatedAt
+
+	@@index([mitarbeiterId])
+	@@index([genehmigtVonId])
+	@@map("urlaubsantrag")
+}

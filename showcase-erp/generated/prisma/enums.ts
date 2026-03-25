@@ -9,7 +9,35 @@
 * 🟢 You can import this file directly.
 */
 
+export const MitarbeiterSkill = {
+  MUEHLE: 'MUEHLE',
+  WALZE: 'WALZE',
+  EXTRAKTION: 'EXTRAKTION',
+  LECITHIN: 'LECITHIN'
+} as const
+
+export type MitarbeiterSkill = (typeof MitarbeiterSkill)[keyof typeof MitarbeiterSkill]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const Teilanlage = {
+  MUEHLE: 'MUEHLE',
+  WALZE: 'WALZE',
+  EXTRAKTION: 'EXTRAKTION',
+  LECITHIN: 'LECITHIN',
+  SPRINGER: 'SPRINGER'
+} as const
+
+export type Teilanlage = (typeof Teilanlage)[keyof typeof Teilanlage]
+
+
+export const SchichtTyp = {
+  FRUEH: 'FRUEH',
+  SPAET: 'SPAET',
+  NACHT: 'NACHT',
+  SPRINGER: 'SPRINGER',
+  URLAUB: 'URLAUB',
+  KRANK: 'KRANK',
+  X_FREI: 'X_FREI'
+} as const
+
+export type SchichtTyp = (typeof SchichtTyp)[keyof typeof SchichtTyp]

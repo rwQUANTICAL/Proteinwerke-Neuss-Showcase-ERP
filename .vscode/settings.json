@@ -10,7 +10,7 @@
       "icon": "server-process",
       "color": "terminal.ansiBlue",
       "path": "powershell.exe",
-      "args": ["-NoExit", "-Command", "cd showcase-er; npm run dev"],
+      "args": ["-NoExit", "-Command", "cd showcase-erp; npm run dev"],
       "cwd": "${workspaceFolder}",
       "overrideName": true
     },
@@ -19,7 +19,7 @@
       "icon": "database",
       "color": "terminal.ansiRed",
       "path": "powershell.exe",
-      "args": ["-NoExit", "-Command", "cd showcase-er; npx --yes prisma studio"],
+      "args": ["-NoExit", "-Command", "cd showcase-erp; npx --yes prisma studio"],
       "cwd": "${workspaceFolder}",
       "overrideName": true
     },

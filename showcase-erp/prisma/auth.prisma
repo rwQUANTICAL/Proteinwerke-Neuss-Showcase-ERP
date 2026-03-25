@@ -14,6 +14,9 @@ model User {
   banExpires    DateTime?
   sessions      Session[]
   accounts      Account[]
+  mitarbeiter   Mitarbeiter?
+  erstellteZuteilungen Zuteilung[]      @relation("ZuteilungErstelltVon")
+  genehmigteUrlaubsantraege Urlaubsantrag[] @relation("UrlaubsantragGenehmigtVon")
 
   @@unique([email])
   @@map("user")

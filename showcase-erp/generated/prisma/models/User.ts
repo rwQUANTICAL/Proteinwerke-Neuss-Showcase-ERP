@@ -232,6 +232,9 @@ export type UserWhereInput = {
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
+  mitarbeiter?: Prisma.XOR<Prisma.MitarbeiterNullableScalarRelationFilter, Prisma.MitarbeiterWhereInput> | null
+  erstellteZuteilungen?: Prisma.ZuteilungListRelationFilter
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -248,6 +251,9 @@ export type UserOrderByWithRelationInput = {
   banExpires?: Prisma.SortOrderInput | Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
+  mitarbeiter?: Prisma.MitarbeiterOrderByWithRelationInput
+  erstellteZuteilungen?: Prisma.ZuteilungOrderByRelationAggregateInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -267,6 +273,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   banExpires?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
+  mitarbeiter?: Prisma.XOR<Prisma.MitarbeiterNullableScalarRelationFilter, Prisma.MitarbeiterWhereInput> | null
+  erstellteZuteilungen?: Prisma.ZuteilungListRelationFilter
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -317,6 +326,9 @@ export type UserCreateInput = {
   banExpires?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -333,6 +345,9 @@ export type UserUncheckedCreateInput = {
   banExpires?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUpdateInput = {
@@ -349,6 +364,9 @@ export type UserUpdateInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -365,6 +383,9 @@ export type UserUncheckedUpdateInput = {
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -456,6 +477,11 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -508,6 +534,52 @@ export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAccountsInput, Prisma.UserUpdateWithoutAccountsInput>, Prisma.UserUncheckedUpdateWithoutAccountsInput>
 }
 
+export type UserCreateNestedOneWithoutMitarbeiterInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMitarbeiterInput, Prisma.UserUncheckedCreateWithoutMitarbeiterInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMitarbeiterInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutMitarbeiterNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutMitarbeiterInput, Prisma.UserUncheckedCreateWithoutMitarbeiterInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutMitarbeiterInput
+  upsert?: Prisma.UserUpsertWithoutMitarbeiterInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutMitarbeiterInput, Prisma.UserUpdateWithoutMitarbeiterInput>, Prisma.UserUncheckedUpdateWithoutMitarbeiterInput>
+}
+
+export type UserCreateNestedOneWithoutErstellteZuteilungenInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutErstellteZuteilungenInput, Prisma.UserUncheckedCreateWithoutErstellteZuteilungenInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutErstellteZuteilungenInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutErstellteZuteilungenNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutErstellteZuteilungenInput, Prisma.UserUncheckedCreateWithoutErstellteZuteilungenInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutErstellteZuteilungenInput
+  upsert?: Prisma.UserUpsertWithoutErstellteZuteilungenInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutErstellteZuteilungenInput, Prisma.UserUpdateWithoutErstellteZuteilungenInput>, Prisma.UserUncheckedUpdateWithoutErstellteZuteilungenInput>
+}
+
+export type UserCreateNestedOneWithoutGenehmigteUrlaubsantraegeInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGenehmigteUrlaubsantraegeInput, Prisma.UserUncheckedCreateWithoutGenehmigteUrlaubsantraegeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGenehmigteUrlaubsantraegeInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutGenehmigteUrlaubsantraegeNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGenehmigteUrlaubsantraegeInput, Prisma.UserUncheckedCreateWithoutGenehmigteUrlaubsantraegeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGenehmigteUrlaubsantraegeInput
+  upsert?: Prisma.UserUpsertWithoutGenehmigteUrlaubsantraegeInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGenehmigteUrlaubsantraegeInput, Prisma.UserUpdateWithoutGenehmigteUrlaubsantraegeInput>, Prisma.UserUncheckedUpdateWithoutGenehmigteUrlaubsantraegeInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id: string
   name: string
@@ -521,6 +593,9 @@ export type UserCreateWithoutSessionsInput = {
   banReason?: string | null
   banExpires?: Date | string | null
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -536,6 +611,9 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   banReason?: string | null
   banExpires?: Date | string | null
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -567,6 +645,9 @@ export type UserUpdateWithoutSessionsInput = {
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -582,6 +663,9 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -597,6 +681,9 @@ export type UserCreateWithoutAccountsInput = {
   banReason?: string | null
   banExpires?: Date | string | null
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -612,6 +699,9 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   banReason?: string | null
   banExpires?: Date | string | null
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -643,6 +733,9 @@ export type UserUpdateWithoutAccountsInput = {
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -658,6 +751,273 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+}
+
+export type UserCreateWithoutMitarbeiterInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
+}
+
+export type UserUncheckedCreateWithoutMitarbeiterInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
+}
+
+export type UserCreateOrConnectWithoutMitarbeiterInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutMitarbeiterInput, Prisma.UserUncheckedCreateWithoutMitarbeiterInput>
+}
+
+export type UserUpsertWithoutMitarbeiterInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutMitarbeiterInput, Prisma.UserUncheckedUpdateWithoutMitarbeiterInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutMitarbeiterInput, Prisma.UserUncheckedCreateWithoutMitarbeiterInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutMitarbeiterInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutMitarbeiterInput, Prisma.UserUncheckedUpdateWithoutMitarbeiterInput>
+}
+
+export type UserUpdateWithoutMitarbeiterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
+}
+
+export type UserUncheckedUpdateWithoutMitarbeiterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+}
+
+export type UserCreateWithoutErstellteZuteilungenInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
+}
+
+export type UserUncheckedCreateWithoutErstellteZuteilungenInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
+}
+
+export type UserCreateOrConnectWithoutErstellteZuteilungenInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutErstellteZuteilungenInput, Prisma.UserUncheckedCreateWithoutErstellteZuteilungenInput>
+}
+
+export type UserUpsertWithoutErstellteZuteilungenInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutErstellteZuteilungenInput, Prisma.UserUncheckedUpdateWithoutErstellteZuteilungenInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutErstellteZuteilungenInput, Prisma.UserUncheckedCreateWithoutErstellteZuteilungenInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutErstellteZuteilungenInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutErstellteZuteilungenInput, Prisma.UserUncheckedUpdateWithoutErstellteZuteilungenInput>
+}
+
+export type UserUpdateWithoutErstellteZuteilungenInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
+}
+
+export type UserUncheckedUpdateWithoutErstellteZuteilungenInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+}
+
+export type UserCreateWithoutGenehmigteUrlaubsantraegeInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
+}
+
+export type UserUncheckedCreateWithoutGenehmigteUrlaubsantraegeInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
+}
+
+export type UserCreateOrConnectWithoutGenehmigteUrlaubsantraegeInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGenehmigteUrlaubsantraegeInput, Prisma.UserUncheckedCreateWithoutGenehmigteUrlaubsantraegeInput>
+}
+
+export type UserUpsertWithoutGenehmigteUrlaubsantraegeInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGenehmigteUrlaubsantraegeInput, Prisma.UserUncheckedUpdateWithoutGenehmigteUrlaubsantraegeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGenehmigteUrlaubsantraegeInput, Prisma.UserUncheckedCreateWithoutGenehmigteUrlaubsantraegeInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGenehmigteUrlaubsantraegeInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGenehmigteUrlaubsantraegeInput, Prisma.UserUncheckedUpdateWithoutGenehmigteUrlaubsantraegeInput>
+}
+
+export type UserUpdateWithoutGenehmigteUrlaubsantraegeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGenehmigteUrlaubsantraegeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
 }
 
 
@@ -668,11 +1028,15 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
 export type UserCountOutputType = {
   sessions: number
   accounts: number
+  erstellteZuteilungen: number
+  genehmigteUrlaubsantraege: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+  erstellteZuteilungen?: boolean | UserCountOutputTypeCountErstellteZuteilungenArgs
+  genehmigteUrlaubsantraege?: boolean | UserCountOutputTypeCountGenehmigteUrlaubsantraegeArgs
 }
 
 /**
@@ -699,6 +1063,20 @@ export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.AccountWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountErstellteZuteilungenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ZuteilungWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGenehmigteUrlaubsantraegeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UrlaubsantragWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -714,6 +1092,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   banExpires?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  mitarbeiter?: boolean | Prisma.User$mitarbeiterArgs<ExtArgs>
+  erstellteZuteilungen?: boolean | Prisma.User$erstellteZuteilungenArgs<ExtArgs>
+  genehmigteUrlaubsantraege?: boolean | Prisma.User$genehmigteUrlaubsantraegeArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -763,6 +1144,9 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
+  mitarbeiter?: boolean | Prisma.User$mitarbeiterArgs<ExtArgs>
+  erstellteZuteilungen?: boolean | Prisma.User$erstellteZuteilungenArgs<ExtArgs>
+  genehmigteUrlaubsantraege?: boolean | Prisma.User$genehmigteUrlaubsantraegeArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -773,6 +1157,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     sessions: Prisma.$SessionPayload<ExtArgs>[]
     accounts: Prisma.$AccountPayload<ExtArgs>[]
+    mitarbeiter: Prisma.$MitarbeiterPayload<ExtArgs> | null
+    erstellteZuteilungen: Prisma.$ZuteilungPayload<ExtArgs>[]
+    genehmigteUrlaubsantraege: Prisma.$UrlaubsantragPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1182,6 +1569,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mitarbeiter<T extends Prisma.User$mitarbeiterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mitarbeiterArgs<ExtArgs>>): Prisma.Prisma__MitarbeiterClient<runtime.Types.Result.GetResult<Prisma.$MitarbeiterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  erstellteZuteilungen<T extends Prisma.User$erstellteZuteilungenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$erstellteZuteilungenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ZuteilungPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  genehmigteUrlaubsantraege<T extends Prisma.User$genehmigteUrlaubsantraegeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$genehmigteUrlaubsantraegeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UrlaubsantragPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1660,6 +2050,73 @@ export type User$accountsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
+}
+
+/**
+ * User.mitarbeiter
+ */
+export type User$mitarbeiterArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Mitarbeiter
+   */
+  select?: Prisma.MitarbeiterSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Mitarbeiter
+   */
+  omit?: Prisma.MitarbeiterOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MitarbeiterInclude<ExtArgs> | null
+  where?: Prisma.MitarbeiterWhereInput
+}
+
+/**
+ * User.erstellteZuteilungen
+ */
+export type User$erstellteZuteilungenArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Zuteilung
+   */
+  select?: Prisma.ZuteilungSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Zuteilung
+   */
+  omit?: Prisma.ZuteilungOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ZuteilungInclude<ExtArgs> | null
+  where?: Prisma.ZuteilungWhereInput
+  orderBy?: Prisma.ZuteilungOrderByWithRelationInput | Prisma.ZuteilungOrderByWithRelationInput[]
+  cursor?: Prisma.ZuteilungWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ZuteilungScalarFieldEnum | Prisma.ZuteilungScalarFieldEnum[]
+}
+
+/**
+ * User.genehmigteUrlaubsantraege
+ */
+export type User$genehmigteUrlaubsantraegeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Urlaubsantrag
+   */
+  select?: Prisma.UrlaubsantragSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Urlaubsantrag
+   */
+  omit?: Prisma.UrlaubsantragOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UrlaubsantragInclude<ExtArgs> | null
+  where?: Prisma.UrlaubsantragWhereInput
+  orderBy?: Prisma.UrlaubsantragOrderByWithRelationInput | Prisma.UrlaubsantragOrderByWithRelationInput[]
+  cursor?: Prisma.UrlaubsantragWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UrlaubsantragScalarFieldEnum | Prisma.UrlaubsantragScalarFieldEnum[]
 }
 
 /**
