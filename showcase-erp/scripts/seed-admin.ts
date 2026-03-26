@@ -17,8 +17,8 @@ const auth = betterAuth({
 });
 
 async function main() {
-  const email = "konrad.brixius@quantical.com";
-  const name = "Konrad Brixius";
+  const email = "tobias.hustedt@quantical.com";
+  const name = "Tobias Hustedt";
   const password = "Passwort1234!";
 
   // Sign up via auth API directly — password is hashed correctly
