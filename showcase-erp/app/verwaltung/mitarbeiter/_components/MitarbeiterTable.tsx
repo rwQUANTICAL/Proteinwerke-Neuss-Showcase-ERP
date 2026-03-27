@@ -4,10 +4,10 @@ import { useMitarbeiterQuery } from "@/app/lib/entities/mitarbeiter/mitarbeiterH
 import { MdInbox } from "react-icons/md";
 
 const SKILL_LABELS: Record<string, string> = {
-  MUEHLE: "Mühle",
-  WALZE: "Walze",
-  EXTRAKTION: "Extraktion",
-  LECITHIN: "Lecithin",
+  MUEHLE: "M",
+  WALZE: "W",
+  EXTRAKTION: "E",
+  LECITHIN: "L",
 };
 
 export default function MitarbeiterTable() {

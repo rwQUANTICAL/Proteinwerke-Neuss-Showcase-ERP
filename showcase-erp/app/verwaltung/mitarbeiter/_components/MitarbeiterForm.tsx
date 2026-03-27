@@ -5,11 +5,98 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useCreateMitarbeiterMutation } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 
+function MuehleIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* Industrial grinding mill – hopper, body, control panel */}
+      {/* Hopper / funnel */}
+      <path d="M7 4h10l-2.5 4h-5z" />
+      {/* Feed neck */}
+      <rect x="9.5" y="8" width="5" height="2" />
+      {/* Grinding body */}
+      <rect x="7" y="10" width="10" height="8" rx="1" />
+      {/* Control panel */}
+      <rect x="9" y="12" width="6" height="4" rx="0.5" />
+      <circle cx="12" cy="14" r="0.5" fill="currentColor" />
+    </svg>
+  );
+}
+
+function WalzeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* Roller – two cylinders with arrows */}
+      <rect x="3" y="4" width="18" height="6" rx="3" />
+      <rect x="3" y="14" width="18" height="6" rx="3" />
+      <path d="M8 10v4M16 10v4" />
+      <path d="M12 10l-2 2 2 2" />
+      <path d="M12 10l2 2-2 2" />
+    </svg>
+  );
+}
+
+function ExtraktionIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* Extraction – flask / distillation */}
+      <path d="M9 3h6v5l4 8a2 2 0 0 1-1.8 2.9H6.8A2 2 0 0 1 5 16L9 8z" />
+      <path d="M9 3h6" />
+      <path d="M8 15h8" />
+      <circle cx="10" cy="12" r="0.5" fill="currentColor" />
+      <circle cx="14" cy="13" r="0.5" fill="currentColor" />
+      <circle cx="12" cy="11" r="0.5" fill="currentColor" />
+    </svg>
+  );
+}
+
+function LecithinIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {/* Lecithin – droplet processing */}
+      <path d="M12 2C8 7 5 10.5 5 14a7 7 0 0 0 14 0c0-3.5-3-7-7-12z" />
+      <path d="M12 18v-4" />
+      <path d="M10 16h4" />
+    </svg>
+  );
+}
+
 const SKILLS = [
-  { value: "MUEHLE", label: "Mühle" },
-  { value: "WALZE", label: "Walze" },
-  { value: "EXTRAKTION", label: "Extraktion" },
-  { value: "LECITHIN", label: "Lecithin" },
+  { value: "MUEHLE", label: "Mühle", icon: MuehleIcon },
+  { value: "WALZE", label: "Walze", icon: WalzeIcon },
+  { value: "EXTRAKTION", label: "Extraktion", icon: ExtraktionIcon },
+  { value: "LECITHIN", label: "Lecithin", icon: LecithinIcon },
 ] as const;
 
 const formSchema = z.object({
@@ -21,7 +108,6 @@ const formSchema = z.object({
   weeklyWorkRequirement: z.coerce.number().positive("Muss positiv sein"),
   urlaubsAnspruch: z.coerce.number().int().positive("Muss positiv sein"),
   email: z.string().email("Ungültige E-Mail"),
-  password: z.string().min(8, "Passwort muss mindestens 8 Zeichen haben"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -49,7 +135,6 @@ export default function MitarbeiterForm({
       weeklyWorkRequirement: 42,
       urlaubsAnspruch: 30,
       email: "",
-      password: "",
     },
   });
 
@@ -72,7 +157,6 @@ export default function MitarbeiterForm({
       urlaubsAnspruch: data.urlaubsAnspruch,
       account: {
         email: data.email,
-        password: data.password,
         name: data.name,
       },
     };
@@ -88,8 +172,8 @@ export default function MitarbeiterForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       {/* Referenznummer */}
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Referenznummer</legend>
+      <div>
+        <label className="label">Referenznummer</label>
         <input
           type="text"
           className={`input input-bordered w-full ${errors.referenzNummer ? "input-error" : ""}`}
@@ -101,11 +185,11 @@ export default function MitarbeiterForm({
             {errors.referenzNummer.message}
           </p>
         )}
-      </fieldset>
+      </div>
 
       {/* Name */}
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Name</legend>
+      <div>
+        <label className="label">Name</label>
         <input
           type="text"
           className={`input input-bordered w-full ${errors.name ? "input-error" : ""}`}
@@ -115,34 +199,39 @@ export default function MitarbeiterForm({
         {errors.name && (
           <p className="text-error text-sm mt-1">{errors.name.message}</p>
         )}
-      </fieldset>
+      </div>
 
       {/* Skills */}
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Skills</legend>
-        <div className="flex flex-wrap gap-2">
-          {SKILLS.map((skill) => (
-            <button
-              key={skill.value}
-              type="button"
-              className={`btn btn-sm ${
-                skills?.includes(skill.value) ? "btn-primary" : "btn-outline"
-              }`}
-              onClick={() => toggleSkill(skill.value)}
-            >
-              {skill.label}
-            </button>
-          ))}
+      <div>
+        <label className="label">Skills</label>
+        <div className="flex flex-wrap gap-3">
+          {SKILLS.map((skill) => {
+            const Icon = skill.icon;
+            const active = skills?.includes(skill.value);
+            return (
+              <button
+                key={skill.value}
+                type="button"
+                className={`btn gap-2 ${
+                  active ? "btn-primary" : "btn-outline"
+                }`}
+                onClick={() => toggleSkill(skill.value)}
+              >
+                <Icon className="size-5" />
+                {skill.label}
+              </button>
+            );
+          })}
         </div>
         {errors.skills && (
           <p className="text-error text-sm mt-1">{errors.skills.message}</p>
         )}
-      </fieldset>
+      </div>
 
       {/* Hours & Vacation */}
       <div className="grid grid-cols-2 gap-4">
-        <fieldset className="fieldset">
-          <legend className="fieldset-legend">Wochenstunden</legend>
+        <div>
+          <label className="label">Wochenstunden</label>
           <input
             type="number"
             step="0.5"
@@ -154,9 +243,9 @@ export default function MitarbeiterForm({
               {errors.weeklyWorkRequirement.message}
             </p>
           )}
-        </fieldset>
-        <fieldset className="fieldset">
-          <legend className="fieldset-legend">Urlaubstage</legend>
+        </div>
+        <div>
+          <label className="label">Urlaubstage</label>
           <input
             type="number"
             className={`input input-bordered w-full ${errors.urlaubsAnspruch ? "input-error" : ""}`}
@@ -167,14 +256,14 @@ export default function MitarbeiterForm({
               {errors.urlaubsAnspruch.message}
             </p>
           )}
-        </fieldset>
+        </div>
       </div>
 
       {/* Account */}
       <div className="divider">Benutzerkonto</div>
 
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">E-Mail</legend>
+      <div>
+        <label className="label">E-Mail</label>
         <input
           type="email"
           className={`input input-bordered w-full ${errors.email ? "input-error" : ""}`}
@@ -184,20 +273,12 @@ export default function MitarbeiterForm({
         {errors.email && (
           <p className="text-error text-sm mt-1">{errors.email.message}</p>
         )}
-      </fieldset>
+      </div>
 
-      <fieldset className="fieldset">
-        <legend className="fieldset-legend">Passwort</legend>
-        <input
-          type="password"
-          className={`input input-bordered w-full ${errors.password ? "input-error" : ""}`}
-          placeholder="Min. 8 Zeichen"
-          {...register("password")}
-        />
-        {errors.password && (
-          <p className="text-error text-sm mt-1">{errors.password.message}</p>
-        )}
-      </fieldset>
+      <p className="text-sm text-base-content/60">
+        Ein sicheres Passwort wird automatisch generiert und per E-Mail an den
+        Mitarbeiter gesendet.
+      </p>
 
       {/* Mutation error */}
       {mutation.error && (

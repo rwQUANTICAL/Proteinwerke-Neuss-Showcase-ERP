@@ -25,7 +25,6 @@ export interface CreateMitarbeiterInput {
   urlaubsAnspruch: number;
   account?: {
     email: string;
-    password: string;
     name: string;
   };
 }

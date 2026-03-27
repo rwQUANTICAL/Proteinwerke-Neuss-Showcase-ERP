@@ -2,14 +2,13 @@
 
 import { authClient } from "@/app/lib/auth-client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { MdPeople } from "react-icons/md";
-import MitarbeiterForm from "./_components/MitarbeiterForm";
-import { useState } from "react";
+import MitarbeiterTable from "./_components/MitarbeiterTable";
 
 export default function MitarbeiterverwaltungPage() {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
-  const [showForm, setShowForm] = useState(false);
 
   if (isPending) {
     return (
@@ -31,22 +30,19 @@ export default function MitarbeiterverwaltungPage() {
           <MdPeople className="size-8 text-primary" />
           <h1 className="text-2xl font-bold">Mitarbeiterverwaltung</h1>
         </div>
-        <button
+        <Link
+          href="/verwaltung/mitarbeiter/neuen-anlegen"
           className="btn btn-primary"
-          onClick={() => setShowForm((v) => !v)}
         >
-          {showForm ? "Abbrechen" : "Neuer Mitarbeiter"}
-        </button>
+          Neuer Mitarbeiter
+        </Link>
       </div>
 
-      {showForm && (
-        <div className="card bg-base-100 shadow-sm mb-6">
-          <div className="card-body">
-            <h2 className="card-title">Mitarbeiter anlegen</h2>
-            <MitarbeiterForm onSuccess={() => setShowForm(false)} />
-          </div>
+      <div className="card bg-base-100 shadow-sm">
+        <div className="card-body">
+          <MitarbeiterTable />
         </div>
-      )}
+      </div>
     </div>
   );
 }

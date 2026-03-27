@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <header className="navbar bg-base-200 shadow-sm px-4">
       {/* Hamburger – mobile only */}
-      <div className="flex-none lg:hidden">
+      <div className="flex-none lg:hidden mr-2">
         <label
           htmlFor={DRAWER_ID}
           aria-label="Menü öffnen"

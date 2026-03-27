@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 import { z } from "zod";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
+import { sendWelcomeEmail } from "@/app/lib/send-emails/welcomeEmail";
 import { headers } from "next/headers";
 
 const MITARBEITER_SKILLS = [
@@ -20,7 +22,6 @@ const createMitarbeiterSchema = z.object({
   account: z
     .object({
       email: z.string().email("Ungültige E-Mail"),
-      password: z.string().min(8, "Passwort muss mindestens 8 Zeichen haben"),
       name: z.string().min(1, "Name ist erforderlich"),
     })
     .optional(),
@@ -73,11 +74,15 @@ export async function POST(request: NextRequest) {
   let userId: string | undefined;
 
   if (account) {
+    // Generate a secure random password
+    const generatedPassword =
+      crypto.randomBytes(12).toString("base64url").slice(0, 16) + "!A1";
+
     // Create user account via Better Auth admin API
     const created = await auth.api.createUser({
       body: {
         email: account.email,
-        password: account.password,
+        password: generatedPassword,
         name: account.name,
         role: "user",
       },
@@ -91,6 +96,15 @@ export async function POST(request: NextRequest) {
     }
 
     userId = created.user.id;
+
+    // Send welcome email with credentials
+    const baseUrl = process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+    await sendWelcomeEmail({
+      to: account.email,
+      name: account.name,
+      password: generatedPassword,
+      loginUrl: `${baseUrl}/sign-in`,
+    });
   }
 
   const mitarbeiter = await prisma.mitarbeiter.create({
