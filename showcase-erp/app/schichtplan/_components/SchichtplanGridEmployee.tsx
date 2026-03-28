@@ -30,7 +30,12 @@ interface SchichtplanGridEmployeeProps {
   schichtFilter: SchichtFilter;
   activeCell: ActiveCellEmployee | null;
   onCellClick: (datum: Date, mitarbeiterId: string) => void;
-  onAssign: (data: { schicht: string; teilanlage: string; mitarbeiterId: string; datum: string }) => void;
+  onAssign: (data: {
+    schicht: string;
+    teilanlage: string;
+    mitarbeiterId: string;
+    datum: string;
+  }) => void;
   onCancel: () => void;
   onDelete: (id: string) => void;
   onEdit: (zuteilung: ZuteilungWithRelations) => void;
@@ -73,7 +78,8 @@ export default function SchichtplanGridEmployee({
   const assignedHoursMap = useMemo(() => {
     const map = new Map<string, number>();
     for (const z of zuteilungen) {
-      if (!(WORKING_SCHICHT_TYPEN as readonly string[]).includes(z.schicht)) continue;
+      if (!(WORKING_SCHICHT_TYPEN as readonly string[]).includes(z.schicht))
+        continue;
       map.set(z.mitarbeiterId, (map.get(z.mitarbeiterId) ?? 0) + 8);
     }
     return map;
@@ -87,10 +93,12 @@ export default function SchichtplanGridEmployee({
       zuteilungen.some((z) => {
         if (z.mitarbeiterId !== ma.id) return false;
         if (schichtFilter === "SPRINGER") {
-          return z.teilanlage === "SPRINGER" && !NON_WORKING.includes(z.schicht);
+          return (
+            z.teilanlage === "SPRINGER" && !NON_WORKING.includes(z.schicht)
+          );
         }
         return z.schicht === schichtFilter;
-      })
+      }),
     );
   }, [mitarbeiterList, schichtFilter, zuteilungen]);
 
@@ -109,7 +117,9 @@ export default function SchichtplanGridEmployee({
                   key={i}
                   className={`text-center ${isWeekend ? "bg-base-200/30" : ""}`}
                 >
-                  <div className={`font-bold ${isWeekend ? "text-base-content/50" : ""}`}>
+                  <div
+                    className={`font-bold ${isWeekend ? "text-base-content/50" : ""}`}
+                  >
                     {WOCHENTAGE[i]}
                   </div>
                   <div className="text-xs font-normal text-base-content/60">
@@ -138,7 +148,8 @@ export default function SchichtplanGridEmployee({
                     </span>
                   </button>
                   <span className="text-[10px] text-base-content/50 whitespace-nowrap shrink-0">
-                    {assignedHoursMap.get(ma.id) ?? 0}/{Number(ma.weeklyWorkRequirement)}h
+                    {assignedHoursMap.get(ma.id) ?? 0}/
+                    {Number(ma.weeklyWorkRequirement)}h
                     <span className="ml-1 text-base-content/30">Ü: 0h</span>
                   </span>
                 </div>
@@ -159,9 +170,7 @@ export default function SchichtplanGridEmployee({
               {/* Day cells */}
               {weekDates.map((date, i) => {
                 const dateKey = formatDateISO(date);
-                const zuteilung = zuteilungMap.get(
-                  `${ma.id}:${dateKey}`
-                );
+                const zuteilung = zuteilungMap.get(`${ma.id}:${dateKey}`);
                 const dimmed =
                   schichtFilter !== null &&
                   zuteilung !== undefined &&
@@ -183,7 +192,11 @@ export default function SchichtplanGridEmployee({
                         mode="employee"
                         employeeSkills={ma.skills}
                         onAssign={(d) =>
-                          onAssign({ ...d, mitarbeiterId: ma.id, datum: dateKey })
+                          onAssign({
+                            ...d,
+                            mitarbeiterId: ma.id,
+                            datum: dateKey,
+                          })
                         }
                         onCancel={onCancel}
                       />
@@ -233,10 +246,7 @@ export default function SchichtplanGridEmployee({
 
           {filteredMitarbeiter.length === 0 && (
             <tr>
-              <td
-                colSpan={8}
-                className="text-center py-8 text-base-content/50"
-              >
+              <td colSpan={8} className="text-center py-8 text-base-content/50">
                 {schichtFilter
                   ? "Keine Mitarbeiter mit diesem Schichttyp in dieser Woche"
                   : "Keine Mitarbeiter vorhanden"}

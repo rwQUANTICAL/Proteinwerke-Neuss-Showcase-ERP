@@ -19,7 +19,9 @@ const SKILL_LABELS: Record<string, string> = {
 export default function MitarbeiterTable() {
   const { data: mitarbeiter, isLoading, error } = useMitarbeiterQuery();
   const deleteMutation = useDeleteMitarbeiterMutation();
-  const [editTarget, setEditTarget] = useState<MitarbeiterWithUser | null>(null);
+  const [editTarget, setEditTarget] = useState<MitarbeiterWithUser | null>(
+    null,
+  );
 
   if (isLoading) {
     return (

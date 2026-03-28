@@ -92,13 +92,21 @@ export default function ZuteilungCell({
       </div>
       <div className="font-semibold truncate">{title}</div>
       {subtitle && <div className="truncate opacity-70">{subtitle}</div>}
-      {showFacility && !isSpringerRole && zuteilung.teilanlage !== "SPRINGER" && (
-        <div className="truncate">{TEILANLAGE_LABELS[zuteilung.teilanlage]}</div>
-      )}
+      {showFacility &&
+        !isSpringerRole &&
+        zuteilung.teilanlage !== "SPRINGER" && (
+          <div className="truncate">
+            {TEILANLAGE_LABELS[zuteilung.teilanlage]}
+          </div>
+        )}
       {isSpringerRole && (
         <div className="flex gap-0.5 mt-0.5">
           {zuteilung.mitarbeiter.skills.map((s) => (
-            <span key={s} className="badge badge-xs badge-outline border-current/30" title={SKILL_LABELS[s] ?? s}>
+            <span
+              key={s}
+              className="badge badge-xs badge-outline border-current/30"
+              title={SKILL_LABELS[s] ?? s}
+            >
               {SKILL_SHORT[s] ?? s}
             </span>
           ))}

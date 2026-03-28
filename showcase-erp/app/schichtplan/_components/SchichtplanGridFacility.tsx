@@ -31,7 +31,12 @@ interface SchichtplanGridFacilityProps {
   schichtFilter: SchichtFilter;
   activeCell: ActiveCellFacility | null;
   onCellClick: (datum: Date, teilanlage: string) => void;
-  onAssign: (data: { schicht: string; teilanlage: string; mitarbeiterId: string; datum: string }) => void;
+  onAssign: (data: {
+    schicht: string;
+    teilanlage: string;
+    mitarbeiterId: string;
+    datum: string;
+  }) => void;
   onCancel: () => void;
   onDelete: (id: string) => void;
   onEdit: (zuteilung: ZuteilungWithRelations) => void;
@@ -74,7 +79,7 @@ export default function SchichtplanGridFacility({
       arr.sort(
         (a, b) =>
           (SCHICHT_SORT_ORDER[a.schicht] ?? 99) -
-          (SCHICHT_SORT_ORDER[b.schicht] ?? 99)
+          (SCHICHT_SORT_ORDER[b.schicht] ?? 99),
       );
     }
     return map;
@@ -95,7 +100,9 @@ export default function SchichtplanGridFacility({
                   key={i}
                   className={`text-center ${isWeekend ? "bg-base-200/30" : ""}`}
                 >
-                  <div className={`font-bold ${isWeekend ? "text-base-content/50" : ""}`}>
+                  <div
+                    className={`font-bold ${isWeekend ? "text-base-content/50" : ""}`}
+                  >
                     {WOCHENTAGE[i]}
                   </div>
                   <div className="text-xs font-normal text-base-content/60">
@@ -128,9 +135,12 @@ export default function SchichtplanGridFacility({
                 const availableEmps = isActive
                   ? mitarbeiterList.filter((ma) => {
                       const required = TEILANLAGE_TO_SKILL[anlage];
-                      if (required && !ma.skills.includes(required)) return false;
+                      if (required && !ma.skills.includes(required))
+                        return false;
                       return !zuteilungen.some(
-                        (z) => z.mitarbeiterId === ma.id && z.datum.split("T")[0] === dateKey
+                        (z) =>
+                          z.mitarbeiterId === ma.id &&
+                          z.datum.split("T")[0] === dateKey,
                       );
                     })
                   : [];
@@ -169,7 +179,11 @@ export default function SchichtplanGridFacility({
                             name: m.name,
                           }))}
                           onAssign={(d) =>
-                            onAssign({ ...d, teilanlage: anlage, datum: dateKey })
+                            onAssign({
+                              ...d,
+                              teilanlage: anlage,
+                              datum: dateKey,
+                            })
                           }
                           onCancel={onCancel}
                         />

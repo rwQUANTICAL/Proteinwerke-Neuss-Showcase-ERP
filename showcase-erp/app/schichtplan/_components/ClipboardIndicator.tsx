@@ -18,9 +18,13 @@ export default function ClipboardIndicator({
   onClear,
 }: ClipboardIndicatorProps) {
   const colors = SCHICHT_TYP_COLORS[clipboard.schicht];
-  const schichtLabel = SCHICHT_TYP_LABELS[clipboard.schicht] ?? clipboard.schicht;
-  const anlageLabel = TEILANLAGE_LABELS[clipboard.teilanlage] ?? clipboard.teilanlage;
-  const isNonWorking = (NON_WORKING_SCHICHT_TYPEN as readonly string[]).includes(clipboard.schicht);
+  const schichtLabel =
+    SCHICHT_TYP_LABELS[clipboard.schicht] ?? clipboard.schicht;
+  const anlageLabel =
+    TEILANLAGE_LABELS[clipboard.teilanlage] ?? clipboard.teilanlage;
+  const isNonWorking = (
+    NON_WORKING_SCHICHT_TYPEN as readonly string[]
+  ).includes(clipboard.schicht);
 
   return (
     <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-info/10 border border-info/20 text-sm">

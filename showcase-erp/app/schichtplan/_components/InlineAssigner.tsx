@@ -39,7 +39,10 @@ export default function InlineAssigner(props: InlineAssignerProps) {
   // Click-outside-to-close
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
         onCancel();
       }
     }
@@ -72,7 +75,10 @@ export default function InlineAssigner(props: InlineAssignerProps) {
       setStep(2);
     } else {
       if (props.availableEmployees.length === 1) {
-        props.onAssign({ schicht, mitarbeiterId: props.availableEmployees[0].id });
+        props.onAssign({
+          schicht,
+          mitarbeiterId: props.availableEmployees[0].id,
+        });
         return;
       }
       setSelectedSchicht(schicht);
@@ -125,7 +131,10 @@ export default function InlineAssigner(props: InlineAssignerProps) {
           <button
             type="button"
             className={`text-xs flex items-center gap-1 rounded-md px-2 py-0.5 font-medium ${sc.bg} ${sc.text}`}
-            onClick={() => { setStep(1); setSelectedSchicht(null); }}
+            onClick={() => {
+              setStep(1);
+              setSelectedSchicht(null);
+            }}
           >
             <MdArrowBack className="size-3" />
             Springer
@@ -138,7 +147,9 @@ export default function InlineAssigner(props: InlineAssignerProps) {
                 key={s}
                 type="button"
                 className={`text-xs font-medium rounded-md px-2 py-1 text-left border transition-all hover:shadow-sm ${c.bg} ${c.text} ${c.border}`}
-                onClick={() => props.onAssign({ schicht: s, teilanlage: "SPRINGER" })}
+                onClick={() =>
+                  props.onAssign({ schicht: s, teilanlage: "SPRINGER" })
+                }
               >
                 {SCHICHT_TYP_LABELS[s]}
                 {zeit && (
@@ -152,7 +163,9 @@ export default function InlineAssigner(props: InlineAssignerProps) {
           <button
             type="button"
             className="text-xs font-medium rounded-md px-2 py-1 text-left bg-base-200 hover:bg-base-300 transition-colors"
-            onClick={() => props.onAssign({ schicht: "SPRINGER", teilanlage: "SPRINGER" })}
+            onClick={() =>
+              props.onAssign({ schicht: "SPRINGER", teilanlage: "SPRINGER" })
+            }
           >
             Flexibel
           </button>
@@ -171,7 +184,10 @@ export default function InlineAssigner(props: InlineAssignerProps) {
         <button
           type="button"
           className={`text-xs flex items-center gap-1 rounded-md px-2 py-0.5 font-medium ${sc.bg} ${sc.text}`}
-          onClick={() => { setStep(1); setSelectedSchicht(null); }}
+          onClick={() => {
+            setStep(1);
+            setSelectedSchicht(null);
+          }}
         >
           <MdArrowBack className="size-3" />
           {SCHICHT_TYP_LABELS[selectedSchicht!]}
@@ -181,7 +197,9 @@ export default function InlineAssigner(props: InlineAssignerProps) {
             key={t}
             type="button"
             className="text-xs font-medium rounded-md px-2 py-1 text-left bg-base-200 hover:bg-base-300 transition-colors"
-            onClick={() => props.onAssign({ schicht: selectedSchicht!, teilanlage: t })}
+            onClick={() =>
+              props.onAssign({ schicht: selectedSchicht!, teilanlage: t })
+            }
           >
             {TEILANLAGE_LABELS[t]}
           </button>
@@ -195,20 +213,27 @@ export default function InlineAssigner(props: InlineAssignerProps) {
       <button
         type="button"
         className={`text-xs flex items-center gap-1 rounded-md px-2 py-0.5 font-medium ${sc.bg} ${sc.text}`}
-        onClick={() => { setStep(1); setSelectedSchicht(null); }}
+        onClick={() => {
+          setStep(1);
+          setSelectedSchicht(null);
+        }}
       >
         <MdArrowBack className="size-3" />
         {SCHICHT_TYP_LABELS[selectedSchicht!]}
       </button>
       {props.availableEmployees.length === 0 && (
-        <p className="text-xs text-base-content/40 px-2 py-1">Keine verfügbar</p>
+        <p className="text-xs text-base-content/40 px-2 py-1">
+          Keine verfügbar
+        </p>
       )}
       {props.availableEmployees.map((emp) => (
         <button
           key={emp.id}
           type="button"
           className="text-xs font-medium rounded-md px-2 py-1 text-left bg-base-200 hover:bg-base-300 transition-colors truncate"
-          onClick={() => props.onAssign({ schicht: selectedSchicht!, mitarbeiterId: emp.id })}
+          onClick={() =>
+            props.onAssign({ schicht: selectedSchicht!, mitarbeiterId: emp.id })
+          }
         >
           {emp.name}
         </button>

@@ -57,10 +57,7 @@ export default function MitarbeiterEditModal({
   }
 
   function onSubmit(data: EditValues) {
-    updateMutation.mutate(
-      { id: mitarbeiter.id, data },
-      { onSuccess: onClose }
-    );
+    updateMutation.mutate({ id: mitarbeiter.id, data }, { onSuccess: onClose });
   }
 
   return (
@@ -132,7 +129,11 @@ export default function MitarbeiterEditModal({
           )}
 
           <div className="modal-action">
-            <button className="btn btn-ghost btn-sm" type="button" onClick={onClose}>
+            <button
+              className="btn btn-ghost btn-sm"
+              type="button"
+              onClick={onClose}
+            >
               Abbrechen
             </button>
             <button

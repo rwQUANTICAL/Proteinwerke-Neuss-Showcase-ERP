@@ -9,7 +9,10 @@ import {
   useCreateZuteilungMutation,
   useDeleteZuteilungMutation,
 } from "@/app/lib/entities/zuteilung/zuteilungHooks";
-import { getKwForDate, formatDateISO } from "@/app/lib/entities/schichtplan/schichtplanConstants";
+import {
+  getKwForDate,
+  formatDateISO,
+} from "@/app/lib/entities/schichtplan/schichtplanConstants";
 import SchichtplanHeader from "./_components/SchichtplanHeader";
 import type { ViewMode, SchichtFilter } from "./_components/SchichtplanHeader";
 import SchichtplanGridEmployee from "./_components/SchichtplanGridEmployee";
@@ -27,11 +30,22 @@ export default function SchichtplanPage() {
   const [kw, setKw] = useState(initialKw.kw);
   const [viewMode, setViewMode] = useState<ViewMode>("employee");
   const [schichtFilter, setSchichtFilter] = useState<SchichtFilter>(null);
-  const [activeCellEmp, setActiveCellEmp] = useState<ActiveCellEmployee | null>(null);
-  const [activeCellFac, setActiveCellFac] = useState<ActiveCellFacility | null>(null);
-  const [editTarget, setEditTarget] = useState<ZuteilungWithRelations | null>(null);
-  const [editEmployee, setEditEmployee] = useState<MitarbeiterWithUser | null>(null);
-  const [clipboard, setClipboard] = useState<{ schicht: string; teilanlage: string } | null>(null);
+  const [activeCellEmp, setActiveCellEmp] = useState<ActiveCellEmployee | null>(
+    null,
+  );
+  const [activeCellFac, setActiveCellFac] = useState<ActiveCellFacility | null>(
+    null,
+  );
+  const [editTarget, setEditTarget] = useState<ZuteilungWithRelations | null>(
+    null,
+  );
+  const [editEmployee, setEditEmployee] = useState<MitarbeiterWithUser | null>(
+    null,
+  );
+  const [clipboard, setClipboard] = useState<{
+    schicht: string;
+    teilanlage: string;
+  } | null>(null);
 
   const zeitplanQuery = useZeitplanQuery(jahr, kw);
   const mitarbeiterQuery = useMitarbeiterQuery();
@@ -45,37 +59,53 @@ export default function SchichtplanPage() {
     setActiveCellFac(null);
   }, []);
 
-  const handleEmployeeCellClick = useCallback((datum: Date, mitarbeiterId: string) => {
-    setActiveCellEmp((prev) => {
-      const datumISO = formatDateISO(datum);
-      if (prev?.datumISO === datumISO && prev?.mitarbeiterId === mitarbeiterId) return null;
-      return { datumISO, mitarbeiterId };
-    });
-  }, []);
+  const handleEmployeeCellClick = useCallback(
+    (datum: Date, mitarbeiterId: string) => {
+      setActiveCellEmp((prev) => {
+        const datumISO = formatDateISO(datum);
+        if (
+          prev?.datumISO === datumISO &&
+          prev?.mitarbeiterId === mitarbeiterId
+        )
+          return null;
+        return { datumISO, mitarbeiterId };
+      });
+    },
+    [],
+  );
 
-  const handleFacilityCellClick = useCallback((datum: Date, teilanlage: string) => {
-    setActiveCellFac((prev) => {
-      const datumISO = formatDateISO(datum);
-      if (prev?.datumISO === datumISO && prev?.teilanlage === teilanlage) return null;
-      return { datumISO, teilanlage };
-    });
-  }, []);
+  const handleFacilityCellClick = useCallback(
+    (datum: Date, teilanlage: string) => {
+      setActiveCellFac((prev) => {
+        const datumISO = formatDateISO(datum);
+        if (prev?.datumISO === datumISO && prev?.teilanlage === teilanlage)
+          return null;
+        return { datumISO, teilanlage };
+      });
+    },
+    [],
+  );
 
   const handleAssign = useCallback(
-    (data: { schicht: string; teilanlage: string; mitarbeiterId: string; datum: string }) => {
+    (data: {
+      schicht: string;
+      teilanlage: string;
+      mitarbeiterId: string;
+      datum: string;
+    }) => {
       if (!zeitplanQuery.data) return;
       setActiveCellEmp(null);
       setActiveCellFac(null);
       createMutation.mutate({ ...data, zeitplanId: zeitplanQuery.data.id });
     },
-    [zeitplanQuery.data, createMutation]
+    [zeitplanQuery.data, createMutation],
   );
 
   const handleDelete = useCallback(
     (id: string) => {
       deleteMutation.mutate(id);
     },
-    [deleteMutation]
+    [deleteMutation],
   );
 
   const handleCancel = useCallback(() => {
@@ -91,12 +121,9 @@ export default function SchichtplanPage() {
     setEditEmployee(ma);
   }, []);
 
-  const handleCopy = useCallback(
-    (z: ZuteilungWithRelations) => {
-      setClipboard({ schicht: z.schicht, teilanlage: z.teilanlage });
-    },
-    []
-  );
+  const handleCopy = useCallback((z: ZuteilungWithRelations) => {
+    setClipboard({ schicht: z.schicht, teilanlage: z.teilanlage });
+  }, []);
 
   const handlePaste = useCallback(
     (mitarbeiterId: string, datum: string) => {
@@ -109,7 +136,7 @@ export default function SchichtplanPage() {
         zeitplanId: zeitplanQuery.data.id,
       });
     },
-    [clipboard, zeitplanQuery.data, createMutation]
+    [clipboard, zeitplanQuery.data, createMutation],
   );
 
   return (

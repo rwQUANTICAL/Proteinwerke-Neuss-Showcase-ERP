@@ -37,7 +37,7 @@ function getMaxKw(year: number): number {
   thursdayDate.setUTCDate(dec28.getUTCDate() + 4 - dayOfWeek);
   const yearStart = new Date(Date.UTC(thursdayDate.getUTCFullYear(), 0, 1));
   return Math.ceil(
-    ((thursdayDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
+    ((thursdayDate.getTime() - yearStart.getTime()) / 86400000 + 1) / 7,
   );
 }
 
@@ -168,16 +168,17 @@ export default function SchichtplanHeader({
           >
             Alle
           </button>
-          {(viewMode === "facility" ? FACILITY_FILTER_TYPEN : ALL_SCHICHT_TYPEN).map((typ) => {
+          {(viewMode === "facility"
+            ? FACILITY_FILTER_TYPEN
+            : ALL_SCHICHT_TYPEN
+          ).map((typ) => {
             const colors = SCHICHT_TYP_COLORS[typ];
             const isActive = schichtFilter === typ;
             return (
               <button
                 key={typ}
                 className={`btn btn-xs ${isActive ? `${colors?.dot ?? ""} text-white border-transparent` : "btn-ghost"}`}
-                onClick={() =>
-                  onSchichtFilterChange(isActive ? null : typ)
-                }
+                onClick={() => onSchichtFilterChange(isActive ? null : typ)}
               >
                 {SCHICHT_TYP_LABELS[typ]}
               </button>

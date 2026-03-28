@@ -19,13 +19,18 @@ interface EditModalProps {
   onClose: () => void;
 }
 
-export default function EditModal({ zuteilung, jahr, kw, onClose }: EditModalProps) {
+export default function EditModal({
+  zuteilung,
+  jahr,
+  kw,
+  onClose,
+}: EditModalProps) {
   const updateMutation = useUpdateZuteilungMutation(jahr, kw);
 
   function handleUpdate(field: "schicht" | "teilanlage", value: string) {
     updateMutation.mutate(
       { id: zuteilung.id, data: { [field]: value } },
-      { onSuccess: onClose }
+      { onSuccess: onClose },
     );
   }
 
@@ -41,22 +46,30 @@ export default function EditModal({ zuteilung, jahr, kw, onClose }: EditModalPro
           </button>
         </div>
 
-        <div className={`rounded-lg px-3 py-2 mb-4 text-sm border ${currentColors?.bg} ${currentColors?.border} ${currentColors?.text}`}>
+        <div
+          className={`rounded-lg px-3 py-2 mb-4 text-sm border ${currentColors?.bg} ${currentColors?.border} ${currentColors?.text}`}
+        >
           <span className="font-semibold">{zuteilung.mitarbeiter.name}</span>
           {" — "}
           {SCHICHT_TYP_LABELS[zuteilung.schicht]}
-          {zuteilung.teilanlage !== "SPRINGER" && `, ${TEILANLAGE_LABELS[zuteilung.teilanlage]}`}
+          {zuteilung.teilanlage !== "SPRINGER" &&
+            `, ${TEILANLAGE_LABELS[zuteilung.teilanlage]}`}
         </div>
 
         {updateMutation.error && (
-          <div role="alert" className="alert alert-error alert-soft mb-3 text-sm">
+          <div
+            role="alert"
+            className="alert alert-error alert-soft mb-3 text-sm"
+          >
             <span>{updateMutation.error.message}</span>
           </div>
         )}
 
         <div className="flex flex-col gap-3">
           <div>
-            <label className="label text-sm font-medium">Schichttyp ändern</label>
+            <label className="label text-sm font-medium">
+              Schichttyp ändern
+            </label>
             <div className="flex flex-wrap gap-1">
               {ASSIGNABLE_SCHICHT_TYPEN.map((s) => {
                 const c = SCHICHT_TYP_COLORS[s];
@@ -81,7 +94,10 @@ export default function EditModal({ zuteilung, jahr, kw, onClose }: EditModalPro
             <div className="flex flex-wrap gap-1">
               {ALL_TEILANLAGEN.filter((t) => {
                 const required = TEILANLAGE_TO_SKILL[t];
-                return required === null || zuteilung.mitarbeiter.skills.includes(required);
+                return (
+                  required === null ||
+                  zuteilung.mitarbeiter.skills.includes(required)
+                );
               }).map((t) => {
                 const isActive = zuteilung.teilanlage === t;
                 return (
