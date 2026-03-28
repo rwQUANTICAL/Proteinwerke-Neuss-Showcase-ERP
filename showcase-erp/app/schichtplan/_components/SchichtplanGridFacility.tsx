@@ -1,0 +1,199 @@
+"use client";
+
+import { useMemo } from "react";
+import { MdAdd } from "react-icons/md";
+import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
+import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
+import ZuteilungCell from "./ZuteilungCell";
+import InlineAssigner from "./InlineAssigner";
+import {
+  WOCHENTAGE,
+  ALL_TEILANLAGEN,
+  TEILANLAGE_LABELS,
+  TEILANLAGE_TO_SKILL,
+  SCHICHT_SORT_ORDER,
+  getWeekDates,
+  formatDateShort,
+  formatDateISO,
+} from "@/app/lib/entities/schichtplan/schichtplanConstants";
+import type { SchichtFilter } from "./SchichtplanHeader";
+
+export interface ActiveCellFacility {
+  datumISO: string;
+  teilanlage: string;
+}
+
+interface SchichtplanGridFacilityProps {
+  jahr: number;
+  kw: number;
+  zuteilungen: ZuteilungWithRelations[];
+  mitarbeiterList: MitarbeiterWithUser[];
+  schichtFilter: SchichtFilter;
+  activeCell: ActiveCellFacility | null;
+  onCellClick: (datum: Date, teilanlage: string) => void;
+  onAssign: (data: { schicht: string; teilanlage: string; mitarbeiterId: string; datum: string }) => void;
+  onCancel: () => void;
+  onDelete: (id: string) => void;
+  onEdit: (zuteilung: ZuteilungWithRelations) => void;
+  onCopy: (zuteilung: ZuteilungWithRelations) => void;
+}
+
+export default function SchichtplanGridFacility({
+  jahr,
+  kw,
+  zuteilungen,
+  mitarbeiterList,
+  schichtFilter,
+  activeCell,
+  onCellClick,
+  onAssign,
+  onCancel,
+  onDelete,
+  onEdit,
+  onCopy,
+}: SchichtplanGridFacilityProps) {
+  const weekDates = useMemo(() => getWeekDates(jahr, kw), [jahr, kw]);
+
+  // Index zuteilungen by teilanlage + date, sorted by shift type
+  // For SPRINGER row: exclude Frei/Urlaub/Krank (show only Springer assignments)
+  const zuteilungMap = useMemo(() => {
+    const NON_SPRINGER = ["X_FREI", "URLAUB", "KRANK"];
+    const map = new Map<string, ZuteilungWithRelations[]>();
+    for (const z of zuteilungen) {
+      const dateKey = z.datum.split("T")[0];
+      const key = `${z.teilanlage}:${dateKey}`;
+      if (z.teilanlage === "SPRINGER" && NON_SPRINGER.includes(z.schicht)) {
+        continue;
+      }
+      const existing = map.get(key) ?? [];
+      existing.push(z);
+      map.set(key, existing);
+    }
+    // Sort each cell's assignments by shift order
+    for (const arr of map.values()) {
+      arr.sort(
+        (a, b) =>
+          (SCHICHT_SORT_ORDER[a.schicht] ?? 99) -
+          (SCHICHT_SORT_ORDER[b.schicht] ?? 99)
+      );
+    }
+    return map;
+  }, [zuteilungen]);
+
+  return (
+    <div>
+      <table className="table table-sm table-fixed w-full">
+        <thead>
+          <tr>
+            <th className="w-[140px] sticky left-0 z-10 border-r border-base-200">
+              Teilanlage
+            </th>
+            {weekDates.map((date, i) => {
+              const isWeekend = i >= 5;
+              return (
+                <th
+                  key={i}
+                  className={`text-center ${isWeekend ? "bg-base-200/30" : ""}`}
+                >
+                  <div className={`font-bold ${isWeekend ? "text-base-content/50" : ""}`}>
+                    {WOCHENTAGE[i]}
+                  </div>
+                  <div className="text-xs font-normal text-base-content/60">
+                    {formatDateShort(date)}
+                  </div>
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody>
+          {ALL_TEILANLAGEN.map((anlage) => (
+            <tr key={anlage} className="hover">
+              {/* Facility header cell */}
+              <td className="sticky left-0 z-10 bg-base-100 border-r border-base-200 font-medium">
+                {TEILANLAGE_LABELS[anlage]}
+              </td>
+
+              {/* Day cells */}
+              {weekDates.map((date, i) => {
+                const dateKey = formatDateISO(date);
+                const cellZuteilungen =
+                  zuteilungMap.get(`${anlage}:${dateKey}`) ?? [];
+                const isWeekend = i >= 5;
+                const isActive =
+                  activeCell?.datumISO === dateKey &&
+                  activeCell?.teilanlage === anlage;
+
+                // Available employees for this facility + day
+                const availableEmps = isActive
+                  ? mitarbeiterList.filter((ma) => {
+                      const required = TEILANLAGE_TO_SKILL[anlage];
+                      if (required && !ma.skills.includes(required)) return false;
+                      return !zuteilungen.some(
+                        (z) => z.mitarbeiterId === ma.id && z.datum.split("T")[0] === dateKey
+                      );
+                    })
+                  : [];
+
+                return (
+                  <td
+                    key={i}
+                    className={`p-1 align-top ${isWeekend ? "bg-base-200/15" : ""}`}
+                  >
+                    <div className="flex flex-col gap-1">
+                      {cellZuteilungen.map((z) => {
+                        const dimmed =
+                          schichtFilter !== null &&
+                          (schichtFilter === "SPRINGER"
+                            ? z.teilanlage !== "SPRINGER"
+                            : z.schicht !== schichtFilter);
+                        return (
+                          <ZuteilungCell
+                            key={z.id}
+                            zuteilung={z}
+                            showEmployee={true}
+                            showFacility={false}
+                            onDelete={onDelete}
+                            onEdit={onEdit}
+                            onCopy={onCopy}
+                            dimmed={dimmed}
+                          />
+                        );
+                      })}
+                      {isActive ? (
+                        <InlineAssigner
+                          mode="facility"
+                          teilanlage={anlage}
+                          availableEmployees={availableEmps.map((m) => ({
+                            id: m.id,
+                            name: m.name,
+                          }))}
+                          onAssign={(d) =>
+                            onAssign({ ...d, teilanlage: anlage, datum: dateKey })
+                          }
+                          onCancel={onCancel}
+                        />
+                      ) : (
+                        <button
+                          type="button"
+                          className="flex items-center justify-center w-full h-8 rounded-lg
+                            border border-dashed border-base-300/60 text-base-content/20
+                            hover:border-primary/40 hover:text-primary/60 hover:bg-primary/5
+                            transition-all cursor-pointer"
+                          onClick={() => onCellClick(date, anlage)}
+                          aria-label={`Zuteilung für ${TEILANLAGE_LABELS[anlage]} am ${WOCHENTAGE[i]}`}
+                        >
+                          <MdAdd className="size-4" />
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}

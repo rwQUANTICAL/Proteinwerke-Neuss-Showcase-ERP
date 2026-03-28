@@ -1,7 +1,13 @@
 "use client";
 
-import { useMitarbeiterQuery } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
-import { MdInbox } from "react-icons/md";
+import { useState } from "react";
+import {
+  useMitarbeiterQuery,
+  useDeleteMitarbeiterMutation,
+} from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
+import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
+import MitarbeiterEditModal from "@/app/schichtplan/_components/MitarbeiterEditModal";
+import { MdInbox, MdEdit, MdDelete } from "react-icons/md";
 
 const SKILL_LABELS: Record<string, string> = {
   MUEHLE: "M",
@@ -12,6 +18,8 @@ const SKILL_LABELS: Record<string, string> = {
 
 export default function MitarbeiterTable() {
   const { data: mitarbeiter, isLoading, error } = useMitarbeiterQuery();
+  const deleteMutation = useDeleteMitarbeiterMutation();
+  const [editTarget, setEditTarget] = useState<MitarbeiterWithUser | null>(null);
 
   if (isLoading) {
     return (
@@ -49,6 +57,7 @@ export default function MitarbeiterTable() {
             <th>Wochenstunden</th>
             <th>Urlaubstage</th>
             <th>Benutzerkonto</th>
+            <th className="w-24"></th>
           </tr>
         </thead>
         <tbody>
@@ -74,10 +83,36 @@ export default function MitarbeiterTable() {
                   <span className="text-base-content/40">—</span>
                 )}
               </td>
+              <td>
+                <div className="flex gap-1">
+                  <button
+                    className="btn btn-ghost btn-xs btn-square"
+                    onClick={() => setEditTarget(ma)}
+                    aria-label="Bearbeiten"
+                  >
+                    <MdEdit className="size-4" />
+                  </button>
+                  <button
+                    className="btn btn-ghost btn-xs btn-square text-error"
+                    onClick={() => deleteMutation.mutate(ma.id)}
+                    disabled={deleteMutation.isPending}
+                    aria-label="Löschen"
+                  >
+                    <MdDelete className="size-4" />
+                  </button>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {editTarget && (
+        <MitarbeiterEditModal
+          mitarbeiter={editTarget}
+          onClose={() => setEditTarget(null)}
+        />
+      )}
     </div>
   );
 }

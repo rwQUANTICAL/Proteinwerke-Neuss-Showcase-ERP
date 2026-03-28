@@ -17,27 +17,29 @@ const auth = betterAuth({
 });
 
 async function main() {
-  const email = "tobias.hustedt@quantical.com";
-  const name = "Tobias Hustedt";
+  const email = "konrad.brixius@quantical.com";
+  const name = "Konrad Brixius";
   const password = "Passwort1234!";
 
   // Sign up via auth API directly — password is hashed correctly
-  const signUpRes = await auth.api.signUpEmail({
-    body: { email, password, name },
-  });
-
-  if (!signUpRes?.user) {
+  let userId: string | undefined;
+  try {
+    const signUpRes = await auth.api.signUpEmail({
+      body: { email, password, name },
+    });
+    userId = signUpRes?.user?.id;
+    if (userId) console.log(`Created user: ${email} (id: ${userId})`);
+  } catch {
     console.log(`User ${email} may already exist. Trying sign-in...`);
-  } else {
-    console.log(`Created user: ${email} (id: ${signUpRes.user.id})`);
   }
 
-  // Sign in to get the user ID
-  const signInRes = await auth.api.signInEmail({
-    body: { email, password },
-  });
+  if (!userId) {
+    const signInRes = await auth.api.signInEmail({
+      body: { email, password },
+    });
+    userId = signInRes?.user?.id;
+  }
 
-  const userId = signInRes?.user?.id;
   if (!userId) {
     console.error("Could not sign in. Check credentials.");
     process.exit(1);
@@ -52,11 +54,18 @@ async function main() {
 
   // Create Mitarbeiter record linked to this user
   const existing = await prisma.mitarbeiter.findFirst({
-    where: { userId },
+    where: {
+      OR: [{ userId }, { referenzNummer: "MA-001" }],
+    },
   });
 
   if (existing) {
-    console.log(`Mitarbeiter already exists (ref: ${existing.referenzNummer}). Skipping.`);
+    // Update if needed (e.g. link to correct user, update name)
+    await prisma.mitarbeiter.update({
+      where: { id: existing.id },
+      data: { name, userId, skills: ["MUEHLE", "WALZE"] },
+    });
+    console.log(`Mitarbeiter MA-001 already exists — updated.`);
   } else {
     const mitarbeiter = await prisma.mitarbeiter.create({
       data: {
