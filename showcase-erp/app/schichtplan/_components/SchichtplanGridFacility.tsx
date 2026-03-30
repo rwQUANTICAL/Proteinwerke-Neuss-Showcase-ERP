@@ -88,11 +88,11 @@ export default function SchichtplanGridFacility({
   }, [zuteilungen]);
 
   return (
-    <div>
-      <table className="table table-sm table-fixed w-full">
+    <div className="overflow-x-auto -mx-2 sm:mx-0">
+      <table className="table table-sm table-fixed w-full min-w-[480px] sm:min-w-0">
         <thead>
           <tr>
-            <th className="w-[140px] sticky left-0 z-10 border-r border-base-200">
+            <th className="w-[80px] sm:w-[140px] sticky left-0 z-10 border-r border-base-200 bg-base-100">
               Teilanlage
             </th>
             {weekDates.map((date, i) => {
@@ -100,14 +100,14 @@ export default function SchichtplanGridFacility({
               return (
                 <th
                   key={i}
-                  className={`text-center ${isWeekend ? "bg-base-200/30" : ""}`}
+                  className={`text-center px-0.5 sm:px-2 ${isWeekend ? "bg-base-200/30" : ""}`}
                 >
                   <div
-                    className={`font-bold ${isWeekend ? "text-base-content/50" : ""}`}
+                    className={`font-bold text-xs sm:text-sm ${isWeekend ? "text-base-content/50" : ""}`}
                   >
                     {WOCHENTAGE[i]}
                   </div>
-                  <div className="text-xs font-normal text-base-content/60">
+                  <div className="text-[10px] sm:text-xs font-normal text-base-content/60">
                     {formatDateShort(date)}
                   </div>
                 </th>
@@ -119,7 +119,7 @@ export default function SchichtplanGridFacility({
           {ALL_TEILANLAGEN.map((anlage) => (
             <tr key={anlage} className="hover">
               {/* Facility header cell */}
-              <td className="sticky left-0 z-10 bg-base-100 border-r border-base-200 font-medium">
+              <td className="sticky left-0 z-10 bg-base-100 border-r border-base-200 font-medium text-xs sm:text-sm">
                 {TEILANLAGE_LABELS[anlage]}
               </td>
 
@@ -150,7 +150,7 @@ export default function SchichtplanGridFacility({
                 return (
                   <td
                     key={i}
-                    className={`p-1 align-top ${isWeekend ? "bg-base-200/15" : ""}`}
+                    className={`p-0.5 sm:p-1 align-top ${isWeekend ? "bg-base-200/15" : ""}`}
                   >
                     <div className="flex flex-col gap-1">
                       {cellZuteilungen.map((z) => {

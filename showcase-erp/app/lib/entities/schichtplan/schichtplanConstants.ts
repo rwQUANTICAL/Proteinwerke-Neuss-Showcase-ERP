@@ -72,6 +72,17 @@ export const TEILANLAGE_LABELS: Record<string, string> = {
   SPRINGER: "Springer",
 };
 
+/** Short (1–2 letter) shift labels for mobile view */
+export const SCHICHT_TYP_SHORT: Record<string, string> = {
+  FRUEH: "F",
+  SPAET: "S",
+  NACHT: "N",
+  SPRINGER: "Sp",
+  URLAUB: "U",
+  KRANK: "K",
+  X_FREI: "X",
+};
+
 export const SKILL_LABELS: Record<string, string> = {
   MUEHLE: "Mühle",
   WALZE: "Walze",

@@ -4,6 +4,7 @@ import { MdClose, MdEdit, MdContentCopy } from "react-icons/md";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import {
   SCHICHT_TYP_LABELS,
+  SCHICHT_TYP_SHORT,
   SCHICHT_TYP_COLORS,
   SCHICHT_TYP_PATTERNS,
   TEILANLAGE_LABELS,
@@ -44,6 +45,9 @@ export default function ZuteilungCell({
   const title = isSpringerRole
     ? "Springer"
     : SCHICHT_TYP_LABELS[zuteilung.schicht];
+  const shortTitle = isSpringerRole
+    ? "Sp"
+    : (SCHICHT_TYP_SHORT[zuteilung.schicht] ?? title);
   const subtitle =
     isSpringerRole && zuteilung.schicht !== "SPRINGER"
       ? SCHICHT_TYP_LABELS[zuteilung.schicht]
@@ -51,7 +55,7 @@ export default function ZuteilungCell({
 
   return (
     <div
-      className={`relative group rounded-lg px-2.5 py-1.5 text-xs border w-full min-h-[3rem] flex flex-col justify-center transition-all
+      className={`relative group rounded-lg px-1 py-1 sm:px-2.5 sm:py-1.5 text-xs border w-full min-h-[2.25rem] sm:min-h-[3rem] flex flex-col justify-center transition-all
         ${colors?.bg ?? "bg-base-200"} ${colors?.border ?? "border-base-300"} ${colors?.text ?? "text-base-content"}
         ${dimmed ? "opacity-25 grayscale" : ""}`}
       style={pattern ? { backgroundImage: pattern } : undefined}
@@ -92,17 +96,20 @@ export default function ZuteilungCell({
           </button>
         )}
       </div>
-      <div className="font-semibold truncate">{title}</div>
-      {subtitle && <div className="truncate opacity-70">{subtitle}</div>}
+      <div className="font-semibold truncate">
+        <span className="sm:hidden">{shortTitle}</span>
+        <span className="hidden sm:inline">{title}</span>
+      </div>
+      {subtitle && <div className="truncate opacity-70 hidden sm:block">{subtitle}</div>}
       {showFacility &&
         !isSpringerRole &&
         zuteilung.teilanlage !== "SPRINGER" && (
-          <div className="truncate">
+          <div className="truncate hidden sm:block">
             {TEILANLAGE_LABELS[zuteilung.teilanlage]}
           </div>
         )}
       {isSpringerRole && showSkills && (
-        <div className="flex gap-0.5 mt-0.5">
+        <div className="gap-0.5 mt-0.5 hidden sm:flex">
           {zuteilung.mitarbeiter.skills.map((s) => (
             <span
               key={s}
@@ -115,7 +122,7 @@ export default function ZuteilungCell({
         </div>
       )}
       {showEmployee && (
-        <div className="truncate">{zuteilung.mitarbeiter.name}</div>
+        <div className="truncate hidden sm:block">{zuteilung.mitarbeiter.name}</div>
       )}
     </div>
   );

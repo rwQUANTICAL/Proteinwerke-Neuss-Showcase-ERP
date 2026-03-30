@@ -10,6 +10,7 @@ import {
 } from "react-icons/md";
 import {
   SCHICHT_TYP_LABELS,
+  SCHICHT_TYP_SHORT,
   SCHICHT_TYP_COLORS,
   ALL_SCHICHT_TYPEN,
   FACILITY_FILTER_TYPEN,
@@ -160,8 +161,8 @@ export default function SchichtplanHeader({
         </div>
 
         {/* Shift Filter — facility view only shows relevant types */}
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <MdFilterList className="size-4 text-base-content/50" />
+        <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap">
+          <MdFilterList className="size-4 text-base-content/50 hidden sm:block" />
           <button
             className={`btn btn-xs ${schichtFilter === null ? "btn-primary" : "btn-ghost"}`}
             onClick={() => onSchichtFilterChange(null)}
@@ -180,15 +181,16 @@ export default function SchichtplanHeader({
                 className={`btn btn-xs ${isActive ? `${colors?.dot ?? ""} text-white border-transparent` : "btn-ghost"}`}
                 onClick={() => onSchichtFilterChange(isActive ? null : typ)}
               >
-                {SCHICHT_TYP_LABELS[typ]}
+                <span className="sm:hidden">{SCHICHT_TYP_SHORT[typ]}</span>
+                <span className="hidden sm:inline">{SCHICHT_TYP_LABELS[typ]}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="flex items-center gap-3 flex-wrap text-xs">
+      {/* Legend — hidden on mobile since abbreviations are self-explanatory with color */}
+      <div className="hidden sm:flex items-center gap-3 flex-wrap text-xs">
         <span className="text-base-content/50 font-medium">Legende:</span>
         {ALL_SCHICHT_TYPEN.map((typ) => {
           const colors = SCHICHT_TYP_COLORS[typ];
