@@ -27,6 +27,7 @@ interface SchichtplanGridEmployeeProps {
   zuteilungen: ZuteilungWithRelations[];
   mitarbeiterList: MitarbeiterWithUser[];
   schichtFilter: SchichtFilter;
+  isAdmin: boolean;
   activeCell: ActiveCellEmployee | null;
   onCellClick: (datum: Date, mitarbeiterId: string) => void;
   onAssign: (data: {
@@ -50,6 +51,7 @@ export default function SchichtplanGridEmployee({
   zuteilungen,
   mitarbeiterList,
   schichtFilter,
+  isAdmin,
   activeCell,
   onCellClick,
   onAssign,
@@ -125,32 +127,40 @@ export default function SchichtplanGridEmployee({
               <td className="sticky left-0 z-10 bg-base-100 border-r border-base-200 py-1.5">
                 {/* Line 1: Name + hours */}
                 <div className="flex items-center justify-between gap-1">
-                  <button
-                    type="button"
-                    className="text-left group/emp min-w-0"
-                    onClick={() => onEditEmployee(ma)}
-                  >
-                    <span className="font-medium group-hover/emp:text-primary transition-colors flex items-center gap-0.5 truncate">
-                      {ma.name}
-                      <MdEdit className="size-3 shrink-0 opacity-0 group-hover/emp:opacity-60 transition-opacity" />
-                    </span>
-                  </button>
-                  <span className="text-[10px] text-base-content/30 whitespace-nowrap shrink-0">
-                    Ü: 0h
-                  </span>
-                </div>
-                {/* Line 2: Skills abbreviated */}
-                <div className="flex gap-0.5 mt-0.5">
-                  {ma.skills.map((s) => (
-                    <span
-                      key={s}
-                      className="badge badge-xs badge-outline"
-                      title={SKILL_LABELS[s] ?? s}
+                  {isAdmin ? (
+                    <button
+                      type="button"
+                      className="text-left group/emp min-w-0"
+                      onClick={() => onEditEmployee(ma)}
                     >
-                      {SKILL_SHORT[s] ?? s}
+                      <span className="font-medium group-hover/emp:text-primary transition-colors flex items-center gap-0.5 truncate">
+                        {ma.name}
+                        <MdEdit className="size-3 shrink-0 opacity-0 group-hover/emp:opacity-60 transition-opacity" />
+                      </span>
+                    </button>
+                  ) : (
+                    <span className="font-medium truncate">{ma.name}</span>
+                  )}
+                  {isAdmin && (
+                    <span className="text-[10px] text-base-content/30 whitespace-nowrap shrink-0">
+                      Ü: 0h
                     </span>
-                  ))}
+                  )}
                 </div>
+                {/* Line 2: Skills abbreviated (admin only) */}
+                {isAdmin && (
+                  <div className="flex gap-0.5 mt-0.5">
+                    {ma.skills.map((s) => (
+                      <span
+                        key={s}
+                        className="badge badge-xs badge-outline"
+                        title={SKILL_LABELS[s] ?? s}
+                      >
+                        {SKILL_SHORT[s] ?? s}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </td>
 
               {/* Day cells */}
@@ -191,12 +201,13 @@ export default function SchichtplanGridEmployee({
                         zuteilung={zuteilung}
                         showEmployee={false}
                         showFacility={true}
-                        onDelete={onDelete}
-                        onEdit={onEdit}
-                        onCopy={onCopy}
+                        showSkills={isAdmin}
+                        onDelete={isAdmin ? onDelete : undefined}
+                        onEdit={isAdmin ? onEdit : undefined}
+                        onCopy={isAdmin ? onCopy : undefined}
                         dimmed={dimmed}
                       />
-                    ) : (
+                    ) : isAdmin ? (
                       <div className="flex gap-1 min-h-[3rem]">
                         <button
                           type="button"
@@ -223,6 +234,8 @@ export default function SchichtplanGridEmployee({
                           </button>
                         )}
                       </div>
+                    ) : (
+                      <div className="min-h-[3rem]" />
                     )}
                   </td>
                 );

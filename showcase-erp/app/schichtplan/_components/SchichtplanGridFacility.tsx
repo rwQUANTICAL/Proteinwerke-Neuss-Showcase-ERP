@@ -29,6 +29,7 @@ interface SchichtplanGridFacilityProps {
   zuteilungen: ZuteilungWithRelations[];
   mitarbeiterList: MitarbeiterWithUser[];
   schichtFilter: SchichtFilter;
+  isAdmin: boolean;
   activeCell: ActiveCellFacility | null;
   onCellClick: (datum: Date, teilanlage: string) => void;
   onAssign: (data: {
@@ -49,6 +50,7 @@ export default function SchichtplanGridFacility({
   zuteilungen,
   mitarbeiterList,
   schichtFilter,
+  isAdmin,
   activeCell,
   onCellClick,
   onAssign,
@@ -163,9 +165,10 @@ export default function SchichtplanGridFacility({
                             zuteilung={z}
                             showEmployee={true}
                             showFacility={false}
-                            onDelete={onDelete}
-                            onEdit={onEdit}
-                            onCopy={onCopy}
+                            showSkills={isAdmin}
+                            onDelete={isAdmin ? onDelete : undefined}
+                            onEdit={isAdmin ? onEdit : undefined}
+                            onCopy={isAdmin ? onCopy : undefined}
                             dimmed={dimmed}
                           />
                         );
@@ -187,7 +190,7 @@ export default function SchichtplanGridFacility({
                           }
                           onCancel={onCancel}
                         />
-                      ) : (
+                      ) : isAdmin ? (
                         <button
                           type="button"
                           className="flex items-center justify-center w-full h-8 rounded-lg
@@ -199,7 +202,7 @@ export default function SchichtplanGridFacility({
                         >
                           <MdAdd className="size-4" />
                         </button>
-                      )}
+                      ) : null}
                     </div>
                   </td>
                 );

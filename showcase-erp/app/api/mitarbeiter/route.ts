@@ -27,20 +27,22 @@ const createMitarbeiterSchema = z.object({
     .optional(),
 });
 
-async function requireAdmin() {
+async function requireAuth() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  if (!session?.user) return null;
+  return session;
+}
 
-  if (!session?.user || session.user.role !== "admin") {
-    return null;
-  }
-
+async function requireAdmin() {
+  const session = await requireAuth();
+  if (!session || session.user.role !== "admin") return null;
   return session;
 }
 
 export async function GET() {
-  const session = await requireAdmin();
+  const session = await requireAuth();
   if (!session) {
     return NextResponse.json({ error: "Nicht autorisiert" }, { status: 403 });
   }

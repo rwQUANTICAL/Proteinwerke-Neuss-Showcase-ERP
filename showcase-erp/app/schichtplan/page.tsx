@@ -13,6 +13,7 @@ import {
   getKwForDate,
   formatDateISO,
 } from "@/app/lib/entities/schichtplan/schichtplanConstants";
+import { authClient } from "@/app/lib/auth-client";
 import SchichtplanHeader from "./_components/SchichtplanHeader";
 import type { ViewMode, SchichtFilter } from "./_components/SchichtplanHeader";
 import SchichtplanGridEmployee from "./_components/SchichtplanGridEmployee";
@@ -26,6 +27,9 @@ import ClipboardIndicator from "./_components/ClipboardIndicator";
 const initialKw = getKwForDate(new Date());
 
 export default function SchichtplanPage() {
+  const { data: session } = authClient.useSession();
+  const isAdmin = session?.user?.role === "admin";
+
   const [jahr, setJahr] = useState(initialKw.jahr);
   const [kw, setKw] = useState(initialKw.kw);
   const [viewMode, setViewMode] = useState<ViewMode>("employee");
@@ -151,7 +155,7 @@ export default function SchichtplanPage() {
         onSchichtFilterChange={setSchichtFilter}
       />
 
-      {clipboard && (
+      {isAdmin && clipboard && (
         <ClipboardIndicator
           clipboard={clipboard}
           onClear={() => setClipboard(null)}
@@ -181,7 +185,8 @@ export default function SchichtplanPage() {
               zuteilungen={zeitplanQuery.data?.zuteilungen ?? []}
               mitarbeiterList={mitarbeiterQuery.data ?? []}
               schichtFilter={schichtFilter}
-              activeCell={activeCellEmp}
+              isAdmin={isAdmin}
+              activeCell={isAdmin ? activeCellEmp : null}
               onCellClick={handleEmployeeCellClick}
               onAssign={handleAssign}
               onCancel={handleCancel}
@@ -189,7 +194,7 @@ export default function SchichtplanPage() {
               onEdit={handleEdit}
               onCopy={handleCopy}
               onEditEmployee={handleEditEmployee}
-              clipboard={clipboard}
+              clipboard={isAdmin ? clipboard : null}
               onPaste={handlePaste}
             />
           ) : (
@@ -199,7 +204,8 @@ export default function SchichtplanPage() {
               zuteilungen={zeitplanQuery.data?.zuteilungen ?? []}
               mitarbeiterList={mitarbeiterQuery.data ?? []}
               schichtFilter={schichtFilter}
-              activeCell={activeCellFac}
+              isAdmin={isAdmin}
+              activeCell={isAdmin ? activeCellFac : null}
               onCellClick={handleFacilityCellClick}
               onAssign={handleAssign}
               onCancel={handleCancel}
@@ -211,7 +217,7 @@ export default function SchichtplanPage() {
         </div>
       </div>
 
-      {editTarget && (
+      {isAdmin && editTarget && (
         <EditModal
           zuteilung={editTarget}
           jahr={jahr}
@@ -220,7 +226,7 @@ export default function SchichtplanPage() {
         />
       )}
 
-      {editEmployee && (
+      {isAdmin && editEmployee && (
         <MitarbeiterEditModal
           mitarbeiter={editEmployee}
           onClose={() => setEditEmployee(null)}

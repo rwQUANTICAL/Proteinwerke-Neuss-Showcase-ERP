@@ -15,6 +15,7 @@ interface ZuteilungCellProps {
   zuteilung: ZuteilungWithRelations;
   showEmployee?: boolean;
   showFacility?: boolean;
+  showSkills?: boolean;
   onDelete?: (id: string) => void;
   onEdit?: (zuteilung: ZuteilungWithRelations) => void;
   onCopy?: (zuteilung: ZuteilungWithRelations) => void;
@@ -25,6 +26,7 @@ export default function ZuteilungCell({
   zuteilung,
   showEmployee = true,
   showFacility = true,
+  showSkills = true,
   onDelete,
   onEdit,
   onCopy,
@@ -99,7 +101,7 @@ export default function ZuteilungCell({
             {TEILANLAGE_LABELS[zuteilung.teilanlage]}
           </div>
         )}
-      {isSpringerRole && (
+      {isSpringerRole && showSkills && (
         <div className="flex gap-0.5 mt-0.5">
           {zuteilung.mitarbeiter.skills.map((s) => (
             <span

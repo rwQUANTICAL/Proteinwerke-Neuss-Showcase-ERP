@@ -9,16 +9,16 @@ const querySchema = z.object({
   kw: z.coerce.number().int().min(1).max(53),
 });
 
-async function requireAdmin() {
+async function requireAuth() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  if (!session?.user || session.user.role !== "admin") return null;
+  if (!session?.user) return null;
   return session;
 }
 
 export async function GET(request: NextRequest) {
-  const session = await requireAdmin();
+  const session = await requireAuth();
   if (!session) {
     return NextResponse.json({ error: "Nicht autorisiert" }, { status: 403 });
   }
