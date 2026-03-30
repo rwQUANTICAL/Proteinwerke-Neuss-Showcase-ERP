@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MdLocalHospital, MdBeachAccess, MdSwapHoriz } from "react-icons/md";
+import { MdBeachAccess, MdSwapHoriz, MdLocalHospital } from "react-icons/md";
 import { authClient } from "@/app/lib/auth-client";
 import KrankmeldungForm from "./_components/KrankmeldungForm";
 import KrankmeldungList from "./_components/KrankmeldungList";
@@ -11,15 +11,9 @@ import UrlaubsantragList from "./_components/UrlaubsantragList";
 import AdminUrlaubsantragList from "./_components/AdminUrlaubsantragList";
 
 type Tab = "meine" | "verwaltung";
-type AbwesenheitTyp = "KRANK" | "URLAUB" | "FREIZEITAUSGLEICH";
+type AbwesenheitTyp = "URLAUB" | "FREIZEITAUSGLEICH" | "KRANK";
 
 const TYPEN = [
-  {
-    value: "KRANK" as const,
-    label: "Krankmeldung",
-    icon: MdLocalHospital,
-    color: "btn-error",
-  },
   {
     value: "URLAUB" as const,
     label: "Urlaub",
@@ -33,13 +27,19 @@ const TYPEN = [
     color: "btn-info",
     disabled: true,
   },
+  {
+    value: "KRANK" as const,
+    label: "Krankmeldung",
+    icon: MdLocalHospital,
+    color: "btn-error",
+  },
 ] as const;
 
 export default function AbwesenheitPage() {
   const { data: session } = authClient.useSession();
   const isAdmin = session?.user?.role === "admin";
   const [tab, setTab] = useState<Tab>("meine");
-  const [typ, setTyp] = useState<AbwesenheitTyp>("KRANK");
+  const [typ, setTyp] = useState<AbwesenheitTyp>("URLAUB");
 
   return (
     <div className="container mx-auto max-w-2xl px-4 py-6 sm:py-10 flex flex-col gap-6">

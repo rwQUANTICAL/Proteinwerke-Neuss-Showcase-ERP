@@ -28,7 +28,6 @@ export interface UrlaubsKonto {
 export const urlaubsantragKeys = {
   all: ["urlaubsantraege"] as const,
   admin: ["urlaubsantraege", "admin"] as const,
-  konto: ["urlaubsantraege", "konto"] as const,
 };
 
 async function fetchUrlaubsantraege(): Promise<Urlaubsantrag[]> {
