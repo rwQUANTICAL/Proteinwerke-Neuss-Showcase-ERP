@@ -149,15 +149,21 @@ export default function SchichtplanGridEmployee({
                       </span>
                       <span className="sm:hidden text-[10px] font-medium leading-tight">
                         <div>{ma.name.split(" ")[0]}</div>
-                        <div className="text-base-content/60">{ma.name.split(" ").slice(1).join(" ")}</div>
+                        <div className="text-base-content/60">
+                          {ma.name.split(" ").slice(1).join(" ")}
+                        </div>
                       </span>
                     </button>
                   ) : (
                     <>
-                      <span className="font-medium text-xs sm:text-sm truncate hidden sm:inline">{ma.name}</span>
+                      <span className="font-medium text-xs sm:text-sm truncate hidden sm:inline">
+                        {ma.name}
+                      </span>
                       <span className="sm:hidden text-[10px] font-medium leading-tight">
                         <div>{ma.name.split(" ")[0]}</div>
-                        <div className="text-base-content/60">{ma.name.split(" ").slice(1).join(" ")}</div>
+                        <div className="text-base-content/60">
+                          {ma.name.split(" ").slice(1).join(" ")}
+                        </div>
                       </span>
                     </>
                   )}

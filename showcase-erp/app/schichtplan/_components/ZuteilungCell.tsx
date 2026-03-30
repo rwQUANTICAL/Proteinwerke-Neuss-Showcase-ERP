@@ -100,7 +100,9 @@ export default function ZuteilungCell({
         <span className="sm:hidden">{shortTitle}</span>
         <span className="hidden sm:inline">{title}</span>
       </div>
-      {subtitle && <div className="truncate opacity-70 hidden sm:block">{subtitle}</div>}
+      {subtitle && (
+        <div className="truncate opacity-70 hidden sm:block">{subtitle}</div>
+      )}
       {showFacility &&
         !isSpringerRole &&
         zuteilung.teilanlage !== "SPRINGER" && (
@@ -117,9 +119,10 @@ export default function ZuteilungCell({
       {!showFacility && (
         <div className="sm:hidden text-[7px] leading-tight">&nbsp;</div>
       )}
-      {showFacility && (isSpringerRole || zuteilung.teilanlage === "SPRINGER") && (
-        <div className="sm:hidden text-[7px] leading-tight">&nbsp;</div>
-      )}
+      {showFacility &&
+        (isSpringerRole || zuteilung.teilanlage === "SPRINGER") && (
+          <div className="sm:hidden text-[7px] leading-tight">&nbsp;</div>
+        )}
       {isSpringerRole && showSkills && (
         <div className="gap-0.5 mt-0.5 hidden sm:flex">
           {zuteilung.mitarbeiter.skills.map((s) => (
@@ -135,7 +138,9 @@ export default function ZuteilungCell({
       )}
       {showEmployee && (
         <>
-          <div className="truncate hidden sm:block">{zuteilung.mitarbeiter.name}</div>
+          <div className="truncate hidden sm:block">
+            {zuteilung.mitarbeiter.name}
+          </div>
           <div className="truncate sm:hidden text-[7px] leading-tight opacity-80">
             {zuteilung.mitarbeiter.name.split(" ").pop()}
           </div>

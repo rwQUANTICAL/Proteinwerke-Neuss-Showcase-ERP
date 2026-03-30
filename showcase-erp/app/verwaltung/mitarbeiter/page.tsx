@@ -28,7 +28,9 @@ export default function MitarbeiterverwaltungPage() {
       <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <MdPeople className="size-5 sm:size-8 text-primary shrink-0" />
-          <h1 className="text-lg sm:text-2xl font-bold truncate">Mitarbeiterverwaltung</h1>
+          <h1 className="text-lg sm:text-2xl font-bold truncate">
+            Mitarbeiterverwaltung
+          </h1>
         </div>
         <Link
           href="/verwaltung/mitarbeiter/neuen-anlegen"

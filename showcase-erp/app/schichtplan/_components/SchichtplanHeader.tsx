@@ -201,7 +201,10 @@ export default function SchichtplanHeader({
                 <button
                   type="button"
                   className="btn btn-ghost btn-circle btn-xs"
-                  onClick={() => { onEmployeeSearchChange(""); setMobileSearchOpen(false); }}
+                  onClick={() => {
+                    onEmployeeSearchChange("");
+                    setMobileSearchOpen(false);
+                  }}
                 >
                   <MdClose className="size-3" />
                 </button>
@@ -261,7 +264,11 @@ export default function SchichtplanHeader({
               onChange={(e) => onEmployeeSearchChange(e.target.value)}
             />
             {employeeSearch && (
-              <button type="button" className="btn btn-ghost btn-circle btn-xs" onClick={() => onEmployeeSearchChange("")}>
+              <button
+                type="button"
+                className="btn btn-ghost btn-circle btn-xs"
+                onClick={() => onEmployeeSearchChange("")}
+              >
                 <MdClose className="size-3" />
               </button>
             )}

@@ -163,7 +163,9 @@ export default function SchichtplanPage() {
       el.style.overflow = "visible";
 
       // Wait for layout reflow
-      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      await new Promise((r) =>
+        requestAnimationFrame(() => requestAnimationFrame(r)),
+      );
 
       const canvas = await html2canvas(el, {
         scale: 2,
@@ -180,7 +182,11 @@ export default function SchichtplanPage() {
 
       const imgWidth = 277; // A4 landscape usable width (mm)
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: "a4",
+      });
 
       pdf.setFontSize(14);
       pdf.text(`Schichtplan — KW ${kw} / ${jahr}`, 10, 12);
@@ -188,13 +194,27 @@ export default function SchichtplanPage() {
       // Handle multi-page if content is taller than A4
       const pageHeight = 190; // A4 landscape usable height minus title
       if (imgHeight <= pageHeight) {
-        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 10, 18, imgWidth, imgHeight);
+        pdf.addImage(
+          canvas.toDataURL("image/png"),
+          "PNG",
+          10,
+          18,
+          imgWidth,
+          imgHeight,
+        );
       } else {
         // Scale to fit on one page
         const scale = pageHeight / imgHeight;
         const scaledWidth = imgWidth * scale;
         const xOffset = 10 + (imgWidth - scaledWidth) / 2;
-        pdf.addImage(canvas.toDataURL("image/png"), "PNG", xOffset, 18, scaledWidth, pageHeight);
+        pdf.addImage(
+          canvas.toDataURL("image/png"),
+          "PNG",
+          xOffset,
+          18,
+          scaledWidth,
+          pageHeight,
+        );
       }
 
       pdf.save(`Schichtplan_KW${kw}_${jahr}.pdf`);

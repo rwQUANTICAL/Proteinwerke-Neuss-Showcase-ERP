@@ -75,7 +75,11 @@ export default function MitarbeiterTable() {
             onChange={(e) => setSearch(e.target.value)}
           />
           {search && (
-            <button type="button" className="btn btn-ghost btn-circle btn-xs" onClick={() => setSearch("")}>
+            <button
+              type="button"
+              className="btn btn-ghost btn-circle btn-xs"
+              onClick={() => setSearch("")}
+            >
               <MdClose className="size-3.5" />
             </button>
           )}
@@ -97,7 +101,10 @@ export default function MitarbeiterTable() {
               <button
                 type="button"
                 className="btn btn-ghost btn-circle btn-xs"
-                onClick={() => { setSearch(""); setMobileSearchOpen(false); }}
+                onClick={() => {
+                  setSearch("");
+                  setMobileSearchOpen(false);
+                }}
               >
                 <MdClose className="size-3.5" />
               </button>
@@ -125,122 +132,121 @@ export default function MitarbeiterTable() {
 
       {/* Desktop table — hidden on mobile */}
       {!!filtered?.length && (
-      <div className="hidden sm:block overflow-x-auto">
-        <table className="table table-zebra">
-          <thead>
-            <tr>
-              <th>Ref.-Nr.</th>
-              <th>Name</th>
-              <th>Skills</th>
-              <th>Wochenstunden</th>
-              <th>Urlaubstage</th>
-              <th>Benutzerkonto</th>
-              <th className="w-24"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((ma) => (
-              <tr key={ma.id}>
-                <td className="font-mono">{ma.referenzNummer}</td>
-                <td>{ma.name}</td>
-                <td>
-                  <div className="flex flex-wrap gap-1">
-                    {ma.skills.map((s) => (
-                      <span key={s} className="badge badge-sm badge-outline">
-                        {SKILL_LABELS[s] ?? s}
-                      </span>
-                    ))}
-                  </div>
-                </td>
-                <td>{ma.weeklyWorkRequirement}h</td>
-                <td>{ma.urlaubsAnspruch}</td>
-                <td>
-                  {ma.user ? (
-                    <span className="text-success">{ma.user.email}</span>
-                  ) : (
-                    <span className="text-base-content/40">—</span>
-                  )}
-                </td>
-                <td>
-                  <div className="flex gap-1">
-                    <button
-                      className="btn btn-ghost btn-xs btn-square"
-                      onClick={() => setEditTarget(ma)}
-                      aria-label="Bearbeiten"
-                    >
-                      <MdEdit className="size-4" />
-                    </button>
-                    <button
-                      className="btn btn-ghost btn-xs btn-square text-error"
-                      onClick={() => deleteMutation.mutate(ma.id)}
-                      disabled={deleteMutation.isPending}
-                      aria-label="Löschen"
-                    >
-                      <MdDelete className="size-4" />
-                    </button>
-                  </div>
-                </td>
+        <div className="hidden sm:block overflow-x-auto">
+          <table className="table table-zebra">
+            <thead>
+              <tr>
+                <th>Ref.-Nr.</th>
+                <th>Name</th>
+                <th>Skills</th>
+                <th>Wochenstunden</th>
+                <th>Urlaubstage</th>
+                <th>Benutzerkonto</th>
+                <th className="w-24"></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {filtered.map((ma) => (
+                <tr key={ma.id}>
+                  <td className="font-mono">{ma.referenzNummer}</td>
+                  <td>{ma.name}</td>
+                  <td>
+                    <div className="flex flex-wrap gap-1">
+                      {ma.skills.map((s) => (
+                        <span key={s} className="badge badge-sm badge-outline">
+                          {SKILL_LABELS[s] ?? s}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td>{ma.weeklyWorkRequirement}h</td>
+                  <td>{ma.urlaubsAnspruch}</td>
+                  <td>
+                    {ma.user ? (
+                      <span className="text-success">{ma.user.email}</span>
+                    ) : (
+                      <span className="text-base-content/40">—</span>
+                    )}
+                  </td>
+                  <td>
+                    <div className="flex gap-1">
+                      <button
+                        className="btn btn-ghost btn-xs btn-square"
+                        onClick={() => setEditTarget(ma)}
+                        aria-label="Bearbeiten"
+                      >
+                        <MdEdit className="size-4" />
+                      </button>
+                      <button
+                        className="btn btn-ghost btn-xs btn-square text-error"
+                        onClick={() => deleteMutation.mutate(ma.id)}
+                        disabled={deleteMutation.isPending}
+                        aria-label="Löschen"
+                      >
+                        <MdDelete className="size-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {/* Mobile card list — hidden on sm+ */}
       {!!filtered?.length && (
-      <div className="sm:hidden flex flex-col gap-2">
-        {filtered.map((ma) => (
-          <div
-            key={ma.id}
-            className="flex items-center gap-3 rounded-lg bg-base-200/40 px-3 py-2"
-          >
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-sm truncate">{ma.name}</span>
-                <span className="text-[10px] font-mono text-base-content/40 shrink-0">
-                  {ma.referenzNummer}
-                </span>
-              </div>
-              <div className="flex items-center gap-2 mt-0.5">
-                <div className="flex gap-0.5">
-                  {ma.skills.map((s) => (
-                    <span
-                      key={s}
-                      className="badge badge-xs badge-outline"
-                    >
-                      {SKILL_LABELS[s] ?? s}
-                    </span>
-                  ))}
+        <div className="sm:hidden flex flex-col gap-2">
+          {filtered.map((ma) => (
+            <div
+              key={ma.id}
+              className="flex items-center gap-3 rounded-lg bg-base-200/40 px-3 py-2"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-sm truncate">
+                    {ma.name}
+                  </span>
+                  <span className="text-[10px] font-mono text-base-content/40 shrink-0">
+                    {ma.referenzNummer}
+                  </span>
                 </div>
-                <span className="text-xs text-base-content/50">
-                  {ma.weeklyWorkRequirement}h
-                </span>
-                <span className="text-xs text-base-content/50">
-                  {ma.urlaubsAnspruch}d
-                </span>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <div className="flex gap-0.5">
+                    {ma.skills.map((s) => (
+                      <span key={s} className="badge badge-xs badge-outline">
+                        {SKILL_LABELS[s] ?? s}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-xs text-base-content/50">
+                    {ma.weeklyWorkRequirement}h
+                  </span>
+                  <span className="text-xs text-base-content/50">
+                    {ma.urlaubsAnspruch}d
+                  </span>
+                </div>
+              </div>
+              <div className="flex gap-1 shrink-0">
+                <button
+                  className="btn btn-ghost btn-xs btn-square"
+                  onClick={() => setEditTarget(ma)}
+                  aria-label="Bearbeiten"
+                >
+                  <MdEdit className="size-4" />
+                </button>
+                <button
+                  className="btn btn-ghost btn-xs btn-square text-error"
+                  onClick={() => deleteMutation.mutate(ma.id)}
+                  disabled={deleteMutation.isPending}
+                  aria-label="Löschen"
+                >
+                  <MdDelete className="size-4" />
+                </button>
               </div>
             </div>
-            <div className="flex gap-1 shrink-0">
-              <button
-                className="btn btn-ghost btn-xs btn-square"
-                onClick={() => setEditTarget(ma)}
-                aria-label="Bearbeiten"
-              >
-                <MdEdit className="size-4" />
-              </button>
-              <button
-                className="btn btn-ghost btn-xs btn-square text-error"
-                onClick={() => deleteMutation.mutate(ma.id)}
-                disabled={deleteMutation.isPending}
-                aria-label="Löschen"
-              >
-                <MdDelete className="size-4" />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
       )}
 
       {editTarget && (
