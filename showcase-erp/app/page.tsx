@@ -1,3 +1,4 @@
+import Link from "next/link";
 import HeroBackground from "@/app/components/HeroBackground";
 
 export default function Home() {
@@ -10,7 +11,7 @@ export default function Home() {
         Ihr digitales Schichtplan- und Personalmanagement – einfach,
         übersichtlich und effizient.
       </p>
-      <button className="btn btn-primary">Zum Schichtplan</button>
+      <Link href="/schichtplan" className="btn btn-primary">Zum Schichtplan</Link>
     </HeroBackground>
   );
 }
