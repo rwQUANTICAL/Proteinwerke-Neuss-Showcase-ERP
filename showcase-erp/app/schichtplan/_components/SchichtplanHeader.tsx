@@ -182,7 +182,9 @@ export default function SchichtplanHeader({
                 onClick={() => onSchichtFilterChange(isActive ? null : typ)}
               >
                 <span className="sm:hidden">{SCHICHT_TYP_SHORT[typ]}</span>
-                <span className="hidden sm:inline">{SCHICHT_TYP_LABELS[typ]}</span>
+                <span className="hidden sm:inline">
+                  {SCHICHT_TYP_LABELS[typ]}
+                </span>
               </button>
             );
           })}
