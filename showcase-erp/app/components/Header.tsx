@@ -82,9 +82,7 @@ export default function Header() {
               key={item.href}
               href={item.href}
               className={`btn btn-sm uppercase tracking-wide font-medium ${
-                isActive
-                  ? "btn-primary"
-                  : "btn-ghost text-base-content/70"
+                isActive ? "btn-primary" : "btn-ghost text-base-content/70"
               }`}
             >
               <item.icon className="size-4" />
