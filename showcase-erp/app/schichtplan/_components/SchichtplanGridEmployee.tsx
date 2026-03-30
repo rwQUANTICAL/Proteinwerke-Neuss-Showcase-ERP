@@ -10,7 +10,6 @@ import {
   WOCHENTAGE,
   SKILL_SHORT,
   SKILL_LABELS,
-  WORKING_SCHICHT_TYPEN,
   getWeekDates,
   formatDateShort,
   formatDateISO,
@@ -70,17 +69,6 @@ export default function SchichtplanGridEmployee({
     for (const z of zuteilungen) {
       const dateKey = z.datum.split("T")[0];
       map.set(`${z.mitarbeiterId}:${dateKey}`, z);
-    }
-    return map;
-  }, [zuteilungen]);
-
-  // Compute assigned hours per employee for this week
-  const assignedHoursMap = useMemo(() => {
-    const map = new Map<string, number>();
-    for (const z of zuteilungen) {
-      if (!(WORKING_SCHICHT_TYPEN as readonly string[]).includes(z.schicht))
-        continue;
-      map.set(z.mitarbeiterId, (map.get(z.mitarbeiterId) ?? 0) + 8);
     }
     return map;
   }, [zuteilungen]);
@@ -147,10 +135,8 @@ export default function SchichtplanGridEmployee({
                       <MdEdit className="size-3 shrink-0 opacity-0 group-hover/emp:opacity-60 transition-opacity" />
                     </span>
                   </button>
-                  <span className="text-[10px] text-base-content/50 whitespace-nowrap shrink-0">
-                    {assignedHoursMap.get(ma.id) ?? 0}/
-                    {Number(ma.weeklyWorkRequirement)}h
-                    <span className="ml-1 text-base-content/30">Ü: 0h</span>
+                  <span className="text-[10px] text-base-content/30 whitespace-nowrap shrink-0">
+                    Ü: 0h
                   </span>
                 </div>
                 {/* Line 2: Skills abbreviated */}
