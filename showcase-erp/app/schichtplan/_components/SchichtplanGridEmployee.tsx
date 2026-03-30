@@ -27,6 +27,7 @@ interface SchichtplanGridEmployeeProps {
   zuteilungen: ZuteilungWithRelations[];
   mitarbeiterList: MitarbeiterWithUser[];
   schichtFilter: SchichtFilter;
+  employeeSearch: string;
   isAdmin: boolean;
   activeCell: ActiveCellEmployee | null;
   onCellClick: (datum: Date, mitarbeiterId: string) => void;
@@ -51,6 +52,7 @@ export default function SchichtplanGridEmployee({
   zuteilungen,
   mitarbeiterList,
   schichtFilter,
+  employeeSearch,
   isAdmin,
   activeCell,
   onCellClick,
@@ -75,11 +77,18 @@ export default function SchichtplanGridEmployee({
     return map;
   }, [zuteilungen]);
 
-  // Filter employees: when filter is active, only show employees with ≥1 matching entry
+  // Filter employees: by search term and/or shift filter
   const filteredMitarbeiter = useMemo(() => {
-    if (!schichtFilter) return mitarbeiterList;
+    let list = mitarbeiterList;
+
+    if (employeeSearch.trim()) {
+      const q = employeeSearch.toLowerCase();
+      list = list.filter((ma) => ma.name.toLowerCase().includes(q));
+    }
+
+    if (!schichtFilter) return list;
     const NON_WORKING = ["X_FREI", "URLAUB", "KRANK"];
-    return mitarbeiterList.filter((ma) =>
+    return list.filter((ma) =>
       zuteilungen.some((z) => {
         if (z.mitarbeiterId !== ma.id) return false;
         if (schichtFilter === "SPRINGER") {
@@ -90,15 +99,16 @@ export default function SchichtplanGridEmployee({
         return z.schicht === schichtFilter;
       }),
     );
-  }, [mitarbeiterList, schichtFilter, zuteilungen]);
+  }, [mitarbeiterList, employeeSearch, schichtFilter, zuteilungen]);
 
   return (
-    <div className="overflow-x-auto -mx-2 sm:mx-0">
-      <table className="table table-sm table-fixed w-full min-w-[480px] sm:min-w-0">
+    <div className="-mx-2 sm:mx-0">
+      <table className="table table-xs sm:table-sm table-fixed w-full">
         <thead>
           <tr>
-            <th className="w-[100px] sm:w-[210px] sticky left-0 z-10 border-r border-base-200 bg-base-100">
-              Mitarbeiter
+            <th className="w-[70px] sm:w-[210px] sticky left-0 z-10 border-r border-base-200 bg-base-100 px-1 sm:px-2">
+              <span className="hidden sm:inline">Mitarbeiter</span>
+              <span className="sm:hidden text-[10px]">Name</span>
             </th>
             {weekDates.map((date, i) => {
               const isWeekend = i >= 5;
@@ -112,7 +122,7 @@ export default function SchichtplanGridEmployee({
                   >
                     {WOCHENTAGE[i]}
                   </div>
-                  <div className="text-[10px] sm:text-xs font-normal text-base-content/60">
+                  <div className="text-[10px] sm:text-xs font-normal text-base-content/60 hidden sm:block">
                     {formatDateShort(date)}
                   </div>
                 </th>
@@ -124,7 +134,7 @@ export default function SchichtplanGridEmployee({
           {filteredMitarbeiter.map((ma) => (
             <tr key={ma.id} className="hover">
               {/* Employee header cell */}
-              <td className="sticky left-0 z-10 bg-base-100 border-r border-base-200 py-1 sm:py-1.5">
+              <td className="sticky left-0 z-10 bg-base-100 border-r border-base-200 py-0.5 sm:py-1.5 px-1 sm:px-2">
                 {/* Line 1: Name + hours */}
                 <div className="flex items-center justify-between gap-1">
                   {isAdmin ? (
@@ -134,15 +144,25 @@ export default function SchichtplanGridEmployee({
                       onClick={() => onEditEmployee(ma)}
                     >
                       <span className="font-medium text-xs sm:text-sm group-hover/emp:text-primary transition-colors flex items-center gap-0.5 truncate">
-                        {ma.name}
-                        <MdEdit className="size-3 shrink-0 opacity-0 group-hover/emp:opacity-60 transition-opacity" />
+                        <span className="hidden sm:inline">{ma.name}</span>
+                        <MdEdit className="size-3 shrink-0 opacity-0 group-hover/emp:opacity-60 transition-opacity hidden sm:inline" />
+                      </span>
+                      <span className="sm:hidden text-[10px] font-medium leading-tight">
+                        <div>{ma.name.split(" ")[0]}</div>
+                        <div className="text-base-content/60">{ma.name.split(" ").slice(1).join(" ")}</div>
                       </span>
                     </button>
                   ) : (
-                    <span className="font-medium text-xs sm:text-sm truncate">{ma.name}</span>
+                    <>
+                      <span className="font-medium text-xs sm:text-sm truncate hidden sm:inline">{ma.name}</span>
+                      <span className="sm:hidden text-[10px] font-medium leading-tight">
+                        <div>{ma.name.split(" ")[0]}</div>
+                        <div className="text-base-content/60">{ma.name.split(" ").slice(1).join(" ")}</div>
+                      </span>
+                    </>
                   )}
                   {isAdmin && (
-                    <span className="text-[10px] text-base-content/30 whitespace-nowrap shrink-0">
+                    <span className="hidden sm:inline text-[10px] text-base-content/30 whitespace-nowrap shrink-0">
                       Ü: 0h
                     </span>
                   )}
@@ -208,7 +228,7 @@ export default function SchichtplanGridEmployee({
                         dimmed={dimmed}
                       />
                     ) : isAdmin ? (
-                      <div className="flex gap-0.5 sm:gap-1 min-h-[2.25rem] sm:min-h-[3rem]">
+                      <div className="flex gap-0.5 sm:gap-1 min-h-[1.5rem] sm:min-h-[3rem]">
                         <button
                           type="button"
                           className="flex items-center justify-center flex-1 rounded-lg
@@ -218,7 +238,7 @@ export default function SchichtplanGridEmployee({
                           onClick={() => onCellClick(date, ma.id)}
                           aria-label={`Zuteilung für ${ma.name} am ${WOCHENTAGE[i]}`}
                         >
-                          <MdAdd className="size-5" />
+                          <MdAdd className="size-3 sm:size-5" />
                         </button>
                         {clipboard && (
                           <button
@@ -235,7 +255,7 @@ export default function SchichtplanGridEmployee({
                         )}
                       </div>
                     ) : (
-                      <div className="min-h-[2.25rem] sm:min-h-[3rem]" />
+                      <div className="min-h-[1.5rem] sm:min-h-[3rem]" />
                     )}
                   </td>
                 );

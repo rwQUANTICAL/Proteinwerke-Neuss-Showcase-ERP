@@ -88,12 +88,12 @@ export default function SchichtplanGridFacility({
   }, [zuteilungen]);
 
   return (
-    <div className="overflow-x-auto -mx-2 sm:mx-0">
-      <table className="table table-sm table-fixed w-full min-w-[480px] sm:min-w-0">
+    <div className="-mx-2 sm:mx-0">
+      <table className="table table-xs sm:table-sm table-fixed w-full">
         <thead>
           <tr>
-            <th className="w-[80px] sm:w-[140px] sticky left-0 z-10 border-r border-base-200 bg-base-100">
-              Teilanlage
+            <th className="w-[60px] sm:w-[140px] sticky left-0 z-10 border-r border-base-200 bg-base-100 px-1 sm:px-2 text-[10px] sm:text-sm">
+              Anlage
             </th>
             {weekDates.map((date, i) => {
               const isWeekend = i >= 5;
@@ -107,7 +107,7 @@ export default function SchichtplanGridFacility({
                   >
                     {WOCHENTAGE[i]}
                   </div>
-                  <div className="text-[10px] sm:text-xs font-normal text-base-content/60">
+                  <div className="text-[10px] sm:text-xs font-normal text-base-content/60 hidden sm:block">
                     {formatDateShort(date)}
                   </div>
                 </th>
@@ -119,7 +119,7 @@ export default function SchichtplanGridFacility({
           {ALL_TEILANLAGEN.map((anlage) => (
             <tr key={anlage} className="hover">
               {/* Facility header cell */}
-              <td className="sticky left-0 z-10 bg-base-100 border-r border-base-200 font-medium text-xs sm:text-sm">
+              <td className="sticky left-0 z-10 bg-base-100 border-r border-base-200 font-medium text-[10px] sm:text-sm px-1 sm:px-2">
                 {TEILANLAGE_LABELS[anlage]}
               </td>
 

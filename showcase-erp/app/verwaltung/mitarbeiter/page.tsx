@@ -25,21 +25,22 @@ export default function MitarbeiterverwaltungPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <MdPeople className="size-8 text-primary" />
-          <h1 className="text-2xl font-bold">Mitarbeiterverwaltung</h1>
+      <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <MdPeople className="size-5 sm:size-8 text-primary shrink-0" />
+          <h1 className="text-lg sm:text-2xl font-bold truncate">Mitarbeiterverwaltung</h1>
         </div>
         <Link
           href="/verwaltung/mitarbeiter/neuen-anlegen"
-          className="btn btn-primary"
+          className="btn btn-primary btn-sm sm:btn-md"
         >
-          Neuer Mitarbeiter
+          <span className="hidden sm:inline">Neuer Mitarbeiter</span>
+          <span className="sm:hidden">Neu</span>
         </Link>
       </div>
 
       <div className="card bg-base-100 shadow-sm">
-        <div className="card-body">
+        <div className="card-body p-2 sm:p-6">
           <MitarbeiterTable />
         </div>
       </div>

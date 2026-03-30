@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useZeitplanQuery } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import { useMitarbeiterQuery } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
@@ -50,6 +50,9 @@ export default function SchichtplanPage() {
     schicht: string;
     teilanlage: string;
   } | null>(null);
+  const [employeeSearch, setEmployeeSearch] = useState("");
+  const [isDownloading, setIsDownloading] = useState(false);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const zeitplanQuery = useZeitplanQuery(jahr, kw);
   const mitarbeiterQuery = useMitarbeiterQuery();
@@ -143,8 +146,65 @@ export default function SchichtplanPage() {
     [clipboard, zeitplanQuery.data, createMutation],
   );
 
+  const handleDownloadPdf = useCallback(async () => {
+    const el = gridRef.current;
+    if (!el) return;
+    setIsDownloading(true);
+    try {
+      const html2canvas = (await import("html2canvas-pro")).default;
+      const { jsPDF } = await import("jspdf");
+
+      // Force desktop width for capture regardless of viewport
+      const origWidth = el.style.width;
+      const origMinWidth = el.style.minWidth;
+      const origOverflow = el.style.overflow;
+      el.style.width = "1200px";
+      el.style.minWidth = "1200px";
+      el.style.overflow = "visible";
+
+      // Wait for layout reflow
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+      const canvas = await html2canvas(el, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        width: 1200,
+        windowWidth: 1200,
+      });
+
+      // Restore original styles
+      el.style.width = origWidth;
+      el.style.minWidth = origMinWidth;
+      el.style.overflow = origOverflow;
+
+      const imgWidth = 277; // A4 landscape usable width (mm)
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+
+      pdf.setFontSize(14);
+      pdf.text(`Schichtplan — KW ${kw} / ${jahr}`, 10, 12);
+
+      // Handle multi-page if content is taller than A4
+      const pageHeight = 190; // A4 landscape usable height minus title
+      if (imgHeight <= pageHeight) {
+        pdf.addImage(canvas.toDataURL("image/png"), "PNG", 10, 18, imgWidth, imgHeight);
+      } else {
+        // Scale to fit on one page
+        const scale = pageHeight / imgHeight;
+        const scaledWidth = imgWidth * scale;
+        const xOffset = 10 + (imgWidth - scaledWidth) / 2;
+        pdf.addImage(canvas.toDataURL("image/png"), "PNG", xOffset, 18, scaledWidth, pageHeight);
+      }
+
+      pdf.save(`Schichtplan_KW${kw}_${jahr}.pdf`);
+    } finally {
+      setIsDownloading(false);
+    }
+  }, [kw, jahr]);
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2 sm:gap-4">
       <SchichtplanHeader
         jahr={jahr}
         kw={kw}
@@ -153,6 +213,10 @@ export default function SchichtplanPage() {
         onViewModeChange={setViewMode}
         schichtFilter={schichtFilter}
         onSchichtFilterChange={setSchichtFilter}
+        employeeSearch={employeeSearch}
+        onEmployeeSearchChange={setEmployeeSearch}
+        onDownloadPdf={handleDownloadPdf}
+        isDownloading={isDownloading}
       />
 
       {isAdmin && clipboard && (
@@ -168,7 +232,7 @@ export default function SchichtplanPage() {
         </div>
       )}
 
-      <div className="card bg-base-100 shadow-sm">
+      <div className="card bg-base-100 shadow-sm" ref={gridRef}>
         <div className="card-body p-2 sm:p-4">
           {zeitplanQuery.isLoading || mitarbeiterQuery.isLoading ? (
             <div className="flex justify-center py-16">
@@ -185,6 +249,7 @@ export default function SchichtplanPage() {
               zuteilungen={zeitplanQuery.data?.zuteilungen ?? []}
               mitarbeiterList={mitarbeiterQuery.data ?? []}
               schichtFilter={schichtFilter}
+              employeeSearch={employeeSearch}
               isAdmin={isAdmin}
               activeCell={isAdmin ? activeCellEmp : null}
               onCellClick={handleEmployeeCellClick}

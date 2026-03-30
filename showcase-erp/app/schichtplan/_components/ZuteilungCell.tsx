@@ -55,7 +55,7 @@ export default function ZuteilungCell({
 
   return (
     <div
-      className={`relative group rounded-lg px-1 py-1 sm:px-2.5 sm:py-1.5 text-xs border w-full min-h-[2.25rem] sm:min-h-[3rem] flex flex-col justify-center transition-all
+      className={`relative group rounded sm:rounded-lg px-0.5 py-0.5 sm:px-2.5 sm:py-1.5 text-[10px] sm:text-xs border w-full min-h-[1.5rem] sm:min-h-[3rem] flex flex-col items-center sm:items-start justify-center transition-all
         ${colors?.bg ?? "bg-base-200"} ${colors?.border ?? "border-base-300"} ${colors?.text ?? "text-base-content"}
         ${dimmed ? "opacity-25 grayscale" : ""}`}
       style={pattern ? { backgroundImage: pattern } : undefined}
@@ -104,10 +104,22 @@ export default function ZuteilungCell({
       {showFacility &&
         !isSpringerRole &&
         zuteilung.teilanlage !== "SPRINGER" && (
-          <div className="truncate hidden sm:block">
-            {TEILANLAGE_LABELS[zuteilung.teilanlage]}
-          </div>
+          <>
+            <div className="truncate hidden sm:block">
+              {TEILANLAGE_LABELS[zuteilung.teilanlage]}
+            </div>
+            <div className="truncate sm:hidden text-[7px] leading-tight opacity-80">
+              {TEILANLAGE_LABELS[zuteilung.teilanlage]}
+            </div>
+          </>
         )}
+      {/* Ensure consistent height on mobile when no facility line */}
+      {!showFacility && (
+        <div className="sm:hidden text-[7px] leading-tight">&nbsp;</div>
+      )}
+      {showFacility && (isSpringerRole || zuteilung.teilanlage === "SPRINGER") && (
+        <div className="sm:hidden text-[7px] leading-tight">&nbsp;</div>
+      )}
       {isSpringerRole && showSkills && (
         <div className="gap-0.5 mt-0.5 hidden sm:flex">
           {zuteilung.mitarbeiter.skills.map((s) => (
@@ -122,7 +134,16 @@ export default function ZuteilungCell({
         </div>
       )}
       {showEmployee && (
-        <div className="truncate hidden sm:block">{zuteilung.mitarbeiter.name}</div>
+        <>
+          <div className="truncate hidden sm:block">{zuteilung.mitarbeiter.name}</div>
+          <div className="truncate sm:hidden text-[7px] leading-tight opacity-80">
+            {zuteilung.mitarbeiter.name.split(" ").pop()}
+          </div>
+        </>
+      )}
+      {/* Ensure consistent height on mobile when no employee line */}
+      {!showEmployee && (
+        <div className="sm:hidden text-[7px] leading-tight">&nbsp;</div>
       )}
     </div>
   );

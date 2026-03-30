@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRef } from "react";
 import {
   MdAccountCircle,
   MdCalendarMonth,
@@ -30,14 +31,17 @@ export default function Header() {
   const pathname = usePathname();
   const { data: session } = authClient.useSession();
   const isAdmin = session?.user?.role === "admin";
+  const menuRef = useRef<HTMLDetailsElement>(null);
 
   const visibleItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin);
+
+  const closeMenu = () => menuRef.current?.removeAttribute("open");
 
   return (
     <header className="navbar bg-base-100 border-b border-base-300 px-4">
       {/* Mobile hamburger */}
       <div className="flex-none md:hidden">
-        <details className="dropdown">
+        <details className="dropdown" ref={menuRef}>
           <summary className="btn btn-square btn-ghost">
             <MdMenu className="size-6" />
           </summary>
@@ -47,6 +51,7 @@ export default function Header() {
                 <Link
                   href={item.href}
                   className={pathname === item.href ? "menu-active" : ""}
+                  onClick={closeMenu}
                 >
                   <item.icon className="size-5" />
                   {item.label}

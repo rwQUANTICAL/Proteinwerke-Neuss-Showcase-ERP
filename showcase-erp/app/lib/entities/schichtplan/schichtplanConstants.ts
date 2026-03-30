@@ -72,15 +72,15 @@ export const TEILANLAGE_LABELS: Record<string, string> = {
   SPRINGER: "Springer",
 };
 
-/** Short (1–2 letter) shift labels for mobile view */
+/** Short readable shift labels for mobile view */
 export const SCHICHT_TYP_SHORT: Record<string, string> = {
-  FRUEH: "F",
-  SPAET: "S",
-  NACHT: "N",
+  FRUEH: "Früh",
+  SPAET: "Spät",
+  NACHT: "Nacht",
   SPRINGER: "Sp",
-  URLAUB: "U",
-  KRANK: "K",
-  X_FREI: "X",
+  URLAUB: "Url.",
+  KRANK: "Krank",
+  X_FREI: "Frei",
 };
 
 export const SKILL_LABELS: Record<string, string> = {
@@ -116,14 +116,6 @@ export const TEILANLAGE_TO_SKILL: Record<string, string | null> = {
 };
 
 export const WOCHENTAGE = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"] as const;
-
-/** Working SchichtTyp values (not days off) */
-export const WORKING_SCHICHT_TYPEN = [
-  "FRUEH",
-  "SPAET",
-  "NACHT",
-  "SPRINGER",
-] as const;
 
 export const ALL_SCHICHT_TYPEN = [
   "FRUEH",
