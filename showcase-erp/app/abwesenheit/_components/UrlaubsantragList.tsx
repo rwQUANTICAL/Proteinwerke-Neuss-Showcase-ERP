@@ -1,7 +1,10 @@
 "use client";
 
 import { MdBeachAccess, MdClose } from "react-icons/md";
-import { formatDateDE, dayCount } from "@/app/lib/entities/krankmeldung/krankmeldungHooks";
+import {
+  formatDateDE,
+  dayCount,
+} from "@/app/lib/entities/krankmeldung/krankmeldungHooks";
 import {
   useUrlaubsantraegeQuery,
   useDeleteUrlaubsantragMutation,

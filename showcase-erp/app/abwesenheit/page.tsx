@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  MdLocalHospital,
-  MdBeachAccess,
-  MdSwapHoriz,
-} from "react-icons/md";
+import { MdLocalHospital, MdBeachAccess, MdSwapHoriz } from "react-icons/md";
 import { authClient } from "@/app/lib/auth-client";
 import KrankmeldungForm from "./_components/KrankmeldungForm";
 import KrankmeldungList from "./_components/KrankmeldungList";

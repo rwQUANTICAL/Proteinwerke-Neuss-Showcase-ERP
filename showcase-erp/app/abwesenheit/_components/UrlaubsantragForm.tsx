@@ -23,7 +23,7 @@ export default function UrlaubsantragForm() {
   const createMutation = useCreateUrlaubsantragMutation();
 
   const mitarbeiter = mitarbeiterList?.find(
-    (m) => m.userId === session?.user?.id
+    (m) => m.userId === session?.user?.id,
   );
   const konto = useUrlaubsKonto(mitarbeiter?.urlaubsAnspruch ?? 0, antraege);
 
@@ -52,8 +52,7 @@ export default function UrlaubsantragForm() {
       await createMutation.mutateAsync(data);
       reset({ von: today, bis: today });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Unbekannter Fehler";
+      const message = err instanceof Error ? err.message : "Unbekannter Fehler";
       setError("von", { message });
     }
   };

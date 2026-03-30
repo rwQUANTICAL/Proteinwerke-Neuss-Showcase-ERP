@@ -2,7 +2,10 @@
 
 import { MdCheck, MdClose, MdDelete, MdBeachAccess } from "react-icons/md";
 import { useState } from "react";
-import { formatDateDE, dayCount } from "@/app/lib/entities/krankmeldung/krankmeldungHooks";
+import {
+  formatDateDE,
+  dayCount,
+} from "@/app/lib/entities/krankmeldung/krankmeldungHooks";
 import {
   useAllUrlaubsantraegeQuery,
   usePatchUrlaubsantragMutation,
