@@ -172,13 +172,15 @@ export async function POST(request: NextRequest) {
       });
 
       if (existing) {
-        // Already a KRANK assignment? Skip
-        if (existing.schicht === "KRANK") {
-          affectedShifts.push({
-            datum: dateStr,
-            originalSchicht: existing.originalSchicht,
-            originalTeilanlage: existing.originalTeilanlage,
-          });
+        // Already KRANK or X_FREI? Skip — don't override days off
+        if (existing.schicht === "KRANK" || existing.schicht === "X_FREI") {
+          if (existing.schicht === "KRANK") {
+            affectedShifts.push({
+              datum: dateStr,
+              originalSchicht: existing.originalSchicht,
+              originalTeilanlage: existing.originalTeilanlage,
+            });
+          }
           continue;
         }
 

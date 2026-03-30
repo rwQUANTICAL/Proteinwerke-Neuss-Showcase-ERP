@@ -283,6 +283,23 @@ export type EnumTeilanlageNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel>
 }
 
+export type EnumUrlaubsantragStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.UrlaubsantragStatus | Prisma.EnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.UrlaubsantragStatus[] | Prisma.ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.UrlaubsantragStatus[] | Prisma.ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel> | $Enums.UrlaubsantragStatus
+}
+
+export type EnumUrlaubsantragStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.UrlaubsantragStatus | Prisma.EnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.UrlaubsantragStatus[] | Prisma.ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.UrlaubsantragStatus[] | Prisma.ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumUrlaubsantragStatusWithAggregatesFilter<$PrismaModel> | $Enums.UrlaubsantragStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -563,6 +580,23 @@ export type NestedEnumTeilanlageNullableWithAggregatesFilter<$PrismaModel = neve
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumUrlaubsantragStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.UrlaubsantragStatus | Prisma.EnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.UrlaubsantragStatus[] | Prisma.ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.UrlaubsantragStatus[] | Prisma.ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel> | $Enums.UrlaubsantragStatus
+}
+
+export type NestedEnumUrlaubsantragStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.UrlaubsantragStatus | Prisma.EnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.UrlaubsantragStatus[] | Prisma.ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.UrlaubsantragStatus[] | Prisma.ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumUrlaubsantragStatusWithAggregatesFilter<$PrismaModel> | $Enums.UrlaubsantragStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel>
 }
 
 

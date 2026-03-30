@@ -215,6 +215,7 @@ export const UrlaubsantragScalarFieldEnum = {
   mitarbeiterId: 'mitarbeiterId',
   von: 'von',
   bis: 'bis',
+  status: 'status',
   genehmigtVonId: 'genehmigtVonId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

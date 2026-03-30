@@ -40,6 +40,11 @@ export default function ZuteilungCell({
   const isSickOverride =
     zuteilung.schicht === "KRANK" && !!zuteilung.originalSchicht;
 
+  const isVacationOverride =
+    zuteilung.schicht === "URLAUB" && !!zuteilung.originalSchicht;
+
+  const isOverride = isSickOverride || isVacationOverride;
+
   const colors = isSpringerRole
     ? SCHICHT_TYP_COLORS["SPRINGER"]
     : SCHICHT_TYP_COLORS[zuteilung.schicht];
@@ -56,7 +61,7 @@ export default function ZuteilungCell({
       ? SCHICHT_TYP_LABELS[zuteilung.schicht]
       : null;
 
-  const originalLabel = isSickOverride
+  const originalLabel = isOverride
     ? SCHICHT_TYP_LABELS[zuteilung.originalSchicht!]
     : null;
 
@@ -107,8 +112,8 @@ export default function ZuteilungCell({
         <span className="sm:hidden">{shortTitle}</span>
         <span className="hidden sm:inline">{title}</span>
       </div>
-      {/* Desktop: show original shift struck through when overridden by KRANK */}
-      {isSickOverride && originalLabel && (
+      {/* Desktop: show original shift struck through when overridden by KRANK/URLAUB */}
+      {isOverride && originalLabel && (
         <div className="truncate hidden sm:block text-[10px] line-through opacity-50">
           {originalLabel}
           {zuteilung.originalTeilanlage &&

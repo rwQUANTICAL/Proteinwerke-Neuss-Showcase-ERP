@@ -107,11 +107,18 @@ model Zeitplan {
 	@@map("zeitplan")
 }
 
+enum UrlaubsantragStatus {
+	BEANTRAGT
+	GENEHMIGT
+	ABGELEHNT
+}
+
 model Urlaubsantrag {
-	id              String      @id @default(cuid())
+	id              String               @id @default(cuid())
 	mitarbeiterId   String
-	von             DateTime    @db.Date
-	bis             DateTime    @db.Date
+	von             DateTime             @db.Date
+	bis             DateTime             @db.Date
+	status          UrlaubsantragStatus  @default(BEANTRAGT)
 	genehmigtVonId  String?
 	mitarbeiter     Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
 	genehmigtVon    User?       @relation("UrlaubsantragGenehmigtVon", fields: [genehmigtVonId], references: [id], onDelete: SetNull)

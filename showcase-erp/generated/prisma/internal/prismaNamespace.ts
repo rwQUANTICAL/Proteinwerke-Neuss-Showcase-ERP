@@ -1402,6 +1402,7 @@ export const UrlaubsantragScalarFieldEnum = {
   mitarbeiterId: 'mitarbeiterId',
   von: 'von',
   bis: 'bis',
+  status: 'status',
   genehmigtVonId: 'genehmigtVonId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1554,6 +1555,20 @@ export type EnumSchichtTypFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'SchichtTyp[]'
  */
 export type ListEnumSchichtTypFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchichtTyp[]'>
+    
+
+
+/**
+ * Reference to a field of type 'UrlaubsantragStatus'
+ */
+export type EnumUrlaubsantragStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UrlaubsantragStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'UrlaubsantragStatus[]'
+ */
+export type ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UrlaubsantragStatus[]'>
     
 
 

@@ -41,3 +41,12 @@ export const SchichtTyp = {
 } as const
 
 export type SchichtTyp = (typeof SchichtTyp)[keyof typeof SchichtTyp]
+
+
+export const UrlaubsantragStatus = {
+  BEANTRAGT: 'BEANTRAGT',
+  GENEHMIGT: 'GENEHMIGT',
+  ABGELEHNT: 'ABGELEHNT'
+} as const
+
+export type UrlaubsantragStatus = (typeof UrlaubsantragStatus)[keyof typeof UrlaubsantragStatus]
