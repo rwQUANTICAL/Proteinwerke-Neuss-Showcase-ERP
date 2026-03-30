@@ -1,4 +1,9 @@
 import sgMail from "@sendgrid/mail";
+import {
+  SCHICHT_TYP_LABELS,
+  TEILANLAGE_LABELS,
+} from "@/app/lib/entities/schichtplan/schichtplanConstants";
+import { escapeHtml } from "@/app/lib/send-emails/escapeHtml";
 
 sgMail.setApiKey(process.env.SEND_GRID_KEY!);
 
@@ -7,24 +12,6 @@ interface AffectedShift {
   originalSchicht: string | null;
   originalTeilanlage: string | null;
 }
-
-const SCHICHT_LABELS: Record<string, string> = {
-  FRUEH: "Frühschicht",
-  SPAET: "Spätschicht",
-  NACHT: "Nachtschicht",
-  SPRINGER: "Springer",
-  URLAUB: "Urlaub",
-  KRANK: "Krank",
-  X_FREI: "Frei",
-};
-
-const TEILANLAGE_LABELS: Record<string, string> = {
-  MUEHLE: "Mühle",
-  WALZE: "Walze",
-  EXTRAKTION: "Extraktion",
-  LECITHIN: "Lecithin",
-  SPRINGER: "Springer",
-};
 
 export async function sendSickReportEmail({
   employeeName,
@@ -102,7 +89,7 @@ function buildSickReportHtml({
     .map((s, i) => {
       const dateStr = formatDateDE(s.datum);
       const shiftLabel = s.originalSchicht
-        ? SCHICHT_LABELS[s.originalSchicht] ?? s.originalSchicht
+        ? SCHICHT_TYP_LABELS[s.originalSchicht] ?? s.originalSchicht
         : "—";
       const facilityLabel = s.originalTeilanlage
         ? TEILANLAGE_LABELS[s.originalTeilanlage] ?? s.originalTeilanlage
@@ -240,10 +227,4 @@ function buildSickReportHtml({
 </html>`;
 }
 
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
+

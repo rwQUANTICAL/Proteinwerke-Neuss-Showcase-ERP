@@ -3,24 +3,10 @@
 import { MdLocalHospital } from "react-icons/md";
 import {
   useKrankmeldungenQuery,
+  formatDateDE,
+  dayCount,
   type Krankmeldung,
 } from "@/app/lib/entities/krankmeldung/krankmeldungHooks";
-
-function formatDateDE(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleDateString("de-DE", {
-    timeZone: "UTC",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-}
-
-function dayCount(von: string, bis: string): number {
-  const start = new Date(von);
-  const end = new Date(bis);
-  return Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
-}
 
 export default function KrankmeldungList() {
   const { data: krankmeldungen, isLoading } = useKrankmeldungenQuery();

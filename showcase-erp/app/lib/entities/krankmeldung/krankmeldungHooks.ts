@@ -16,6 +16,24 @@ export interface Krankmeldung {
   mitarbeiter: KrankmeldungMitarbeiter;
 }
 
+/** Format an ISO date string as "DD.MM.YYYY" (German locale, UTC). */
+export function formatDateDE(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleDateString("de-DE", {
+    timeZone: "UTC",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
+/** Count the number of calendar days between two ISO date strings (inclusive). */
+export function dayCount(von: string, bis: string): number {
+  const start = new Date(von);
+  const end = new Date(bis);
+  return Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
+}
+
 export const krankmeldungKeys = {
   all: ["krankmeldungen"] as const,
   admin: ["krankmeldungen", "admin"] as const,

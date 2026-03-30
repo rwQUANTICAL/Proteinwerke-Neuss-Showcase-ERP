@@ -1,4 +1,5 @@
 import sgMail from "@sendgrid/mail";
+import { escapeHtml } from "@/app/lib/send-emails/escapeHtml";
 
 sgMail.setApiKey(process.env.SEND_GRID_KEY!);
 
@@ -155,10 +156,4 @@ function buildWelcomeHtml({
 </html>`;
 }
 
-function escapeHtml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
+
