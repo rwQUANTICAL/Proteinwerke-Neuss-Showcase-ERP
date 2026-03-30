@@ -155,10 +155,12 @@ export default function SchichtplanGridFacility({
                     <div className="flex flex-col gap-1">
                       {cellZuteilungen.map((z) => {
                         const dimmed =
-                          schichtFilter !== null &&
-                          (schichtFilter === "SPRINGER"
-                            ? z.teilanlage !== "SPRINGER"
-                            : z.schicht !== schichtFilter);
+                          schichtFilter.length > 0 &&
+                          !schichtFilter.some((f) =>
+                            f === "SPRINGER"
+                              ? z.teilanlage === "SPRINGER"
+                              : z.schicht === f,
+                          );
                         return (
                           <ZuteilungCell
                             key={z.id}

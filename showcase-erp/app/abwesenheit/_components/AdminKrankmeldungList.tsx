@@ -67,9 +67,7 @@ export default function AdminKrankmeldungList() {
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="font-semibold truncate">
-                  {km.mitarbeiter.name}
-                </p>
+                <p className="font-semibold truncate">{km.mitarbeiter.name}</p>
                 <p className="text-sm text-base-content/70">
                   {formatDateDE(km.von)} – {formatDateDE(km.bis)}
                   <span className="badge badge-sm badge-ghost ml-2">
@@ -81,7 +79,9 @@ export default function AdminKrankmeldungList() {
               <div className="shrink-0">
                 {isConfirming ? (
                   <div className="flex gap-2 items-center">
-                    <span className="text-sm text-error hidden sm:inline">Löschen?</span>
+                    <span className="text-sm text-error hidden sm:inline">
+                      Löschen?
+                    </span>
                     <button
                       type="button"
                       className="btn btn-error btn-sm"

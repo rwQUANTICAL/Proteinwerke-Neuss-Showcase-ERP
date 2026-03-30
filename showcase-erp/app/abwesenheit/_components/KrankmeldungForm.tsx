@@ -3,7 +3,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { MdSend, MdLocalHospital, MdBeachAccess, MdSwapHoriz } from "react-icons/md";
+import {
+  MdSend,
+  MdLocalHospital,
+  MdBeachAccess,
+  MdSwapHoriz,
+} from "react-icons/md";
 import {
   krankmeldungSchema,
   type KrankmeldungFormData,
@@ -17,9 +22,26 @@ import {
 type AbwesenheitTyp = "KRANK" | "URLAUB" | "FREIZEITAUSGLEICH";
 
 const TYPEN = [
-  { value: "KRANK" as const, label: "Krankmeldung", icon: MdLocalHospital, color: "btn-error" },
-  { value: "URLAUB" as const, label: "Urlaub", icon: MdBeachAccess, color: "btn-success", disabled: true },
-  { value: "FREIZEITAUSGLEICH" as const, label: "Freizeitausgleich", icon: MdSwapHoriz, color: "btn-info", disabled: true },
+  {
+    value: "KRANK" as const,
+    label: "Krankmeldung",
+    icon: MdLocalHospital,
+    color: "btn-error",
+  },
+  {
+    value: "URLAUB" as const,
+    label: "Urlaub",
+    icon: MdBeachAccess,
+    color: "btn-success",
+    disabled: true,
+  },
+  {
+    value: "FREIZEITAUSGLEICH" as const,
+    label: "Freizeitausgleich",
+    icon: MdSwapHoriz,
+    color: "btn-info",
+    disabled: true,
+  },
 ] as const;
 
 export default function KrankmeldungForm() {
@@ -45,8 +67,7 @@ export default function KrankmeldungForm() {
 
     if (hasOverlap(data.von, data.bis, existing)) {
       setError("von", {
-        message:
-          "Es gibt bereits eine Krankmeldung in diesem Zeitraum.",
+        message: "Es gibt bereits eine Krankmeldung in diesem Zeitraum.",
       });
       return;
     }
@@ -55,8 +76,7 @@ export default function KrankmeldungForm() {
       await createMutation.mutateAsync(data);
       reset({ von: today, bis: today });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Unbekannter Fehler";
+      const message = err instanceof Error ? err.message : "Unbekannter Fehler";
       setError("von", { message });
     }
   };
@@ -78,7 +98,9 @@ export default function KrankmeldungForm() {
                 key={t.value}
                 type="button"
                 className={`btn btn-sm ${isActive ? t.color : "btn-ghost"} ${"disabled" in t && t.disabled ? "btn-disabled opacity-50" : ""}`}
-                onClick={() => !("disabled" in t && t.disabled) && setTyp(t.value)}
+                onClick={() =>
+                  !("disabled" in t && t.disabled) && setTyp(t.value)
+                }
                 tabIndex={"disabled" in t && t.disabled ? -1 : undefined}
                 aria-disabled={"disabled" in t && t.disabled ? true : undefined}
               >
@@ -128,7 +150,9 @@ export default function KrankmeldungForm() {
             <button
               type="submit"
               className="btn btn-primary"
-              disabled={isSubmitting || createMutation.isPending || typ !== "KRANK"}
+              disabled={
+                isSubmitting || createMutation.isPending || typ !== "KRANK"
+              }
             >
               {createMutation.isPending ? (
                 <span className="loading loading-spinner loading-sm" />

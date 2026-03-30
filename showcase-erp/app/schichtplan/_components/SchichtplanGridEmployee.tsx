@@ -86,17 +86,19 @@ export default function SchichtplanGridEmployee({
       list = list.filter((ma) => ma.name.toLowerCase().includes(q));
     }
 
-    if (!schichtFilter) return list;
+    if (schichtFilter.length === 0) return list;
     const NON_WORKING = ["X_FREI", "URLAUB", "KRANK"];
     return list.filter((ma) =>
       zuteilungen.some((z) => {
         if (z.mitarbeiterId !== ma.id) return false;
-        if (schichtFilter === "SPRINGER") {
-          return (
-            z.teilanlage === "SPRINGER" && !NON_WORKING.includes(z.schicht)
-          );
-        }
-        return z.schicht === schichtFilter;
+        return schichtFilter.some((f) => {
+          if (f === "SPRINGER") {
+            return (
+              z.teilanlage === "SPRINGER" && !NON_WORKING.includes(z.schicht)
+            );
+          }
+          return z.schicht === f;
+        });
       }),
     );
   }, [mitarbeiterList, employeeSearch, schichtFilter, zuteilungen]);
@@ -194,11 +196,13 @@ export default function SchichtplanGridEmployee({
                 const dateKey = formatDateISO(date);
                 const zuteilung = zuteilungMap.get(`${ma.id}:${dateKey}`);
                 const dimmed =
-                  schichtFilter !== null &&
+                  schichtFilter.length > 0 &&
                   zuteilung !== undefined &&
-                  (schichtFilter === "SPRINGER"
-                    ? zuteilung.teilanlage !== "SPRINGER"
-                    : zuteilung.schicht !== schichtFilter);
+                  !schichtFilter.some((f) =>
+                    f === "SPRINGER"
+                      ? zuteilung.teilanlage === "SPRINGER"
+                      : zuteilung.schicht === f,
+                  );
                 const isWeekend = i >= 5;
                 const isActive =
                   activeCell?.datumISO === dateKey &&

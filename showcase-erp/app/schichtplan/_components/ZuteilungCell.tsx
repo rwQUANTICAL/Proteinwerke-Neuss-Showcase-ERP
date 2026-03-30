@@ -37,7 +37,8 @@ export default function ZuteilungCell({
     zuteilung.teilanlage === "SPRINGER" &&
     !["X_FREI", "URLAUB", "KRANK"].includes(zuteilung.schicht);
 
-  const isSickOverride = zuteilung.schicht === "KRANK" && !!zuteilung.originalSchicht;
+  const isSickOverride =
+    zuteilung.schicht === "KRANK" && !!zuteilung.originalSchicht;
 
   const colors = isSpringerRole
     ? SCHICHT_TYP_COLORS["SPRINGER"]

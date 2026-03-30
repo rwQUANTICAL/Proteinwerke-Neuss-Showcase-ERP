@@ -36,11 +36,9 @@ const NAV_ITEMS = [
 
 export default function Header() {
   const pathname = usePathname();
-  const { data: session } = authClient.useSession();
+  const { data: session, isPending } = authClient.useSession();
   const isAdmin = session?.user?.role === "admin";
   const menuRef = useRef<HTMLDetailsElement>(null);
-
-  const visibleItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin);
 
   const closeMenu = () => menuRef.current?.removeAttribute("open");
 
@@ -53,18 +51,21 @@ export default function Header() {
             <MdMenu className="size-6" />
           </summary>
           <ul className="dropdown-content menu bg-base-100 rounded-box z-50 mt-2 w-52 shadow-lg border border-base-300">
-            {visibleItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={pathname === item.href ? "menu-active" : ""}
-                  onClick={closeMenu}
-                >
-                  <item.icon className="size-5" />
-                  {item.label}
-                </Link>
-              </li>
-            ))}
+            {NAV_ITEMS.map((item) => {
+              if (item.adminOnly && (isPending || !isAdmin)) return null;
+              return (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={pathname === item.href ? "menu-active" : ""}
+                    onClick={closeMenu}
+                  >
+                    <item.icon className="size-5" />
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </details>
       </div>
@@ -87,7 +88,8 @@ export default function Header() {
 
       {/* Desktop navigation */}
       <nav className="hidden md:flex flex-1 gap-2">
-        {visibleItems.map((item) => {
+        {NAV_ITEMS.map((item) => {
+          if (item.adminOnly && (isPending || !isAdmin)) return null;
           const isActive = pathname === item.href;
           return (
             <Link

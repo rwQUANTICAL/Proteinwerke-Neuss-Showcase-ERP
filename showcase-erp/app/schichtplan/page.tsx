@@ -33,7 +33,7 @@ export default function SchichtplanPage() {
   const [jahr, setJahr] = useState(initialKw.jahr);
   const [kw, setKw] = useState(initialKw.kw);
   const [viewMode, setViewMode] = useState<ViewMode>("employee");
-  const [schichtFilter, setSchichtFilter] = useState<SchichtFilter>(null);
+  const [schichtFilter, setSchichtFilter] = useState<SchichtFilter>([]);
   const [activeCellEmp, setActiveCellEmp] = useState<ActiveCellEmployee | null>(
     null,
   );

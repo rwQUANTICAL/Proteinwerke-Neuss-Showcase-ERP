@@ -21,7 +21,7 @@ import {
 } from "@/app/lib/entities/schichtplan/schichtplanConstants";
 
 export type ViewMode = "employee" | "facility";
-export type SchichtFilter = string | null;
+export type SchichtFilter = string[];
 
 interface SchichtplanHeaderProps {
   jahr: number;
@@ -227,8 +227,8 @@ export default function SchichtplanHeader({
       <div className="hidden sm:flex items-center justify-between gap-3">
         <div className="flex items-center gap-1.5 flex-wrap">
           <button
-            className={`btn btn-xs gap-1 ${schichtFilter === null ? "btn-primary" : "btn-ghost"}`}
-            onClick={() => onSchichtFilterChange(null)}
+            className={`btn btn-xs gap-1 ${schichtFilter.length === 0 ? "btn-primary" : "btn-ghost"}`}
+            onClick={() => onSchichtFilterChange([])}
           >
             Alle
           </button>
@@ -237,12 +237,18 @@ export default function SchichtplanHeader({
             : ALL_SCHICHT_TYPEN
           ).map((typ) => {
             const colors = SCHICHT_TYP_COLORS[typ];
-            const isActive = schichtFilter === typ;
+            const isActive = schichtFilter.includes(typ);
             return (
               <button
                 key={typ}
                 className={`btn btn-xs gap-1.5 ${isActive ? `${colors?.dot ?? ""} text-white border-transparent` : "btn-ghost"}`}
-                onClick={() => onSchichtFilterChange(isActive ? null : typ)}
+                onClick={() =>
+                  onSchichtFilterChange(
+                    isActive
+                      ? schichtFilter.filter((f) => f !== typ)
+                      : [...schichtFilter, typ],
+                  )
+                }
               >
                 <span
                   className={`inline-block w-2.5 h-2.5 rounded-sm ${isActive ? "bg-white/60" : (colors?.dot ?? "bg-base-300")}`}
