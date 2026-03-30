@@ -18,7 +18,7 @@ export async function sendWelcomeEmail({
   await sgMail.send({
     to,
     from: {
-      email: "noreply@proteinwerke-neuss.de",
+      email: "noreply.erp@quantical.com",
       name: "Öl & Proteinwerke Neuss",
     },
     subject: "Ihr Benutzerkonto wurde erstellt",
@@ -37,15 +37,20 @@ function buildWelcomeHtml({
   password: string;
   loginUrl: string;
 }) {
-  // Colors from the lemonade daisyUI theme
-  const primary = "#519903"; // oklch(65.69% 0.17 126.1) ≈ green
+  // Colors matching the "proteinwerke" daisyUI theme
+  const primary = "#4a7c18";
   const primaryContent = "#ffffff";
-  const base100 = "#f8fced";
-  const base200 = "#e8edda";
-  const base300 = "#d8ddc8";
-  const baseContent = "#2e3128";
-  const neutral = "#3d4a2c";
-  const neutralContent = "#dce0d4";
+  const cardBg = "#ffffff";
+  const pageBg = "#f4f5f1";
+  const subtleBg = "#f7f8f5";
+  const border = "#e5e7e0";
+  const text = "#3a3d35";
+  const textMuted = "#6b7060";
+  const headerBg = "#3d4a2c";
+  const headerText = "#e2e4dc";
+
+  const font =
+    "'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
 
   return `<!DOCTYPE html>
 <html lang="de">
@@ -54,22 +59,22 @@ function buildWelcomeHtml({
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ihr Benutzerkonto</title>
 </head>
-<body style="margin:0;padding:0;background-color:${base200};font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${base200};padding:32px 16px;">
+<body style="margin:0;padding:0;background-color:${pageBg};font-family:${font};">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${pageBg};padding:48px 16px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="background-color:${base100};border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:${cardBg};border-radius:8px;overflow:hidden;border:1px solid ${border};">
           <!-- Header -->
           <tr>
-            <td style="background-color:${neutral};padding:24px 32px;text-align:center;">
+            <td style="background-color:${headerBg};padding:28px 40px;text-align:center;">
               <img
                 src="https://raw.githubusercontent.com/rwQUANTICAL/Proteinwerke-Neuss-Showcase-ERP/main/showcase-erp/public/logo-thywissen.svg"
                 alt="Logo"
-                width="48"
-                height="40"
-                style="display:inline-block;vertical-align:middle;margin-right:12px;"
+                width="44"
+                height="36"
+                style="display:inline-block;vertical-align:middle;margin-right:14px;"
               />
-              <span style="color:${neutralContent};font-size:20px;font-weight:600;vertical-align:middle;">
+              <span style="color:${headerText};font-size:18px;font-weight:600;vertical-align:middle;letter-spacing:0.01em;">
                 Öl &amp; Proteinwerke Neuss
               </span>
             </td>
@@ -77,33 +82,32 @@ function buildWelcomeHtml({
 
           <!-- Body -->
           <tr>
-            <td style="padding:32px;">
-              <h1 style="margin:0 0 16px;font-size:22px;color:${primary};">
+            <td style="padding:44px 40px 48px;">
+              <h1 style="margin:0 0 12px;font-size:22px;font-weight:700;color:${primary};letter-spacing:-0.01em;">
                 Willkommen, ${escapeHtml(name)}!
               </h1>
-              <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:${baseContent};">
+              <p style="margin:0 0 32px;font-size:15px;line-height:1.7;color:${textMuted};">
                 Ihr Benutzerkonto für das ERP-System wurde erstellt.
                 Nachfolgend finden Sie Ihre Zugangsdaten:
               </p>
 
               <!-- Credentials box -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${base200};border-radius:6px;margin-bottom:24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:${subtleBg};border-radius:8px;border:1px solid ${border};margin-bottom:32px;">
                 <tr>
-                  <td style="padding:20px 24px;">
+                  <td style="padding:24px 28px;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="padding:4px 0;font-size:14px;color:${baseContent};">
-                          <strong>E-Mail:</strong>
-                        </td>
-                        <td style="padding:4px 0;font-size:14px;color:${baseContent};text-align:right;">
+                        <td style="padding:8px 0;font-size:14px;color:${textMuted};">E-Mail</td>
+                        <td style="padding:8px 0;font-size:14px;color:${text};text-align:right;font-weight:600;">
                           ${escapeHtml(email)}
                         </td>
                       </tr>
                       <tr>
-                        <td style="padding:4px 0;font-size:14px;color:${baseContent};">
-                          <strong>Passwort:</strong>
-                        </td>
-                        <td style="padding:4px 0;font-size:14px;color:${baseContent};text-align:right;font-family:monospace;">
+                        <td colspan="2" style="padding:0;"><div style="border-bottom:1px solid ${border};"></div></td>
+                      </tr>
+                      <tr>
+                        <td style="padding:8px 0;font-size:14px;color:${textMuted};">Passwort</td>
+                        <td style="padding:8px 0;font-size:14px;color:${text};text-align:right;font-weight:600;font-family:'Geist Mono',Consolas,monospace;letter-spacing:0.02em;">
                           ${escapeHtml(password)}
                         </td>
                       </tr>
@@ -115,10 +119,10 @@ function buildWelcomeHtml({
               <!-- CTA button -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td align="center">
+                  <td align="center" style="padding-top:4px;">
                     <a
                       href="${escapeHtml(loginUrl)}"
-                      style="display:inline-block;background-color:${primary};color:${primaryContent};text-decoration:none;font-size:15px;font-weight:600;padding:12px 32px;border-radius:6px;"
+                      style="display:inline-block;background-color:${primary};color:${primaryContent};text-decoration:none;font-size:14px;font-weight:600;padding:14px 40px;border-radius:6px;letter-spacing:0.01em;"
                     >
                       Jetzt anmelden
                     </a>
@@ -126,7 +130,7 @@ function buildWelcomeHtml({
                 </tr>
               </table>
 
-              <p style="margin:24px 0 0;font-size:13px;line-height:1.5;color:${base300};">
+              <p style="margin:28px 0 0;font-size:13px;line-height:1.6;color:${textMuted};">
                 Bitte ändern Sie Ihr Passwort nach der ersten Anmeldung.
               </p>
             </td>
@@ -134,8 +138,11 @@ function buildWelcomeHtml({
 
           <!-- Footer -->
           <tr>
-            <td style="background-color:${base200};padding:16px 32px;text-align:center;">
-              <p style="margin:0;font-size:12px;color:${baseContent};opacity:0.6;">
+            <td style="padding:0 40px;"><div style="border-top:1px solid ${border};"></div></td>
+          </tr>
+          <tr>
+            <td style="padding:24px 40px 28px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:${textMuted};line-height:1.6;">
                 &copy; ${new Date().getFullYear()} Öl &amp; Proteinwerke Neuss &mdash; Showcase ERP
               </p>
             </td>

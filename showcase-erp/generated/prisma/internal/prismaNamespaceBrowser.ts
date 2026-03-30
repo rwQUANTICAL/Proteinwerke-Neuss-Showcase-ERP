@@ -60,7 +60,8 @@ export const ModelName = {
   Zeitbuchung: 'Zeitbuchung',
   Praemie: 'Praemie',
   Zeitplan: 'Zeitplan',
-  Urlaubsantrag: 'Urlaubsantrag'
+  Urlaubsantrag: 'Urlaubsantrag',
+  Krankmeldung: 'Krankmeldung'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -163,6 +164,8 @@ export const ZuteilungScalarFieldEnum = {
   teilanlage: 'teilanlage',
   datum: 'datum',
   schicht: 'schicht',
+  originalSchicht: 'originalSchicht',
+  originalTeilanlage: 'originalTeilanlage',
   erstelltAm: 'erstelltAm',
   erstelltVonId: 'erstelltVonId',
   zeitplanId: 'zeitplanId'
@@ -218,6 +221,18 @@ export const UrlaubsantragScalarFieldEnum = {
 } as const
 
 export type UrlaubsantragScalarFieldEnum = (typeof UrlaubsantragScalarFieldEnum)[keyof typeof UrlaubsantragScalarFieldEnum]
+
+
+export const KrankmeldungScalarFieldEnum = {
+  id: 'id',
+  mitarbeiterId: 'mitarbeiterId',
+  von: 'von',
+  bis: 'bis',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KrankmeldungScalarFieldEnum = (typeof KrankmeldungScalarFieldEnum)[keyof typeof KrankmeldungScalarFieldEnum]
 
 
 export const SortOrder = {

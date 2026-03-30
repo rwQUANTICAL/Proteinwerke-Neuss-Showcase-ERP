@@ -18,6 +18,8 @@ export interface ZuteilungWithRelations {
   teilanlage: string;
   datum: string;
   schicht: string;
+  originalSchicht: string | null;
+  originalTeilanlage: string | null;
   erstelltAm: string;
   erstelltVonId: string;
   zeitplanId: string;

@@ -7,6 +7,7 @@ import { useRef } from "react";
 import {
   MdAccountCircle,
   MdCalendarMonth,
+  MdDateRange,
   MdMenu,
   MdPeople,
 } from "react-icons/md";
@@ -17,6 +18,12 @@ const NAV_ITEMS = [
     href: "/schichtplan",
     label: "Schichtplan",
     icon: MdCalendarMonth,
+    adminOnly: false,
+  },
+  {
+    href: "/abwesenheit",
+    label: "Abwesenheit",
+    icon: MdDateRange,
     adminOnly: false,
   },
   {

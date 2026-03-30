@@ -229,6 +229,20 @@ export type EnumSchichtTypFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumSchichtTypFilter<$PrismaModel> | $Enums.SchichtTyp
 }
 
+export type EnumSchichtTypNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.SchichtTyp | Prisma.EnumSchichtTypFieldRefInput<$PrismaModel> | null
+  in?: $Enums.SchichtTyp[] | Prisma.ListEnumSchichtTypFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.SchichtTyp[] | Prisma.ListEnumSchichtTypFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumSchichtTypNullableFilter<$PrismaModel> | $Enums.SchichtTyp | null
+}
+
+export type EnumTeilanlageNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.Teilanlage | Prisma.EnumTeilanlageFieldRefInput<$PrismaModel> | null
+  in?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel> | $Enums.Teilanlage | null
+}
+
 export type EnumTeilanlageWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.Teilanlage | Prisma.EnumTeilanlageFieldRefInput<$PrismaModel>
   in?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel>
@@ -247,6 +261,26 @@ export type EnumSchichtTypWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSchichtTypFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSchichtTypFilter<$PrismaModel>
+}
+
+export type EnumSchichtTypNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SchichtTyp | Prisma.EnumSchichtTypFieldRefInput<$PrismaModel> | null
+  in?: $Enums.SchichtTyp[] | Prisma.ListEnumSchichtTypFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.SchichtTyp[] | Prisma.ListEnumSchichtTypFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumSchichtTypNullableWithAggregatesFilter<$PrismaModel> | $Enums.SchichtTyp | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSchichtTypNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSchichtTypNullableFilter<$PrismaModel>
+}
+
+export type EnumTeilanlageNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Teilanlage | Prisma.EnumTeilanlageFieldRefInput<$PrismaModel> | null
+  in?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumTeilanlageNullableWithAggregatesFilter<$PrismaModel> | $Enums.Teilanlage | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel>
 }
 
 export type NestedStringFilter<$PrismaModel = never> = {
@@ -477,6 +511,20 @@ export type NestedEnumSchichtTypFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumSchichtTypFilter<$PrismaModel> | $Enums.SchichtTyp
 }
 
+export type NestedEnumSchichtTypNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.SchichtTyp | Prisma.EnumSchichtTypFieldRefInput<$PrismaModel> | null
+  in?: $Enums.SchichtTyp[] | Prisma.ListEnumSchichtTypFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.SchichtTyp[] | Prisma.ListEnumSchichtTypFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumSchichtTypNullableFilter<$PrismaModel> | $Enums.SchichtTyp | null
+}
+
+export type NestedEnumTeilanlageNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.Teilanlage | Prisma.EnumTeilanlageFieldRefInput<$PrismaModel> | null
+  in?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel> | $Enums.Teilanlage | null
+}
+
 export type NestedEnumTeilanlageWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.Teilanlage | Prisma.EnumTeilanlageFieldRefInput<$PrismaModel>
   in?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel>
@@ -495,6 +543,26 @@ export type NestedEnumSchichtTypWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumSchichtTypFilter<$PrismaModel>
   _max?: Prisma.NestedEnumSchichtTypFilter<$PrismaModel>
+}
+
+export type NestedEnumSchichtTypNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SchichtTyp | Prisma.EnumSchichtTypFieldRefInput<$PrismaModel> | null
+  in?: $Enums.SchichtTyp[] | Prisma.ListEnumSchichtTypFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.SchichtTyp[] | Prisma.ListEnumSchichtTypFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumSchichtTypNullableWithAggregatesFilter<$PrismaModel> | $Enums.SchichtTyp | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSchichtTypNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSchichtTypNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumTeilanlageNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.Teilanlage | Prisma.EnumTeilanlageFieldRefInput<$PrismaModel> | null
+  in?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.Teilanlage[] | Prisma.ListEnumTeilanlageFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumTeilanlageNullableWithAggregatesFilter<$PrismaModel> | $Enums.Teilanlage | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTeilanlageNullableFilter<$PrismaModel>
 }
 
 

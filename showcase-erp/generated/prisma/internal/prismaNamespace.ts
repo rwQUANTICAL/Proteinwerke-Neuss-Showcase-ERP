@@ -393,7 +393,8 @@ export const ModelName = {
   Zeitbuchung: 'Zeitbuchung',
   Praemie: 'Praemie',
   Zeitplan: 'Zeitplan',
-  Urlaubsantrag: 'Urlaubsantrag'
+  Urlaubsantrag: 'Urlaubsantrag',
+  Krankmeldung: 'Krankmeldung'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "mitarbeiter" | "zuteilung" | "zeitbuchung" | "praemie" | "zeitplan" | "urlaubsantrag"
+    modelProps: "user" | "session" | "account" | "verification" | "mitarbeiter" | "zuteilung" | "zeitbuchung" | "praemie" | "zeitplan" | "urlaubsantrag" | "krankmeldung"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1153,6 +1154,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Krankmeldung: {
+      payload: Prisma.$KrankmeldungPayload<ExtArgs>
+      fields: Prisma.KrankmeldungFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.KrankmeldungFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.KrankmeldungFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>
+        }
+        findFirst: {
+          args: Prisma.KrankmeldungFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.KrankmeldungFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>
+        }
+        findMany: {
+          args: Prisma.KrankmeldungFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>[]
+        }
+        create: {
+          args: Prisma.KrankmeldungCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>
+        }
+        createMany: {
+          args: Prisma.KrankmeldungCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.KrankmeldungCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>[]
+        }
+        delete: {
+          args: Prisma.KrankmeldungDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>
+        }
+        update: {
+          args: Prisma.KrankmeldungUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>
+        }
+        deleteMany: {
+          args: Prisma.KrankmeldungDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.KrankmeldungUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.KrankmeldungUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>[]
+        }
+        upsert: {
+          args: Prisma.KrankmeldungUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KrankmeldungPayload>
+        }
+        aggregate: {
+          args: Prisma.KrankmeldungAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateKrankmeldung>
+        }
+        groupBy: {
+          args: Prisma.KrankmeldungGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KrankmeldungGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.KrankmeldungCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KrankmeldungCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1276,6 +1351,8 @@ export const ZuteilungScalarFieldEnum = {
   teilanlage: 'teilanlage',
   datum: 'datum',
   schicht: 'schicht',
+  originalSchicht: 'originalSchicht',
+  originalTeilanlage: 'originalTeilanlage',
   erstelltAm: 'erstelltAm',
   erstelltVonId: 'erstelltVonId',
   zeitplanId: 'zeitplanId'
@@ -1331,6 +1408,18 @@ export const UrlaubsantragScalarFieldEnum = {
 } as const
 
 export type UrlaubsantragScalarFieldEnum = (typeof UrlaubsantragScalarFieldEnum)[keyof typeof UrlaubsantragScalarFieldEnum]
+
+
+export const KrankmeldungScalarFieldEnum = {
+  id: 'id',
+  mitarbeiterId: 'mitarbeiterId',
+  von: 'von',
+  bis: 'bis',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KrankmeldungScalarFieldEnum = (typeof KrankmeldungScalarFieldEnum)[keyof typeof KrankmeldungScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1586,6 +1675,7 @@ export type GlobalOmitConfig = {
   praemie?: Prisma.PraemieOmit
   zeitplan?: Prisma.ZeitplanOmit
   urlaubsantrag?: Prisma.UrlaubsantragOmit
+  krankmeldung?: Prisma.KrankmeldungOmit
 }
 
 /* Types for Logging */

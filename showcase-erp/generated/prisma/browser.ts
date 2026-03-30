@@ -67,3 +67,8 @@ export type Zeitplan = Prisma.ZeitplanModel
  * 
  */
 export type Urlaubsantrag = Prisma.UrlaubsantragModel
+/**
+ * Model Krankmeldung
+ * 
+ */
+export type Krankmeldung = Prisma.KrankmeldungModel

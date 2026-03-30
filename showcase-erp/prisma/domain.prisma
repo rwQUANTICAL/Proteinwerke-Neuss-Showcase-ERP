@@ -36,6 +36,7 @@ model Mitarbeiter {
 	zeitbuchungen         Zeitbuchung[]
 	urlaubsantraege       Urlaubsantrag[]
 	praemien              Praemie[]
+	krankmeldungen        Krankmeldung[]
 	createdAt             DateTime         @default(now())
 	updatedAt             DateTime         @updatedAt
 
@@ -43,18 +44,20 @@ model Mitarbeiter {
 }
 
 model Zuteilung {
-	id            String      @id @default(cuid())
-	mitarbeiterId String
-	teilanlage    Teilanlage
-	datum         DateTime    @db.Date
-	schicht       SchichtTyp
-	erstelltAm    DateTime    @default(now())
-	erstelltVonId String
-	zeitplanId    String
-	mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
-	erstelltVon   User        @relation("ZuteilungErstelltVon", fields: [erstelltVonId], references: [id], onDelete: Restrict)
-	zeitplan      Zeitplan    @relation(fields: [zeitplanId], references: [id], onDelete: Cascade)
-	praemien      Praemie[]
+	id                 String      @id @default(cuid())
+	mitarbeiterId      String
+	teilanlage         Teilanlage
+	datum              DateTime    @db.Date
+	schicht            SchichtTyp
+	originalSchicht    SchichtTyp?
+	originalTeilanlage Teilanlage?
+	erstelltAm         DateTime    @default(now())
+	erstelltVonId      String
+	zeitplanId         String
+	mitarbeiter        Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
+	erstelltVon        User        @relation("ZuteilungErstelltVon", fields: [erstelltVonId], references: [id], onDelete: Restrict)
+	zeitplan           Zeitplan    @relation(fields: [zeitplanId], references: [id], onDelete: Cascade)
+	praemien           Praemie[]
 
 	@@unique([mitarbeiterId, datum])
 	@@index([datum])
@@ -118,4 +121,17 @@ model Urlaubsantrag {
 	@@index([mitarbeiterId])
 	@@index([genehmigtVonId])
 	@@map("urlaubsantrag")
+}
+
+model Krankmeldung {
+	id            String      @id @default(cuid())
+	mitarbeiterId String
+	von           DateTime    @db.Date
+	bis           DateTime    @db.Date
+	mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
+	createdAt     DateTime    @default(now())
+	updatedAt     DateTime    @updatedAt
+
+	@@index([mitarbeiterId])
+	@@map("krankmeldung")
 }
