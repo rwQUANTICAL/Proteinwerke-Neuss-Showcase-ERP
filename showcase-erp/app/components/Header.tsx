@@ -74,17 +74,17 @@ export default function Header() {
       </div>
 
       {/* Desktop navigation */}
-      <nav className="hidden md:flex flex-1 gap-1">
+      <nav className="hidden md:flex flex-1 gap-2">
         {visibleItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`btn btn-ghost btn-sm uppercase tracking-wide font-medium ${
+              className={`btn btn-sm uppercase tracking-wide font-medium ${
                 isActive
-                  ? "border-b-2 border-primary text-primary rounded-b-none"
-                  : "text-base-content/70"
+                  ? "btn-primary"
+                  : "btn-ghost text-base-content/70"
               }`}
             >
               <item.icon className="size-4" />
