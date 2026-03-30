@@ -3,12 +3,27 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MdAccountCircle, MdCalendarMonth, MdMenu, MdPeople } from "react-icons/md";
+import {
+  MdAccountCircle,
+  MdCalendarMonth,
+  MdMenu,
+  MdPeople,
+} from "react-icons/md";
 import { authClient } from "@/app/lib/auth-client";
 
 const NAV_ITEMS = [
-  { href: "/schichtplan", label: "Schichtplan", icon: MdCalendarMonth, adminOnly: false },
-  { href: "/verwaltung/mitarbeiter", label: "Mitarbeiter", icon: MdPeople, adminOnly: true },
+  {
+    href: "/schichtplan",
+    label: "Schichtplan",
+    icon: MdCalendarMonth,
+    adminOnly: false,
+  },
+  {
+    href: "/verwaltung/mitarbeiter",
+    label: "Mitarbeiter",
+    icon: MdPeople,
+    adminOnly: true,
+  },
 ] as const;
 
 export default function Header() {
@@ -29,7 +44,10 @@ export default function Header() {
           <ul className="dropdown-content menu bg-base-100 rounded-box z-50 mt-2 w-52 shadow-lg border border-base-300">
             {visibleItems.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className={pathname === item.href ? "menu-active" : ""}>
+                <Link
+                  href={item.href}
+                  className={pathname === item.href ? "menu-active" : ""}
+                >
                   <item.icon className="size-5" />
                   {item.label}
                 </Link>
@@ -64,7 +82,9 @@ export default function Header() {
               key={item.href}
               href={item.href}
               className={`btn btn-ghost btn-sm uppercase tracking-wide font-medium ${
-                isActive ? "border-b-2 border-primary text-primary rounded-b-none" : "text-base-content/70"
+                isActive
+                  ? "border-b-2 border-primary text-primary rounded-b-none"
+                  : "text-base-content/70"
               }`}
             >
               <item.icon className="size-4" />
