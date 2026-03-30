@@ -11,7 +11,9 @@ export default function Home() {
         Ihr digitales Schichtplan- und Personalmanagement – einfach,
         übersichtlich und effizient.
       </p>
-      <Link href="/schichtplan" className="btn btn-primary">Zum Schichtplan</Link>
+      <Link href="/schichtplan" className="btn btn-primary">
+        Zum Schichtplan
+      </Link>
     </HeroBackground>
   );
 }
