@@ -49,11 +49,11 @@ export default function KrankmeldungForm() {
 
   return (
     <div className="card card-border bg-base-100">
-      <div className="card-body gap-4">
-        <h2 className="card-title text-lg">Krankmeldung einreichen</h2>
+      <div className="card-body p-4 sm:p-6 gap-3 sm:gap-4">
+        <h2 className="card-title text-base sm:text-lg">Krankmeldung einreichen</h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <fieldset className="fieldset flex-1">
               <legend className="fieldset-legend">Von</legend>
               <input

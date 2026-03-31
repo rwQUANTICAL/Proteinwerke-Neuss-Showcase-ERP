@@ -61,31 +61,31 @@ export default function UrlaubsantragForm() {
 
   return (
     <div className="card card-border bg-base-100">
-      <div className="card-body gap-4">
-        <h2 className="card-title text-lg">Urlaub beantragen</h2>
+      <div className="card-body p-4 sm:p-6 gap-3 sm:gap-4">
+        <h2 className="card-title text-base sm:text-lg">Urlaub beantragen</h2>
 
         {/* Balance overview */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="bg-base-200 rounded-lg p-3 text-center">
-            <p className="text-xs text-base-content/60">Anspruch</p>
-            <p className="text-lg font-bold">{konto.anspruch}</p>
+        <div className="grid grid-cols-4 gap-2 sm:gap-3">
+          <div className="bg-base-200 rounded-lg p-2 sm:p-3 text-center">
+            <p className="text-[10px] sm:text-xs text-base-content/60">Anspruch</p>
+            <p className="text-base sm:text-lg font-bold">{konto.anspruch}</p>
           </div>
-          <div className="bg-success/10 rounded-lg p-3 text-center">
-            <p className="text-xs text-base-content/60">Genehmigt</p>
-            <p className="text-lg font-bold text-success">{konto.genehmigt}</p>
+          <div className="bg-success/10 rounded-lg p-2 sm:p-3 text-center">
+            <p className="text-[10px] sm:text-xs text-base-content/60">Genehmigt</p>
+            <p className="text-base sm:text-lg font-bold text-success">{konto.genehmigt}</p>
           </div>
-          <div className="bg-warning/10 rounded-lg p-3 text-center">
-            <p className="text-xs text-base-content/60">Beantragt</p>
-            <p className="text-lg font-bold text-warning">{konto.beantragt}</p>
+          <div className="bg-warning/10 rounded-lg p-2 sm:p-3 text-center">
+            <p className="text-[10px] sm:text-xs text-base-content/60">Beantragt</p>
+            <p className="text-base sm:text-lg font-bold text-warning">{konto.beantragt}</p>
           </div>
-          <div className="bg-info/10 rounded-lg p-3 text-center">
-            <p className="text-xs text-base-content/60">Verfügbar</p>
-            <p className="text-lg font-bold text-info">{konto.verfuegbar}</p>
+          <div className="bg-info/10 rounded-lg p-2 sm:p-3 text-center">
+            <p className="text-[10px] sm:text-xs text-base-content/60">Verfügbar</p>
+            <p className="text-base sm:text-lg font-bold text-info">{konto.verfuegbar}</p>
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <fieldset className="fieldset flex-1">
               <legend className="fieldset-legend">Von</legend>
               <input

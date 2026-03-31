@@ -22,13 +22,13 @@ export default function KrankmeldungList() {
   if (!krankmeldungen?.length) return null;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2 sm:gap-3">
       {krankmeldungen.map((km: Krankmeldung) => {
         const days = dayCount(km.von, km.bis);
 
         return (
           <div key={km.id} className="card card-border bg-base-100">
-            <div className="card-body p-4 sm:p-6 flex-row items-center gap-4">
+            <div className="card-body p-3 sm:p-6 flex-row items-center gap-3 sm:gap-4">
               <div className="hidden sm:flex size-10 rounded-full bg-error/10 items-center justify-center shrink-0">
                 <MdLocalHospital className="size-5 text-error" />
               </div>

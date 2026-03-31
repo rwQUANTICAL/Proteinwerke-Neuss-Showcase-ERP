@@ -42,7 +42,7 @@ export default function AbwesenheitPage() {
   const [typ, setTyp] = useState<AbwesenheitTyp>("URLAUB");
 
   return (
-    <div className="container mx-auto max-w-2xl px-4 py-6 sm:py-10 flex flex-col gap-6">
+    <div className="container mx-auto max-w-2xl px-4 py-4 sm:py-10 flex flex-col gap-4 sm:gap-6">
       <h1 className="text-2xl font-bold">Abwesenheit</h1>
 
       {isAdmin && (
@@ -67,7 +67,7 @@ export default function AbwesenheitPage() {
       {tab === "meine" && (
         <>
           {/* Type selector */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {TYPEN.map((t) => {
               const isActive = typ === t.value;
               const Icon = t.icon;
@@ -76,12 +76,12 @@ export default function AbwesenheitPage() {
                 <button
                   key={t.value}
                   type="button"
-                  className={`btn btn-sm ${isActive ? t.color : "btn-ghost"} ${isDisabled ? "btn-disabled opacity-50" : ""}`}
+                  className={`btn btn-xs sm:btn-sm ${isActive ? t.color : "btn-ghost"} ${isDisabled ? "btn-disabled opacity-50" : ""}`}
                   onClick={() => !isDisabled && setTyp(t.value)}
                   tabIndex={isDisabled ? -1 : undefined}
                   aria-disabled={isDisabled ? true : undefined}
                 >
-                  <Icon className="size-4" />
+                  <Icon className="size-3.5 sm:size-4" />
                   {t.label}
                   {isDisabled && (
                     <span className="badge badge-xs badge-ghost">Bald</span>
