@@ -42,13 +42,13 @@ function buildWelcomeHtml({
   const primary = "#4a7c18";
   const primaryContent = "#ffffff";
   const cardBg = "#ffffff";
-  const pageBg = "#f4f5f1";
-  const subtleBg = "#f7f8f5";
-  const border = "#e5e7e0";
-  const text = "#3a3d35";
-  const textMuted = "#6b7060";
+  const pageBg = "#f5f5f5";
+  const subtleBg = "#f9fafb";
+  const border = "#e5e7eb";
+  const text = "#1f2937";
+  const textMuted = "#6b7280";
   const headerBg = "#3d4a2c";
-  const headerText = "#e2e4dc";
+  const headerText = "#f3f4f6";
 
   const font =
     "'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
