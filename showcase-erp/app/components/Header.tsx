@@ -41,7 +41,7 @@ export default function Header() {
   const isAdmin = session?.user?.role === "admin";
   const menuRef = useRef<HTMLDetailsElement>(null);
   const { data: pendingCount } = usePendingUrlaubsantraegeCount(
-    isAdmin === true
+    isAdmin === true,
   );
 
   const closeMenu = () => menuRef.current?.removeAttribute("open");
