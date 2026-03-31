@@ -3,6 +3,7 @@ import { z } from "zod";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { headers } from "next/headers";
+import { sendVacationRequestEmail } from "@/app/lib/send-emails/vacationRequestEmail";
 
 const createSchema = z
   .object({
@@ -149,6 +150,16 @@ export async function POST(request: NextRequest) {
     },
     include: { mitarbeiter: { select: { id: true, name: true } } },
   });
+
+  // Send notification email (fire-and-forget)
+  const origin = (await headers()).get("origin") ?? "";
+  sendVacationRequestEmail({
+    employeeName: mitarbeiter.name,
+    von,
+    bis,
+    days: requestedDays,
+    abwesenheitUrl: `${origin}/abwesenheit`,
+  }).catch((err) => console.error("Vacation request email failed:", err));
 
   return NextResponse.json(antrag, { status: 201 });
 }

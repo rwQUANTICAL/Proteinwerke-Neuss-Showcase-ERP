@@ -12,6 +12,7 @@ import {
   MdPeople,
 } from "react-icons/md";
 import { authClient } from "@/app/lib/auth-client";
+import { usePendingUrlaubsantraegeCount } from "@/app/lib/entities/urlaubsantrag/urlaubsantragHooks";
 
 const NAV_ITEMS = [
   {
@@ -39,6 +40,9 @@ export default function Header() {
   const { data: session, isPending } = authClient.useSession();
   const isAdmin = session?.user?.role === "admin";
   const menuRef = useRef<HTMLDetailsElement>(null);
+  const { data: pendingCount } = usePendingUrlaubsantraegeCount(
+    isAdmin === true
+  );
 
   const closeMenu = () => menuRef.current?.removeAttribute("open");
 
@@ -53,6 +57,11 @@ export default function Header() {
           <ul className="dropdown-content menu bg-base-100 rounded-box z-50 mt-2 w-52 shadow-lg border border-base-300">
             {NAV_ITEMS.map((item) => {
               if (item.adminOnly && (isPending || !isAdmin)) return null;
+              const showBadge =
+                item.href === "/abwesenheit" &&
+                isAdmin &&
+                !!pendingCount &&
+                pendingCount > 0;
               return (
                 <li key={item.href}>
                   <Link
@@ -62,6 +71,11 @@ export default function Header() {
                   >
                     <item.icon className="size-5" />
                     {item.label}
+                    {showBadge && (
+                      <span className="badge badge-xs badge-warning">
+                        {pendingCount}
+                      </span>
+                    )}
                   </Link>
                 </li>
               );
@@ -91,6 +105,11 @@ export default function Header() {
         {NAV_ITEMS.map((item) => {
           if (item.adminOnly && (isPending || !isAdmin)) return null;
           const isActive = pathname === item.href;
+          const showBadge =
+            item.href === "/abwesenheit" &&
+            isAdmin &&
+            !!pendingCount &&
+            pendingCount > 0;
           return (
             <Link
               key={item.href}
@@ -101,6 +120,11 @@ export default function Header() {
             >
               <item.icon className="size-4" />
               {item.label}
+              {showBadge && (
+                <span className="badge badge-xs badge-warning">
+                  {pendingCount}
+                </span>
+              )}
             </Link>
           );
         })}

@@ -110,6 +110,16 @@ export function useAllUrlaubsantraegeQuery() {
   });
 }
 
+/** Count of pending (BEANTRAGT) vacation requests — for admin badge display. */
+export function usePendingUrlaubsantraegeCount(enabled: boolean) {
+  return useQuery({
+    queryKey: urlaubsantragKeys.admin,
+    queryFn: fetchAllUrlaubsantraege,
+    select: (data) => data.filter((a) => a.status === "BEANTRAGT").length,
+    enabled,
+  });
+}
+
 /** Derive vacation balance from the user's own Urlaubsanträge + Mitarbeiter data. */
 export function useUrlaubsKonto(
   anspruch: number,
