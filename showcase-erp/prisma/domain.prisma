@@ -72,11 +72,14 @@ model Zeitbuchung {
 	datum         DateTime    @db.Date
 	von           DateTime    @db.Time(0)
 	bis           DateTime    @db.Time(0)
+	pauseVon      DateTime?   @db.Time(0)
+	pauseBis      DateTime?   @db.Time(0)
 	schicht       SchichtTyp
 	mitarbeiter   Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
 	createdAt     DateTime    @default(now())
 	updatedAt     DateTime    @updatedAt
 
+	@@unique([mitarbeiterId, datum])
 	@@index([mitarbeiterId, datum])
 	@@map("zeitbuchung")
 }

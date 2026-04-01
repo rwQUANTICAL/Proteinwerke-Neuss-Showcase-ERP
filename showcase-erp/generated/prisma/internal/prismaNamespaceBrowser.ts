@@ -180,6 +180,8 @@ export const ZeitbuchungScalarFieldEnum = {
   datum: 'datum',
   von: 'von',
   bis: 'bis',
+  pauseVon: 'pauseVon',
+  pauseBis: 'pauseBis',
   schicht: 'schicht',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

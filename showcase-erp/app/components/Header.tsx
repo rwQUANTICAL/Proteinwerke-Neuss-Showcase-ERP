@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useRef } from "react";
 import {
   MdAccountCircle,
+  MdAccessTime,
   MdCalendarMonth,
   MdDateRange,
   MdMenu,
@@ -19,6 +20,12 @@ const NAV_ITEMS = [
     href: "/schichtplan",
     label: "Schichtplan",
     icon: MdCalendarMonth,
+    adminOnly: false,
+  },
+  {
+    href: "/zeiterfassung",
+    label: "Zeiterfassung",
+    icon: MdAccessTime,
     adminOnly: false,
   },
   {
