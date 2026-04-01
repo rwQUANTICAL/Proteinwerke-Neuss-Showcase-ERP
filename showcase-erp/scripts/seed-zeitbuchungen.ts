@@ -14,12 +14,12 @@ const SCHICHT_CONFIGS: Record<
   string,
   { von: string; bis: string; pauseVon: string; pauseBis: string }
 > = {
-  FRUEH: { von: "06:00", bis: "14:00", pauseVon: "09:30", pauseBis: "10:00" },
-  SPAET: { von: "14:00", bis: "22:00", pauseVon: "17:30", pauseBis: "18:00" },
-  NACHT: { von: "22:00", bis: "06:00", pauseVon: "01:30", pauseBis: "02:00" },
+  FRUEH: { von: "06:00", bis: "14:30", pauseVon: "09:30", pauseBis: "10:00" },
+  SPAET: { von: "14:00", bis: "22:30", pauseVon: "17:30", pauseBis: "18:00" },
+  NACHT: { von: "22:00", bis: "06:30", pauseVon: "01:30", pauseBis: "02:00" },
   SPRINGER: {
     von: "06:00",
-    bis: "14:00",
+    bis: "14:30",
     pauseVon: "09:30",
     pauseBis: "10:00",
   },
@@ -50,7 +50,6 @@ async function main() {
   await prisma.zeitbuchung.deleteMany();
   console.log(`Seeding Zeitbuchungen für ${mitarbeiter.length} Mitarbeiter (6-on/2-off, 4 Wochen)...`);
 
-  // Generate entries for the last 4 weeks using a 6-on/2-off rotation
   const today = new Date();
   const startDate = new Date(today);
   startDate.setUTCDate(startDate.getUTCDate() - 28);
@@ -58,60 +57,36 @@ async function main() {
   const SCHICHT_CYCLE: SchichtTyp[] = ["FRUEH", "SPAET", "NACHT", "FRUEH", "SPAET", "NACHT"];
   let created = 0;
 
-  // Some employees get overtime (longer shifts / extra days), some get deficit
-  const overtimeEmployees = new Set(
-    mitarbeiter.slice(0, Math.ceil(mitarbeiter.length * 0.4)).map((m) => m.id),
-  );
-  const deficitEmployees = new Set(
-    mitarbeiter.slice(Math.ceil(mitarbeiter.length * 0.7)).map((m) => m.id),
-  );
-
   for (const ma of mitarbeiter) {
     const maIdx = mitarbeiter.indexOf(ma);
-    // Each employee starts their 6-on/2-off cycle on a different offset
-    const cycleOffset = maIdx * 2;
-
-    const current = new Date(startDate);
+    // Each employee starts at a different point in the 8-day cycle
+    // The pattern is always: 6 work, 2 off, repeating continuously
+    const cycleStart = (maIdx * 3) % 8;
 
     for (let dayNum = 0; dayNum < 28; dayNum++) {
-      const datum = new Date(current);
-      datum.setUTCDate(current.getUTCDate() + dayNum);
-
-      // Don't create entries in the future
+      const datum = new Date(startDate);
+      datum.setUTCDate(startDate.getUTCDate() + dayNum);
       if (datum > today) continue;
 
-      // 6-on/2-off: position in 8-day cycle
-      const cycleDay = ((dayNum + cycleOffset) % 8);
-      const isWorkDay = cycleDay < 6;
-      if (!isWorkDay) continue;
+      // Continuous 8-day cycle: positions 0-5 = work, 6-7 = off
+      const posInCycle = (dayNum + cycleStart) % 8;
+      if (posInCycle >= 6) continue;
 
-      // Random absence (~8% chance)
-      if (Math.random() < 0.08) continue;
+      // Rare random absence (~5%)
+      if (Math.random() < 0.05) continue;
 
-      const schichtIdx = (Math.floor((dayNum + cycleOffset) / 8) + maIdx) % SCHICHT_CYCLE.length;
+      const schichtIdx = (Math.floor(dayNum / 8) + maIdx) % SCHICHT_CYCLE.length;
       const schicht = SCHICHT_CYCLE[schichtIdx];
       const config = SCHICHT_CONFIGS[schicht];
 
-      let von = jitter(config.von, 10);
-      let bis = jitter(config.bis, 15);
-      const pauseVon = jitter(config.pauseVon, 5);
-      const pauseBis = jitter(config.pauseBis, 10);
-
-      // Overtime employees: ~30% of shifts run 30-60 min longer
-      if (overtimeEmployees.has(ma.id) && Math.random() < 0.3) {
-        const extraMin = 30 + Math.floor(Math.random() * 31);
-        const [bH, bM] = bis.split(":").map(Number);
-        const total = ((bH * 60 + bM + extraMin) % 1440);
-        bis = `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
-      }
-
-      // Deficit employees: ~20% of shifts start late (15-40 min)
-      if (deficitEmployees.has(ma.id) && Math.random() < 0.2) {
-        const lateMin = 15 + Math.floor(Math.random() * 26);
-        const [vH, vM] = von.split(":").map(Number);
-        const total = ((vH * 60 + vM + lateMin) % 1440);
-        von = `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
-      }
+      // Start on time (±3 min), end slightly late (+2 to +15 min) → majority > 8h
+      const von = jitter(config.von, 3);
+      const [bH, bM] = config.bis.split(":").map(Number);
+      const extra = 2 + Math.floor(Math.random() * 14); // +2 to +15 min
+      const bisTotal = ((bH * 60 + bM + extra) % 1440);
+      const bis = `${String(Math.floor(bisTotal / 60)).padStart(2, "0")}:${String(bisTotal % 60).padStart(2, "0")}`;
+      const pauseVon = config.pauseVon;
+      const pauseBis = config.pauseBis;
 
       try {
         await prisma.zeitbuchung.upsert({
@@ -133,7 +108,7 @@ async function main() {
           },
         });
         created++;
-      } catch (err) {
+      } catch {
         // Skip duplicates silently
       }
     }

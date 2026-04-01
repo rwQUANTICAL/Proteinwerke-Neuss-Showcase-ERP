@@ -2,20 +2,18 @@
 
 import { useState, useMemo } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
-import { authClient } from "@/app/lib/auth-client";
 import {
   useZeitbuchungenQuery,
   getISOWeekData,
   getWeekDates,
+  ARBEITSTAGE_PRO_WOCHE,
 } from "@/app/lib/entities/zeitbuchung/zeitbuchungHooks";
+import { useUrlaubsantraegeQuery } from "@/app/lib/entities/urlaubsantrag/urlaubsantragHooks";
+import { useKrankmeldungenQuery } from "@/app/lib/entities/krankmeldung/krankmeldungHooks";
 import ArbeitszeitenRinge from "./_components/ArbeitszeitenRinge";
-import Zeitkonto from "./_components/UeberstundenSaldo";
-import Stempeluhr from "./_components/Stempeluhr";
+import MonatsUebersicht from "./_components/MonatsUebersicht";
 import ZeiterfassungWochenTabelle from "./_components/ZeiterfassungWochenTabelle";
 import ZeiterfassungForm from "./_components/ZeiterfassungForm";
-import AdminZeiterfassungUebersicht from "./_components/AdminZeiterfassungUebersicht";
-
-type Tab = "meine" | "verwaltung";
 
 function getCurrentWeek() {
   const d = new Date();
@@ -23,15 +21,22 @@ function getCurrentWeek() {
 }
 
 export default function ZeiterfassungPage() {
-  const { data: session } = authClient.useSession();
-  const isAdmin = session?.user?.role === "admin";
-  const [tab, setTab] = useState<Tab>("meine");
-
   const init = getCurrentWeek();
   const [jahr, setJahr] = useState(init.jahr);
   const [kw, setKw] = useState(init.kw);
 
   const { data: allEntries } = useZeitbuchungenQuery();
+  const { data: urlaubRaw } = useUrlaubsantraegeQuery();
+  const { data: krankRaw } = useKrankmeldungenQuery();
+
+  const urlaub = useMemo(
+    () => (urlaubRaw ?? []).filter((u) => u.status === "GENEHMIGT").map((u) => ({ von: u.von, bis: u.bis })),
+    [urlaubRaw],
+  );
+  const krank = useMemo(
+    () => (krankRaw ?? []).map((k) => ({ von: k.von, bis: k.bis })),
+    [krankRaw],
+  );
 
   const weekDates = useMemo(() => getWeekDates(jahr, kw), [jahr, kw]);
   const { data: weekRaw, isLoading } = useZeitbuchungenQuery(
@@ -52,97 +57,58 @@ export default function ZeiterfassungPage() {
     (e) => new Date(e.datum).toISOString().split("T")[0] === todayStr,
   );
 
+  // Derive Soll from the employee's weekly work requirement
+  const weeklyWork = allEntries?.[0]?.mitarbeiter?.weeklyWorkRequirement ?? 42;
+  const sollProTag = weeklyWork / ARBEITSTAGE_PRO_WOCHE;
+
   const navWeek = (d: number) => {
     let nk = kw + d,
       nj = jahr;
-    if (nk < 1) {
-      nj--;
-      nk = 52;
-    } else if (nk > 52) {
-      nj++;
-      nk = 1;
-    }
+    if (nk < 1) { nj--; nk = 52; }
+    else if (nk > 52) { nj++; nk = 1; }
     setKw(nk);
     setJahr(nj);
   };
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-6 sm:py-10 flex flex-col gap-5 sm:gap-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl sm:text-2xl font-bold">Zeiterfassung</h1>
-        {isAdmin && (
-          <div role="tablist" className="tabs tabs-bordered tabs-sm">
-            <button
-              role="tab"
-              className={`tab ${tab === "meine" ? "tab-active" : ""}`}
-              onClick={() => setTab("meine")}
-            >
-              Meine Zeiten
-            </button>
-            <button
-              role="tab"
-              className={`tab ${tab === "verwaltung" ? "tab-active" : ""}`}
-              onClick={() => setTab("verwaltung")}
-            >
-              Verwaltung
-            </button>
-          </div>
-        )}
+      <h1 className="text-xl sm:text-2xl font-bold">Zeiterfassung</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <ArbeitszeitenRinge
+          todayEntry={todayEntry}
+          weekEntries={weekEntries}
+          allEntries={allEntries ?? []}
+          sollProTag={sollProTag}
+          weeklyWork={weeklyWork}
+          urlaub={urlaub}
+          krank={krank}
+        />
+        <MonatsUebersicht allEntries={allEntries ?? []} urlaub={urlaub} krank={krank} sollProTag={sollProTag} />
       </div>
 
-      {tab === "meine" && (
+      <div className="flex items-center justify-center gap-4">
+        <button className="btn btn-ghost btn-sm btn-square" onClick={() => navWeek(-1)}>
+          <MdChevronLeft className="size-5" />
+        </button>
+        <span className="text-sm font-semibold tracking-wide">
+          KW {kw} · {jahr}
+        </span>
+        <button className="btn btn-ghost btn-sm btn-square" onClick={() => navWeek(1)}>
+          <MdChevronRight className="size-5" />
+        </button>
+      </div>
+
+      {isLoading ? (
+        <div className="flex justify-center py-12">
+          <span className="loading loading-spinner loading-md" />
+        </div>
+      ) : (
         <>
-          {/* Dashboard cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ArbeitszeitenRinge
-              todayEntry={todayEntry}
-              weekEntries={weekEntries}
-            />
-            <Zeitkonto
-              weekEntries={weekEntries}
-              allEntries={allEntries ?? []}
-            />
-            <Stempeluhr />
-          </div>
-
-          {/* Week nav */}
-          <div className="flex items-center justify-center gap-4">
-            <button
-              className="btn btn-ghost btn-sm btn-square"
-              onClick={() => navWeek(-1)}
-            >
-              <MdChevronLeft className="size-5" />
-            </button>
-            <span className="text-sm font-semibold tracking-wide">
-              KW {kw} · {jahr}
-            </span>
-            <button
-              className="btn btn-ghost btn-sm btn-square"
-              onClick={() => navWeek(1)}
-            >
-              <MdChevronRight className="size-5" />
-            </button>
-          </div>
-
-          {isLoading ? (
-            <div className="flex justify-center py-12">
-              <span className="loading loading-spinner loading-md" />
-            </div>
-          ) : (
-            <>
-              <ZeiterfassungWochenTabelle
-                entries={weekEntries}
-                jahr={jahr}
-                kw={kw}
-              />
-              <ZeiterfassungForm />
-            </>
-          )}
+          <ZeiterfassungWochenTabelle entries={weekEntries} jahr={jahr} kw={kw} sollProTag={sollProTag} />
+          <ZeiterfassungForm />
         </>
       )}
-
-      {tab === "verwaltung" && isAdmin && <AdminZeiterfassungUebersicht />}
     </div>
   );
 }

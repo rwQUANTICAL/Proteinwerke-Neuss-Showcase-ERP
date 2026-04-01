@@ -7,7 +7,6 @@ import {
   getWeekdayShort,
   calcNettoStunden,
   calcPauseMinuten,
-  SOLL_STUNDEN_PRO_SCHICHT,
   getWeekDates,
 } from "@/app/lib/entities/zeitbuchung/zeitbuchungHooks";
 
@@ -15,12 +14,14 @@ interface Props {
   entries: ZeitbuchungEntry[];
   jahr: number;
   kw: number;
+  sollProTag: number;
 }
 
 export default function ZeiterfassungWochenTabelle({
   entries,
   jahr,
   kw,
+  sollProTag,
 }: Props) {
   const weekDates = getWeekDates(jahr, kw);
 
@@ -36,7 +37,7 @@ export default function ZeiterfassungWochenTabelle({
       entry,
       netto: entry ? calcNettoStunden(entry) : 0,
       pause: entry ? calcPauseMinuten(entry) : 0,
-      diff: entry ? calcNettoStunden(entry) - SOLL_STUNDEN_PRO_SCHICHT : 0,
+      diff: entry ? calcNettoStunden(entry) - sollProTag : 0,
     };
   });
 

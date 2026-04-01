@@ -88,16 +88,16 @@ export default function ZeiterfassungForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="card bg-base-100 border border-base-300 shadow-sm"
-    >
-      <div className="card-body p-4 sm:p-6">
-        <h3 className="card-title text-sm font-medium text-base-content/70">
-          <MdAdd className="size-4" />
-          Eintrag erfassen
-        </h3>
-
+    <div className="collapse collapse-arrow bg-base-100 border border-base-300">
+      <input type="checkbox" />
+      <div className="collapse-title text-sm font-medium text-base-content/70 flex items-center gap-2">
+        <MdAdd className="size-4" />
+        Eintrag manuell erfassen
+      </div>
+      <div className="collapse-content">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+        >
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
           {/* Datum */}
           <fieldset className="fieldset col-span-2 sm:col-span-1">
@@ -199,7 +199,8 @@ export default function ZeiterfassungForm() {
             Eintrag speichern
           </button>
         </div>
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
