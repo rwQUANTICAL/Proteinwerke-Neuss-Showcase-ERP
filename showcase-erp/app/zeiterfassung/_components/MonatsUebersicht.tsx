@@ -121,9 +121,9 @@ export default function MonatsUebersicht({
 
   return (
     <div className="card bg-base-100 border border-base-300 h-full">
-      <div className="card-body p-4 sm:p-5 justify-center">
-        <div className="flex items-center justify-between mb-1">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
+      <div className="card-body p-3 sm:p-5 justify-center">
+        <div className="flex items-center justify-between mb-0.5 sm:mb-1">
+          <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-base-content/50">
             Monatsübersicht
           </h3>
           <div className="flex items-center gap-1">
@@ -142,11 +142,11 @@ export default function MonatsUebersicht({
           </div>
         </div>
 
-        <p className="text-xs font-medium text-center mb-1">{monthName}</p>
+        <p className="text-[10px] sm:text-xs font-medium text-center mb-0.5 sm:mb-1">{monthName}</p>
 
         <div className="grid grid-cols-7 gap-px text-center mb-0.5">
           {DAY_LABELS.map((d) => (
-            <span key={d} className="text-[10px] text-base-content/40">
+            <span key={d} className="text-[9px] sm:text-[10px] text-base-content/40">
               {d}
             </span>
           ))}
@@ -162,7 +162,7 @@ export default function MonatsUebersicht({
               <div
                 key={i}
                 className={`
-                  flex items-center justify-center rounded-sm text-[11px] leading-7 font-medium
+                  flex items-center justify-center rounded-sm text-[10px] sm:text-[11px] leading-6 sm:leading-7 font-medium
                   ${!inMonth ? "text-base-content/15" : type ? TYPE_CLASSES[type] : "text-base-content/40"}
                   ${isToday ? "ring-1 ring-base-content/30" : ""}
                 `}
@@ -173,7 +173,7 @@ export default function MonatsUebersicht({
           })}
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-2 text-[10px] text-base-content/50">
+        <div className="flex flex-wrap items-center gap-x-2 sm:gap-x-3 gap-y-0.5 mt-1 sm:mt-2 text-[9px] sm:text-[10px] text-base-content/50">
           <span className="flex items-center gap-1">
             <span className="size-2 rounded-sm bg-success" /> ≥Soll
           </span>

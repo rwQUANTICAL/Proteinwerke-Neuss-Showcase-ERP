@@ -68,14 +68,14 @@ function Ring({
   const offset = circ - pct * circ;
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <svg viewBox="0 0 100 100" className="size-24 sm:size-28">
+    <div className="flex flex-col items-center gap-0.5 sm:gap-1">
+      <svg viewBox="0 0 100 100" className="size-20 sm:size-28">
         <circle
           cx="50"
           cy="50"
           r={r}
           fill="none"
-          strokeWidth="6"
+          strokeWidth="8"
           className="stroke-base-200"
         />
         <circle
@@ -83,7 +83,7 @@ function Ring({
           cy="50"
           r={r}
           fill="none"
-          strokeWidth="6"
+          strokeWidth="8"
           className={color}
           strokeDasharray={circ}
           strokeDashoffset={offset}
@@ -110,7 +110,7 @@ function Ring({
           {sub}
         </text>
       </svg>
-      <span className="text-[11px] font-medium text-base-content/60">
+      <span className="text-[10px] sm:text-[11px] font-medium text-base-content/60">
         {label}
       </span>
     </div>
@@ -189,11 +189,11 @@ export default function ArbeitszeitenRinge({
 
   return (
     <div className="card bg-base-100 border border-base-300 h-full">
-      <div className="card-body p-4 sm:p-5 justify-center">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-2">
+      <div className="card-body p-3 sm:p-5 justify-center">
+        <h3 className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-1 sm:mb-2">
           Arbeitszeiten
         </h3>
-        <div className="flex items-center justify-evenly gap-2">
+        <div className="flex items-center justify-evenly gap-1 sm:gap-2">
           <Ring
             value={todayNetto}
             max={sollProTag}
@@ -216,11 +216,11 @@ export default function ArbeitszeitenRinge({
             color="stroke-secondary"
           />
         </div>
-        <div className="divider my-1" />
+        <div className="divider my-0.5 sm:my-1" />
         <div className="flex items-center justify-between">
-          <span className="text-xs text-base-content/50">Gesamtsaldo</span>
+          <span className="text-[11px] sm:text-xs text-base-content/50">Gesamtsaldo</span>
           <span
-            className={`text-sm font-bold tabular-nums ${totalSaldo >= 0 ? "text-success" : "text-error"}`}
+            className={`text-xs sm:text-sm font-bold tabular-nums ${totalSaldo >= 0 ? "text-success" : "text-error"}`}
           >
             {fmtSaldo(totalSaldo)}
           </span>
