@@ -38,7 +38,9 @@ function getMonthGrid(year: number, month: number) {
     cells.push({ day: d, dateStr: dt.toISOString().split("T")[0] });
   }
   while (cells.length % 7 !== 0) {
-    const d = new Date(Date.UTC(year, month + 1, cells.length - startDow - lastDay + 1));
+    const d = new Date(
+      Date.UTC(year, month + 1, cells.length - startDow - lastDay + 1),
+    );
     cells.push({ day: null, dateStr: d.toISOString().split("T")[0] });
   }
   return cells;
@@ -63,7 +65,12 @@ const TYPE_CLASSES: Record<string, string> = {
   krank: "bg-error/70 text-error-content",
 };
 
-export default function MonatsUebersicht({ allEntries, urlaub, krank, sollProTag }: Props) {
+export default function MonatsUebersicht({
+  allEntries,
+  urlaub,
+  krank,
+  sollProTag,
+}: Props) {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
@@ -71,7 +78,10 @@ export default function MonatsUebersicht({ allEntries, urlaub, krank, sollProTag
   const entryMap = useMemo(() => {
     const map = new Map<string, number>();
     for (const e of allEntries) {
-      map.set(new Date(e.datum).toISOString().split("T")[0], calcNettoStunden(e));
+      map.set(
+        new Date(e.datum).toISOString().split("T")[0],
+        calcNettoStunden(e),
+      );
     }
     return map;
   }, [allEntries]);
@@ -88,9 +98,15 @@ export default function MonatsUebersicht({ allEntries, urlaub, krank, sollProTag
   );
 
   const nav = (d: number) => {
-    let nm = month + d, ny = year;
-    if (nm < 0) { ny--; nm = 11; }
-    else if (nm > 11) { ny++; nm = 0; }
+    let nm = month + d,
+      ny = year;
+    if (nm < 0) {
+      ny--;
+      nm = 11;
+    } else if (nm > 11) {
+      ny++;
+      nm = 0;
+    }
     setMonth(nm);
     setYear(ny);
   };
@@ -111,10 +127,16 @@ export default function MonatsUebersicht({ allEntries, urlaub, krank, sollProTag
             Monatsübersicht
           </h3>
           <div className="flex items-center gap-1">
-            <button className="btn btn-ghost btn-xs btn-square" onClick={() => nav(-1)}>
+            <button
+              className="btn btn-ghost btn-xs btn-square"
+              onClick={() => nav(-1)}
+            >
               <MdChevronLeft className="size-3.5" />
             </button>
-            <button className="btn btn-ghost btn-xs btn-square" onClick={() => nav(1)}>
+            <button
+              className="btn btn-ghost btn-xs btn-square"
+              onClick={() => nav(1)}
+            >
               <MdChevronRight className="size-3.5" />
             </button>
           </div>
@@ -124,7 +146,9 @@ export default function MonatsUebersicht({ allEntries, urlaub, krank, sollProTag
 
         <div className="grid grid-cols-7 gap-px text-center mb-0.5">
           {DAY_LABELS.map((d) => (
-            <span key={d} className="text-[10px] text-base-content/40">{d}</span>
+            <span key={d} className="text-[10px] text-base-content/40">
+              {d}
+            </span>
           ))}
         </div>
 
@@ -150,10 +174,18 @@ export default function MonatsUebersicht({ allEntries, urlaub, krank, sollProTag
         </div>
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-2 text-[10px] text-base-content/50">
-          <span className="flex items-center gap-1"><span className="size-2 rounded-sm bg-success" /> ≥8h</span>
-          <span className="flex items-center gap-1"><span className="size-2 rounded-sm bg-warning" /> &lt;8h</span>
-          <span className="flex items-center gap-1"><span className="size-2 rounded-sm bg-info" /> Urlaub</span>
-          <span className="flex items-center gap-1"><span className="size-2 rounded-sm bg-error/70" /> Krank</span>
+          <span className="flex items-center gap-1">
+            <span className="size-2 rounded-sm bg-success" /> ≥8h
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="size-2 rounded-sm bg-warning" /> &lt;8h
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="size-2 rounded-sm bg-info" /> Urlaub
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="size-2 rounded-sm bg-error/70" /> Krank
+          </span>
         </div>
       </div>
     </div>

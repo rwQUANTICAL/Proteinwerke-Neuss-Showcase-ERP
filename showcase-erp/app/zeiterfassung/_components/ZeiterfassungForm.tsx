@@ -95,110 +95,110 @@ export default function ZeiterfassungForm() {
         Eintrag manuell erfassen
       </div>
       <div className="collapse-content">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-        >
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
-          {/* Datum */}
-          <fieldset className="fieldset col-span-2 sm:col-span-1">
-            <legend className="fieldset-legend text-xs">Datum</legend>
-            <input
-              type="date"
-              className={`input input-sm input-bordered w-full ${errors.datum ? "input-error" : ""}`}
-              {...register("datum")}
-            />
-            {errors.datum && (
-              <p className="text-error text-xs mt-1">{errors.datum.message}</p>
-            )}
-          </fieldset>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2">
+            {/* Datum */}
+            <fieldset className="fieldset col-span-2 sm:col-span-1">
+              <legend className="fieldset-legend text-xs">Datum</legend>
+              <input
+                type="date"
+                className={`input input-sm input-bordered w-full ${errors.datum ? "input-error" : ""}`}
+                {...register("datum")}
+              />
+              {errors.datum && (
+                <p className="text-error text-xs mt-1">
+                  {errors.datum.message}
+                </p>
+              )}
+            </fieldset>
 
-          {/* Schicht */}
-          <fieldset className="fieldset col-span-2 sm:col-span-1">
-            <legend className="fieldset-legend text-xs">Schicht</legend>
-            <select
-              className="select select-sm select-bordered w-full"
-              {...register("schicht")}
-            >
-              {SCHICHT_OPTIONS.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-          </fieldset>
+            {/* Schicht */}
+            <fieldset className="fieldset col-span-2 sm:col-span-1">
+              <legend className="fieldset-legend text-xs">Schicht</legend>
+              <select
+                className="select select-sm select-bordered w-full"
+                {...register("schicht")}
+              >
+                {SCHICHT_OPTIONS.map((o) => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </fieldset>
 
-          {/* Von */}
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend text-xs">Von</legend>
-            <input
-              type="time"
-              className={`input input-sm input-bordered w-full ${errors.von ? "input-error" : ""}`}
-              {...register("von")}
-            />
-            {errors.von && (
-              <p className="text-error text-xs mt-1">{errors.von.message}</p>
-            )}
-          </fieldset>
+            {/* Von */}
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend text-xs">Von</legend>
+              <input
+                type="time"
+                className={`input input-sm input-bordered w-full ${errors.von ? "input-error" : ""}`}
+                {...register("von")}
+              />
+              {errors.von && (
+                <p className="text-error text-xs mt-1">{errors.von.message}</p>
+              )}
+            </fieldset>
 
-          {/* Bis */}
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend text-xs">Bis</legend>
-            <input
-              type="time"
-              className={`input input-sm input-bordered w-full ${errors.bis ? "input-error" : ""}`}
-              {...register("bis")}
-            />
-            {errors.bis && (
-              <p className="text-error text-xs mt-1">{errors.bis.message}</p>
-            )}
-          </fieldset>
+            {/* Bis */}
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend text-xs">Bis</legend>
+              <input
+                type="time"
+                className={`input input-sm input-bordered w-full ${errors.bis ? "input-error" : ""}`}
+                {...register("bis")}
+              />
+              {errors.bis && (
+                <p className="text-error text-xs mt-1">{errors.bis.message}</p>
+              )}
+            </fieldset>
 
-          {/* Pause Von */}
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend text-xs">Pause von</legend>
-            <input
-              type="time"
-              className={`input input-sm input-bordered w-full ${errors.pauseVon ? "input-error" : ""}`}
-              {...register("pauseVon")}
-            />
-          </fieldset>
+            {/* Pause Von */}
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend text-xs">Pause von</legend>
+              <input
+                type="time"
+                className={`input input-sm input-bordered w-full ${errors.pauseVon ? "input-error" : ""}`}
+                {...register("pauseVon")}
+              />
+            </fieldset>
 
-          {/* Pause Bis */}
-          <fieldset className="fieldset">
-            <legend className="fieldset-legend text-xs">Pause bis</legend>
-            <input
-              type="time"
-              className={`input input-sm input-bordered w-full ${errors.pauseBis ? "input-error" : ""}`}
-              {...register("pauseBis")}
-            />
-            {errors.pauseBis && (
-              <p className="text-error text-xs mt-1">
-                {errors.pauseBis.message}
-              </p>
-            )}
-          </fieldset>
-        </div>
-
-        {mutation.error && (
-          <div role="alert" className="alert alert-error alert-soft mt-2">
-            <span className="text-sm">{mutation.error.message}</span>
+            {/* Pause Bis */}
+            <fieldset className="fieldset">
+              <legend className="fieldset-legend text-xs">Pause bis</legend>
+              <input
+                type="time"
+                className={`input input-sm input-bordered w-full ${errors.pauseBis ? "input-error" : ""}`}
+                {...register("pauseBis")}
+              />
+              {errors.pauseBis && (
+                <p className="text-error text-xs mt-1">
+                  {errors.pauseBis.message}
+                </p>
+              )}
+            </fieldset>
           </div>
-        )}
 
-        <div className="card-actions mt-3">
-          <button
-            type="submit"
-            className="btn btn-primary btn-sm"
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? (
-              <span className="loading loading-spinner loading-xs" />
-            ) : (
-              <MdAdd className="size-4" />
-            )}
-            Eintrag speichern
-          </button>
-        </div>
+          {mutation.error && (
+            <div role="alert" className="alert alert-error alert-soft mt-2">
+              <span className="text-sm">{mutation.error.message}</span>
+            </div>
+          )}
+
+          <div className="card-actions mt-3">
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm"
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? (
+                <span className="loading loading-spinner loading-xs" />
+              ) : (
+                <MdAdd className="size-4" />
+              )}
+              Eintrag speichern
+            </button>
+          </div>
         </form>
       </div>
     </div>

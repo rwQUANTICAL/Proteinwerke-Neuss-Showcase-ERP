@@ -59,26 +59,35 @@ export default function Zeitkonto({
 }: Props) {
   // Week saldo
   const weekWorkedDates = useMemo(
-    () => new Set(weekEntries.map((e) => new Date(e.datum).toISOString().split("T")[0])),
+    () =>
+      new Set(
+        weekEntries.map((e) => new Date(e.datum).toISOString().split("T")[0]),
+      ),
     [weekEntries],
   );
   const weekDateSet = useMemo(() => new Set(weekDates), [weekDates]);
 
   let weekIst = 0;
   for (const e of weekEntries) weekIst += calcNettoStunden(e);
-  const weekAbw = countAbwesenheitDays(urlaub, weekDateSet, weekWorkedDates)
-    + countAbwesenheitDays(krank, weekDateSet, weekWorkedDates);
+  const weekAbw =
+    countAbwesenheitDays(urlaub, weekDateSet, weekWorkedDates) +
+    countAbwesenheitDays(krank, weekDateSet, weekWorkedDates);
   weekIst += weekAbw * sollProTag;
   const weekSaldo = weekIst - weeklyWork;
 
   // Total saldo
   const allWorkedDates = useMemo(
-    () => new Set(allEntries.map((e) => new Date(e.datum).toISOString().split("T")[0])),
+    () =>
+      new Set(
+        allEntries.map((e) => new Date(e.datum).toISOString().split("T")[0]),
+      ),
     [allEntries],
   );
   const totalCalendarDays = useMemo(() => {
     if (allEntries.length === 0) return 0;
-    const dates = allEntries.map((e) => new Date(e.datum).toISOString().split("T")[0]).sort();
+    const dates = allEntries
+      .map((e) => new Date(e.datum).toISOString().split("T")[0])
+      .sort();
     const start = new Date(dates[0]);
     const end = new Date();
     return Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
@@ -87,7 +96,9 @@ export default function Zeitkonto({
   const allDatesEver = useMemo(() => {
     const set = new Set<string>();
     if (allEntries.length === 0) return set;
-    const dates = allEntries.map((e) => new Date(e.datum).toISOString().split("T")[0]).sort();
+    const dates = allEntries
+      .map((e) => new Date(e.datum).toISOString().split("T")[0])
+      .sort();
     const start = new Date(dates[0]);
     const end = new Date();
     for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1))
@@ -97,8 +108,9 @@ export default function Zeitkonto({
 
   let totalIst = 0;
   for (const e of allEntries) totalIst += calcNettoStunden(e);
-  const totalAbw = countAbwesenheitDays(urlaub, allDatesEver, allWorkedDates)
-    + countAbwesenheitDays(krank, allDatesEver, allWorkedDates);
+  const totalAbw =
+    countAbwesenheitDays(urlaub, allDatesEver, allWorkedDates) +
+    countAbwesenheitDays(krank, allDatesEver, allWorkedDates);
   totalIst += totalAbw * sollProTag;
   const totalSoll = weeklyWork * (totalCalendarDays / 7);
   const totalSaldo = totalIst - totalSoll;
@@ -107,11 +119,17 @@ export default function Zeitkonto({
   const now = new Date();
   const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
   const monthEntries = useMemo(
-    () => allEntries.filter((e) => new Date(e.datum).toISOString().split("T")[0].startsWith(monthKey)),
+    () =>
+      allEntries.filter((e) =>
+        new Date(e.datum).toISOString().split("T")[0].startsWith(monthKey),
+      ),
     [allEntries, monthKey],
   );
   const monthWorkedDates = useMemo(
-    () => new Set(monthEntries.map((e) => new Date(e.datum).toISOString().split("T")[0])),
+    () =>
+      new Set(
+        monthEntries.map((e) => new Date(e.datum).toISOString().split("T")[0]),
+      ),
     [monthEntries],
   );
   const monthDateSet = useMemo(() => {
@@ -123,11 +141,14 @@ export default function Zeitkonto({
     return set;
   }, [now.getFullYear(), now.getMonth()]);
 
-  const monthCalendarDays = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 0)).getUTCDate();
+  const monthCalendarDays = new Date(
+    Date.UTC(now.getFullYear(), now.getMonth() + 1, 0),
+  ).getUTCDate();
   let monthIst = 0;
   for (const e of monthEntries) monthIst += calcNettoStunden(e);
-  const monthAbw = countAbwesenheitDays(urlaub, monthDateSet, monthWorkedDates)
-    + countAbwesenheitDays(krank, monthDateSet, monthWorkedDates);
+  const monthAbw =
+    countAbwesenheitDays(urlaub, monthDateSet, monthWorkedDates) +
+    countAbwesenheitDays(krank, monthDateSet, monthWorkedDates);
   monthIst += monthAbw * sollProTag;
   const monthSoll = weeklyWork * (monthCalendarDays / 7);
   const monthSaldo = monthIst - monthSoll;

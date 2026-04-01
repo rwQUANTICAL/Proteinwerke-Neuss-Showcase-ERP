@@ -30,7 +30,10 @@ export default function ZeiterfassungPage() {
   const { data: krankRaw } = useKrankmeldungenQuery();
 
   const urlaub = useMemo(
-    () => (urlaubRaw ?? []).filter((u) => u.status === "GENEHMIGT").map((u) => ({ von: u.von, bis: u.bis })),
+    () =>
+      (urlaubRaw ?? [])
+        .filter((u) => u.status === "GENEHMIGT")
+        .map((u) => ({ von: u.von, bis: u.bis })),
     [urlaubRaw],
   );
   const krank = useMemo(
@@ -64,8 +67,13 @@ export default function ZeiterfassungPage() {
   const navWeek = (d: number) => {
     let nk = kw + d,
       nj = jahr;
-    if (nk < 1) { nj--; nk = 52; }
-    else if (nk > 52) { nj++; nk = 1; }
+    if (nk < 1) {
+      nj--;
+      nk = 52;
+    } else if (nk > 52) {
+      nj++;
+      nk = 1;
+    }
     setKw(nk);
     setJahr(nj);
   };
@@ -84,17 +92,28 @@ export default function ZeiterfassungPage() {
           urlaub={urlaub}
           krank={krank}
         />
-        <MonatsUebersicht allEntries={allEntries ?? []} urlaub={urlaub} krank={krank} sollProTag={sollProTag} />
+        <MonatsUebersicht
+          allEntries={allEntries ?? []}
+          urlaub={urlaub}
+          krank={krank}
+          sollProTag={sollProTag}
+        />
       </div>
 
       <div className="flex items-center justify-center gap-4">
-        <button className="btn btn-ghost btn-sm btn-square" onClick={() => navWeek(-1)}>
+        <button
+          className="btn btn-ghost btn-sm btn-square"
+          onClick={() => navWeek(-1)}
+        >
           <MdChevronLeft className="size-5" />
         </button>
         <span className="text-sm font-semibold tracking-wide">
           KW {kw} · {jahr}
         </span>
-        <button className="btn btn-ghost btn-sm btn-square" onClick={() => navWeek(1)}>
+        <button
+          className="btn btn-ghost btn-sm btn-square"
+          onClick={() => navWeek(1)}
+        >
           <MdChevronRight className="size-5" />
         </button>
       </div>
@@ -105,7 +124,12 @@ export default function ZeiterfassungPage() {
         </div>
       ) : (
         <>
-          <ZeiterfassungWochenTabelle entries={weekEntries} jahr={jahr} kw={kw} sollProTag={sollProTag} />
+          <ZeiterfassungWochenTabelle
+            entries={weekEntries}
+            jahr={jahr}
+            kw={kw}
+            sollProTag={sollProTag}
+          />
           <ZeiterfassungForm />
         </>
       )}
