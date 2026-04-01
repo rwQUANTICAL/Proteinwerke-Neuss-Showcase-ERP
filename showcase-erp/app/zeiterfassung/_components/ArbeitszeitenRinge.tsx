@@ -218,7 +218,9 @@ export default function ArbeitszeitenRinge({
         </div>
         <div className="divider my-0.5 sm:my-1" />
         <div className="flex items-center justify-between">
-          <span className="text-[11px] sm:text-xs text-base-content/50">Gesamtsaldo</span>
+          <span className="text-[11px] sm:text-xs text-base-content/50">
+            Gesamtsaldo
+          </span>
           <span
             className={`text-xs sm:text-sm font-bold tabular-nums ${totalSaldo >= 0 ? "text-success" : "text-error"}`}
           >

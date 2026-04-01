@@ -42,7 +42,7 @@ export default function AbwesenheitPage() {
   const [typ, setTyp] = useState<AbwesenheitTyp>("URLAUB");
 
   return (
-    <div className="container mx-auto max-w-5xl px-4 py-4 sm:py-10 flex flex-col gap-4 sm:gap-6">
+    <div className="container mx-auto max-w-6xl flex flex-col gap-4 sm:gap-6">
       <h1 className="text-2xl font-bold">Abwesenheit</h1>
 
       {isAdmin && (

@@ -29,14 +29,6 @@ export interface CreateZeitbuchungInput {
   schicht: string;
 }
 
-export interface UpdateZeitbuchungInput {
-  von: string;
-  bis: string;
-  pauseVon?: string | null;
-  pauseBis?: string | null;
-  schicht: string;
-}
-
 // ── Utility functions ──────────────────────────────────────────
 
 /** Extract "HH:MM" from an ISO datetime or time string. */
@@ -134,9 +126,6 @@ export const zeitbuchungKeys = {
   all: ["zeitbuchungen"] as const,
   byRange: (von?: string, bis?: string) =>
     ["zeitbuchungen", { von, bis }] as const,
-  admin: ["zeitbuchungen", "admin"] as const,
-  adminByRange: (von?: string, bis?: string) =>
-    ["zeitbuchungen", "admin", { von, bis }] as const,
 };
 
 // ── Fetch functions ────────────────────────────────────────────
@@ -150,18 +139,6 @@ async function fetchZeitbuchungen(
   if (bis) params.set("bis", bis);
   const qs = params.toString();
   const res = await fetch(`/api/zeitbuchung${qs ? `?${qs}` : ""}`);
-  if (!res.ok) throw new Error("Fehler beim Laden der Zeitbuchungen");
-  return res.json();
-}
-
-async function fetchAllZeitbuchungen(
-  von?: string,
-  bis?: string,
-): Promise<ZeitbuchungEntry[]> {
-  const params = new URLSearchParams({ admin: "true" });
-  if (von) params.set("von", von);
-  if (bis) params.set("bis", bis);
-  const res = await fetch(`/api/zeitbuchung?${params.toString()}`);
   if (!res.ok) throw new Error("Fehler beim Laden der Zeitbuchungen");
   return res.json();
 }
@@ -181,33 +158,6 @@ async function createZeitbuchung(
   return res.json();
 }
 
-async function updateZeitbuchung({
-  id,
-  data,
-}: {
-  id: string;
-  data: UpdateZeitbuchungInput;
-}): Promise<ZeitbuchungEntry> {
-  const res = await fetch(`/api/zeitbuchung/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error ?? "Fehler beim Aktualisieren der Zeitbuchung");
-  }
-  return res.json();
-}
-
-async function deleteZeitbuchung(id: string): Promise<void> {
-  const res = await fetch(`/api/zeitbuchung/${id}`, { method: "DELETE" });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error ?? "Fehler beim Löschen der Zeitbuchung");
-  }
-}
-
 // ── React Query hooks ──────────────────────────────────────────
 
 export function useZeitbuchungenQuery(von?: string, bis?: string) {
@@ -217,37 +167,10 @@ export function useZeitbuchungenQuery(von?: string, bis?: string) {
   });
 }
 
-export function useAllZeitbuchungenQuery(von?: string, bis?: string) {
-  return useQuery({
-    queryKey: zeitbuchungKeys.adminByRange(von, bis),
-    queryFn: () => fetchAllZeitbuchungen(von, bis),
-  });
-}
-
 export function useCreateZeitbuchungMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createZeitbuchung,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: zeitbuchungKeys.all });
-    },
-  });
-}
-
-export function useUpdateZeitbuchungMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: updateZeitbuchung,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: zeitbuchungKeys.all });
-    },
-  });
-}
-
-export function useDeleteZeitbuchungMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: deleteZeitbuchung,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: zeitbuchungKeys.all });
     },

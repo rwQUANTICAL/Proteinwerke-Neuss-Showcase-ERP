@@ -142,11 +142,16 @@ export default function MonatsUebersicht({
           </div>
         </div>
 
-        <p className="text-[10px] sm:text-xs font-medium text-center mb-0.5 sm:mb-1">{monthName}</p>
+        <p className="text-[10px] sm:text-xs font-medium text-center mb-0.5 sm:mb-1">
+          {monthName}
+        </p>
 
         <div className="grid grid-cols-7 gap-px text-center mb-0.5">
           {DAY_LABELS.map((d) => (
-            <span key={d} className="text-[9px] sm:text-[10px] text-base-content/40">
+            <span
+              key={d}
+              className="text-[9px] sm:text-[10px] text-base-content/40"
+            >
               {d}
             </span>
           ))}
