@@ -93,10 +93,8 @@ export function calcNettoStunden(entry: ZeitbuchungEntry): number {
   return Math.max((grossMinutes - pauseMinutes) / 60, 0);
 }
 
-/** Calculate daily target hours from weekly requirement (÷ 5 work days). */
-export function calcSollStundenTag(weeklyReq: number): number {
-  return weeklyReq / 5;
-}
+/** Standard shift = 8 hours. This is the daily target per worked day. */
+export const SOLL_STUNDEN_PRO_SCHICHT = 8;
 
 /** Get ISO week number and year for a date. */
 export function getISOWeekData(dateStr: string): { jahr: number; kw: number } {

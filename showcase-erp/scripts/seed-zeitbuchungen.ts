@@ -39,13 +39,6 @@ function jitter(time: string, maxMin: number): string {
   return `${hh}:${mm}`;
 }
 
-function getMonday(date: Date): Date {
-  const d = new Date(date);
-  const day = d.getUTCDay() || 7;
-  d.setUTCDate(d.getUTCDate() - day + 1);
-  return d;
-}
-
 async function main() {
   const mitarbeiter = await prisma.mitarbeiter.findMany();
   if (mitarbeiter.length === 0) {
@@ -53,67 +46,96 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`Seeding Zeitbuchungen für ${mitarbeiter.length} Mitarbeiter...`);
+  // Clear existing data
+  await prisma.zeitbuchung.deleteMany();
+  console.log(`Seeding Zeitbuchungen für ${mitarbeiter.length} Mitarbeiter (6-on/2-off, 4 Wochen)...`);
 
-  // Generate entries for the last 8 weeks (Mon-Fri)
+  // Generate entries for the last 4 weeks using a 6-on/2-off rotation
   const today = new Date();
-  const startMonday = getMonday(today);
-  startMonday.setUTCDate(startMonday.getUTCDate() - 7 * 7); // 8 weeks ago
+  const startDate = new Date(today);
+  startDate.setUTCDate(startDate.getUTCDate() - 28);
 
-  const SCHICHT_CYCLE: SchichtTyp[] = ["FRUEH", "SPAET", "NACHT", "FRUEH", "SPAET"];
+  const SCHICHT_CYCLE: SchichtTyp[] = ["FRUEH", "SPAET", "NACHT", "FRUEH", "SPAET", "NACHT"];
   let created = 0;
 
+  // Some employees get overtime (longer shifts / extra days), some get deficit
+  const overtimeEmployees = new Set(
+    mitarbeiter.slice(0, Math.ceil(mitarbeiter.length * 0.4)).map((m) => m.id),
+  );
+  const deficitEmployees = new Set(
+    mitarbeiter.slice(Math.ceil(mitarbeiter.length * 0.7)).map((m) => m.id),
+  );
+
   for (const ma of mitarbeiter) {
-    const current = new Date(startMonday);
+    const maIdx = mitarbeiter.indexOf(ma);
+    // Each employee starts their 6-on/2-off cycle on a different offset
+    const cycleOffset = maIdx * 2;
 
-    for (let week = 0; week < 8; week++) {
-      // Randomly skip a few days to create realistic gaps
-      const skipDay = Math.random() < 0.1 ? Math.floor(Math.random() * 5) : -1;
+    const current = new Date(startDate);
 
-      for (let day = 0; day < 5; day++) {
-        const datum = new Date(current);
-        datum.setUTCDate(current.getUTCDate() + day);
+    for (let dayNum = 0; dayNum < 28; dayNum++) {
+      const datum = new Date(current);
+      datum.setUTCDate(current.getUTCDate() + dayNum);
 
-        // Don't create entries in the future
-        if (datum > today) continue;
-        // Random skip
-        if (day === skipDay) continue;
+      // Don't create entries in the future
+      if (datum > today) continue;
 
-        const schichtIdx = (week + mitarbeiter.indexOf(ma)) % SCHICHT_CYCLE.length;
-        const schicht = SCHICHT_CYCLE[schichtIdx];
-        const config = SCHICHT_CONFIGS[schicht];
+      // 6-on/2-off: position in 8-day cycle
+      const cycleDay = ((dayNum + cycleOffset) % 8);
+      const isWorkDay = cycleDay < 6;
+      if (!isWorkDay) continue;
 
-        const von = jitter(config.von, 10);
-        const bis = jitter(config.bis, 15);
-        const pauseVon = jitter(config.pauseVon, 5);
-        const pauseBis = jitter(config.pauseBis, 10);
+      // Random absence (~8% chance)
+      if (Math.random() < 0.08) continue;
 
-        try {
-          await prisma.zeitbuchung.upsert({
-            where: {
-              mitarbeiterId_datum: {
-                mitarbeiterId: ma.id,
-                datum: new Date(datum.toISOString().split("T")[0] + "T00:00:00Z"),
-              },
-            },
-            update: {},
-            create: {
-              mitarbeiterId: ma.id,
-              datum: new Date(datum.toISOString().split("T")[0] + "T00:00:00Z"),
-              von: timeToDb(von),
-              bis: timeToDb(bis),
-              pauseVon: timeToDb(pauseVon),
-              pauseBis: timeToDb(pauseBis),
-              schicht,
-            },
-          });
-          created++;
-        } catch (err) {
-          // Skip duplicates silently
-        }
+      const schichtIdx = (Math.floor((dayNum + cycleOffset) / 8) + maIdx) % SCHICHT_CYCLE.length;
+      const schicht = SCHICHT_CYCLE[schichtIdx];
+      const config = SCHICHT_CONFIGS[schicht];
+
+      let von = jitter(config.von, 10);
+      let bis = jitter(config.bis, 15);
+      const pauseVon = jitter(config.pauseVon, 5);
+      const pauseBis = jitter(config.pauseBis, 10);
+
+      // Overtime employees: ~30% of shifts run 30-60 min longer
+      if (overtimeEmployees.has(ma.id) && Math.random() < 0.3) {
+        const extraMin = 30 + Math.floor(Math.random() * 31);
+        const [bH, bM] = bis.split(":").map(Number);
+        const total = ((bH * 60 + bM + extraMin) % 1440);
+        bis = `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
       }
 
-      current.setUTCDate(current.getUTCDate() + 7);
+      // Deficit employees: ~20% of shifts start late (15-40 min)
+      if (deficitEmployees.has(ma.id) && Math.random() < 0.2) {
+        const lateMin = 15 + Math.floor(Math.random() * 26);
+        const [vH, vM] = von.split(":").map(Number);
+        const total = ((vH * 60 + vM + lateMin) % 1440);
+        von = `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+      }
+
+      try {
+        await prisma.zeitbuchung.upsert({
+          where: {
+            mitarbeiterId_datum: {
+              mitarbeiterId: ma.id,
+              datum: new Date(datum.toISOString().split("T")[0] + "T00:00:00Z"),
+            },
+          },
+          update: {},
+          create: {
+            mitarbeiterId: ma.id,
+            datum: new Date(datum.toISOString().split("T")[0] + "T00:00:00Z"),
+            von: timeToDb(von),
+            bis: timeToDb(bis),
+            pauseVon: timeToDb(pauseVon),
+            pauseBis: timeToDb(pauseBis),
+            schicht,
+          },
+        });
+        created++;
+      } catch (err) {
+        // Skip duplicates silently
+      }
     }
   }
 

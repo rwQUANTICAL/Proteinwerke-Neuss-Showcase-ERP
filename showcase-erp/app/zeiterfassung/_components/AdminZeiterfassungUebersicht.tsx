@@ -5,37 +5,26 @@ import { MdPeople, MdSearch } from "react-icons/md";
 import {
   ZeitbuchungEntry,
   calcNettoStunden,
-  getWeekDates,
-  calcSollStundenTag,
+  SOLL_STUNDEN_PRO_SCHICHT,
   useAllZeitbuchungenQuery,
 } from "@/app/lib/entities/zeitbuchung/zeitbuchungHooks";
-
-interface Props {
-  jahr: number;
-  kw: number;
-}
 
 interface EmployeeSummary {
   mitarbeiterId: string;
   name: string;
-  weeklyReq: number;
   istStunden: number;
   sollStunden: number;
   diff: number;
-  eintraegeCount: number;
+  schichten: number;
 }
 
-export default function AdminZeiterfassungUebersicht({ jahr, kw }: Props) {
-  const weekDates = getWeekDates(jahr, kw);
-  const von = weekDates[0];
-  const bis = weekDates[weekDates.length - 1];
-  const { data: entries, isLoading } = useAllZeitbuchungenQuery(von, bis);
+export default function AdminZeiterfassungUebersicht() {
+  const { data: entries, isLoading } = useAllZeitbuchungenQuery();
   const [search, setSearch] = useState("");
 
   const summaries = useMemo(() => {
     if (!entries) return [];
 
-    // Group by employee
     const grouped = new Map<string, ZeitbuchungEntry[]>();
     for (const e of entries) {
       const list = grouped.get(e.mitarbeiterId) ?? [];
@@ -45,35 +34,24 @@ export default function AdminZeiterfassungUebersicht({ jahr, kw }: Props) {
 
     const result: EmployeeSummary[] = [];
     for (const [mitarbeiterId, empEntries] of grouped) {
-      const first = empEntries[0];
-      const weeklyReq = first.mitarbeiter.weeklyWorkRequirement;
-      const sollTag = calcSollStundenTag(weeklyReq);
-
       let istStunden = 0;
-      let sollStunden = 0;
-
-      for (const date of weekDates) {
-        const isWeekend = new Date(date + "T00:00:00Z").getUTCDay() % 6 === 0;
-        if (!isWeekend) sollStunden += sollTag;
-      }
-
       for (const e of empEntries) {
         istStunden += calcNettoStunden(e);
       }
+      const sollStunden = empEntries.length * SOLL_STUNDEN_PRO_SCHICHT;
 
       result.push({
         mitarbeiterId,
-        name: first.mitarbeiter.name,
-        weeklyReq,
+        name: empEntries[0].mitarbeiter.name,
         istStunden,
         sollStunden,
         diff: istStunden - sollStunden,
-        eintraegeCount: empEntries.length,
+        schichten: empEntries.length,
       });
     }
 
     return result.sort((a, b) => a.name.localeCompare(b.name, "de"));
-  }, [entries, weekDates]);
+  }, [entries]);
 
   const filtered = search
     ? summaries.filter((s) =>
@@ -108,7 +86,7 @@ export default function AdminZeiterfassungUebersicht({ jahr, kw }: Props) {
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-base-content/60">
           <MdPeople className="size-12 mb-4" />
-          <p>Keine Einträge für diese Woche</p>
+          <p>Keine Einträge vorhanden</p>
         </div>
       ) : (
         <>
@@ -118,29 +96,27 @@ export default function AdminZeiterfassungUebersicht({ jahr, kw }: Props) {
               <thead>
                 <tr className="text-base-content/50">
                   <th>Mitarbeiter</th>
-                  <th>Soll/Woche</th>
-                  <th>Ist-Stunden</th>
-                  <th>Soll-Stunden</th>
-                  <th className="text-right">Differenz</th>
-                  <th className="text-right">Einträge</th>
+                  <th className="text-right">Schichten</th>
+                  <th className="text-right">Ist</th>
+                  <th className="text-right">Soll</th>
+                  <th className="text-right">Saldo</th>
                 </tr>
               </thead>
               <tbody>
                 {filtered.map((s) => (
                   <tr key={s.mitarbeiterId}>
                     <td className="font-medium">{s.name}</td>
-                    <td>{s.weeklyReq} Std.</td>
-                    <td>{s.istStunden.toFixed(1)} Std.</td>
-                    <td>{s.sollStunden.toFixed(1)} Std.</td>
+                    <td className="text-right">{s.schichten}</td>
+                    <td className="text-right">{s.istStunden.toFixed(1)} Std.</td>
+                    <td className="text-right">{s.sollStunden.toFixed(1)} Std.</td>
                     <td className="text-right">
                       <span
-                        className={`font-semibold ${s.diff >= 0 ? "text-success" : "text-error"}`}
+                        className={`badge badge-sm font-semibold ${s.diff >= 0 ? "badge-success" : "badge-error"}`}
                       >
                         {s.diff >= 0 ? "+" : ""}
                         {s.diff.toFixed(1)} Std.
                       </span>
                     </td>
-                    <td className="text-right">{s.eintraegeCount}/5</td>
                   </tr>
                 ))}
               </tbody>
@@ -159,15 +135,14 @@ export default function AdminZeiterfassungUebersicht({ jahr, kw }: Props) {
                     <div>
                       <p className="font-medium text-sm">{s.name}</p>
                       <p className="text-xs text-base-content/50">
-                        Soll: {s.weeklyReq} Std./Woche ·{" "}
-                        {s.eintraegeCount}/5 Einträge
+                        {s.schichten} Schichten
                       </p>
                     </div>
                     <span
                       className={`badge badge-sm ${s.diff >= 0 ? "badge-success" : "badge-error"}`}
                     >
                       {s.diff >= 0 ? "+" : ""}
-                      {s.diff.toFixed(1)}
+                      {s.diff.toFixed(1)} Std.
                     </span>
                   </div>
                   <div className="flex gap-4 mt-1 text-xs text-base-content/60">
