@@ -83,10 +83,7 @@ function Ring({
   );
 }
 
-export default function ArbeitszeitenRinge({
-  todayEntry,
-  weekEntries,
-}: Props) {
+export default function ArbeitszeitenRinge({ todayEntry, weekEntries }: Props) {
   const todayNetto = todayEntry ? calcNettoStunden(todayEntry) : 0;
   const soll = SOLL_STUNDEN_PRO_SCHICHT;
 

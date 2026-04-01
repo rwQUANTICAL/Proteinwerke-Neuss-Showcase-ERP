@@ -64,7 +64,8 @@ export default function Stempeluhr() {
   const onResume = useCallback(() => {
     setPhase("working");
     setPauseEnd(nowHHMM());
-    if (breakT0) setBreakAcc((p) => p + Math.floor((Date.now() - breakT0) / 1000));
+    if (breakT0)
+      setBreakAcc((p) => p + Math.floor((Date.now() - breakT0) / 1000));
     setBreakT0(null);
   }, [breakT0]);
 
@@ -127,10 +128,16 @@ export default function Stempeluhr() {
           )}
           {phase === "working" && (
             <>
-              <button className="btn btn-soft btn-warning btn-sm" onClick={onPause}>
+              <button
+                className="btn btn-soft btn-warning btn-sm"
+                onClick={onPause}
+              >
                 <MdCoffee className="size-4" /> Pause
               </button>
-              <button className="btn btn-soft btn-error btn-sm" onClick={onStop}>
+              <button
+                className="btn btn-soft btn-error btn-sm"
+                onClick={onStop}
+              >
                 <MdStop className="size-4" /> Ende
               </button>
             </>

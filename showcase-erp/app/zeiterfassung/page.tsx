@@ -42,7 +42,9 @@ export default function ZeiterfassungPage() {
   const weekEntries = useMemo(() => {
     if (!weekRaw) return [];
     const set = new Set(weekDates);
-    return weekRaw.filter((e) => set.has(new Date(e.datum).toISOString().split("T")[0]));
+    return weekRaw.filter((e) =>
+      set.has(new Date(e.datum).toISOString().split("T")[0]),
+    );
   }, [weekRaw, weekDates]);
 
   const todayStr = new Date().toISOString().split("T")[0];
@@ -51,9 +53,15 @@ export default function ZeiterfassungPage() {
   );
 
   const navWeek = (d: number) => {
-    let nk = kw + d, nj = jahr;
-    if (nk < 1) { nj--; nk = 52; }
-    else if (nk > 52) { nj++; nk = 1; }
+    let nk = kw + d,
+      nj = jahr;
+    if (nk < 1) {
+      nj--;
+      nk = 52;
+    } else if (nk > 52) {
+      nj++;
+      nk = 1;
+    }
     setKw(nk);
     setJahr(nj);
   };
@@ -100,13 +108,19 @@ export default function ZeiterfassungPage() {
 
           {/* Week nav */}
           <div className="flex items-center justify-center gap-4">
-            <button className="btn btn-ghost btn-sm btn-square" onClick={() => navWeek(-1)}>
+            <button
+              className="btn btn-ghost btn-sm btn-square"
+              onClick={() => navWeek(-1)}
+            >
               <MdChevronLeft className="size-5" />
             </button>
             <span className="text-sm font-semibold tracking-wide">
               KW {kw} · {jahr}
             </span>
-            <button className="btn btn-ghost btn-sm btn-square" onClick={() => navWeek(1)}>
+            <button
+              className="btn btn-ghost btn-sm btn-square"
+              onClick={() => navWeek(1)}
+            >
               <MdChevronRight className="size-5" />
             </button>
           </div>
@@ -117,7 +131,11 @@ export default function ZeiterfassungPage() {
             </div>
           ) : (
             <>
-              <ZeiterfassungWochenTabelle entries={weekEntries} jahr={jahr} kw={kw} />
+              <ZeiterfassungWochenTabelle
+                entries={weekEntries}
+                jahr={jahr}
+                kw={kw}
+              />
               <ZeiterfassungForm />
             </>
           )}

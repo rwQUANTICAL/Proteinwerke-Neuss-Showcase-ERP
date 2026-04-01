@@ -43,7 +43,10 @@ export default function Zeitkonto({ weekEntries, allEntries }: Props) {
           <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
             Zeitkonto
           </h3>
-          <div className="tooltip tooltip-left" data-tip={`${allEntries.length} Schichten erfasst`}>
+          <div
+            className="tooltip tooltip-left"
+            data-tip={`${allEntries.length} Schichten erfasst`}
+          >
             <MdInfoOutline className="size-4 text-base-content/30" />
           </div>
         </div>

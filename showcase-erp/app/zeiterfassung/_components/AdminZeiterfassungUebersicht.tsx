@@ -107,8 +107,12 @@ export default function AdminZeiterfassungUebersicht() {
                   <tr key={s.mitarbeiterId}>
                     <td className="font-medium">{s.name}</td>
                     <td className="text-right">{s.schichten}</td>
-                    <td className="text-right">{s.istStunden.toFixed(1)} Std.</td>
-                    <td className="text-right">{s.sollStunden.toFixed(1)} Std.</td>
+                    <td className="text-right">
+                      {s.istStunden.toFixed(1)} Std.
+                    </td>
+                    <td className="text-right">
+                      {s.sollStunden.toFixed(1)} Std.
+                    </td>
                     <td className="text-right">
                       <span
                         className={`badge badge-sm font-semibold ${s.diff >= 0 ? "badge-success" : "badge-error"}`}

@@ -17,7 +17,11 @@ interface Props {
   kw: number;
 }
 
-export default function ZeiterfassungWochenTabelle({ entries, jahr, kw }: Props) {
+export default function ZeiterfassungWochenTabelle({
+  entries,
+  jahr,
+  kw,
+}: Props) {
   const weekDates = getWeekDates(jahr, kw);
 
   const byDate = new Map<string, ZeitbuchungEntry>();
@@ -111,7 +115,8 @@ export default function ZeiterfassungWochenTabelle({ entries, jahr, kw }: Props)
                   <span
                     className={`text-xs ${diff >= 0 ? "text-success" : "text-error"}`}
                   >
-                    {diff >= 0 ? "+" : ""}{diff.toFixed(1)}
+                    {diff >= 0 ? "+" : ""}
+                    {diff.toFixed(1)}
                   </span>
                 </div>
               ) : (
