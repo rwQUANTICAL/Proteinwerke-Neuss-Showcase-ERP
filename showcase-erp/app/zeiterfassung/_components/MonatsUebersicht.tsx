@@ -121,7 +121,7 @@ export default function MonatsUebersicht({
 
   return (
     <div className="card bg-base-100 border border-base-300 h-full">
-      <div className="card-body p-4 sm:p-5">
+      <div className="card-body p-4 sm:p-5 justify-center">
         <div className="flex items-center justify-between mb-1">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-base-content/50">
             Monatsübersicht
@@ -175,10 +175,10 @@ export default function MonatsUebersicht({
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-2 text-[10px] text-base-content/50">
           <span className="flex items-center gap-1">
-            <span className="size-2 rounded-sm bg-success" /> ≥8h
+            <span className="size-2 rounded-sm bg-success" /> ≥Soll
           </span>
           <span className="flex items-center gap-1">
-            <span className="size-2 rounded-sm bg-warning" /> &lt;8h
+            <span className="size-2 rounded-sm bg-warning" /> &lt;Soll
           </span>
           <span className="flex items-center gap-1">
             <span className="size-2 rounded-sm bg-info" /> Urlaub

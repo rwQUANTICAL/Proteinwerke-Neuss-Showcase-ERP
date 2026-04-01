@@ -82,7 +82,7 @@ export default function ZeiterfassungPage() {
     <div className="container mx-auto max-w-6xl px-4 py-6 sm:py-10 flex flex-col gap-5 sm:gap-6">
       <h1 className="text-xl sm:text-2xl font-bold">Zeiterfassung</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
         <ArbeitszeitenRinge
           todayEntry={todayEntry}
           weekEntries={weekEntries}

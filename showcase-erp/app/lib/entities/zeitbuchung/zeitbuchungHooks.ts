@@ -93,9 +93,6 @@ export function calcNettoStunden(entry: ZeitbuchungEntry): number {
   return Math.max((grossMinutes - pauseMinutes) / 60, 0);
 }
 
-/** Standard shift = 8 hours. This is the daily target per worked day. */
-export const SOLL_STUNDEN_PRO_SCHICHT = 8;
-
 /** 6-on/2-off cycle → average 5.25 scheduled work days per 7-day week. */
 export const ARBEITSTAGE_PRO_WOCHE = (6 / 8) * 7; // 5.25
 
