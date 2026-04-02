@@ -394,7 +394,8 @@ export const ModelName = {
   Praemie: 'Praemie',
   Zeitplan: 'Zeitplan',
   Urlaubsantrag: 'Urlaubsantrag',
-  Krankmeldung: 'Krankmeldung'
+  Krankmeldung: 'Krankmeldung',
+  FreizeitausgleichAntrag: 'FreizeitausgleichAntrag'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "mitarbeiter" | "zuteilung" | "zeitbuchung" | "praemie" | "zeitplan" | "urlaubsantrag" | "krankmeldung"
+    modelProps: "user" | "session" | "account" | "verification" | "mitarbeiter" | "zuteilung" | "zeitbuchung" | "praemie" | "zeitplan" | "urlaubsantrag" | "krankmeldung" | "freizeitausgleichAntrag"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1228,6 +1229,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    FreizeitausgleichAntrag: {
+      payload: Prisma.$FreizeitausgleichAntragPayload<ExtArgs>
+      fields: Prisma.FreizeitausgleichAntragFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FreizeitausgleichAntragFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FreizeitausgleichAntragFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>
+        }
+        findFirst: {
+          args: Prisma.FreizeitausgleichAntragFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FreizeitausgleichAntragFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>
+        }
+        findMany: {
+          args: Prisma.FreizeitausgleichAntragFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>[]
+        }
+        create: {
+          args: Prisma.FreizeitausgleichAntragCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>
+        }
+        createMany: {
+          args: Prisma.FreizeitausgleichAntragCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FreizeitausgleichAntragCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>[]
+        }
+        delete: {
+          args: Prisma.FreizeitausgleichAntragDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>
+        }
+        update: {
+          args: Prisma.FreizeitausgleichAntragUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>
+        }
+        deleteMany: {
+          args: Prisma.FreizeitausgleichAntragDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FreizeitausgleichAntragUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FreizeitausgleichAntragUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>[]
+        }
+        upsert: {
+          args: Prisma.FreizeitausgleichAntragUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FreizeitausgleichAntragPayload>
+        }
+        aggregate: {
+          args: Prisma.FreizeitausgleichAntragAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFreizeitausgleichAntrag>
+        }
+        groupBy: {
+          args: Prisma.FreizeitausgleichAntragGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FreizeitausgleichAntragGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FreizeitausgleichAntragCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FreizeitausgleichAntragCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1425,6 +1500,20 @@ export const KrankmeldungScalarFieldEnum = {
 export type KrankmeldungScalarFieldEnum = (typeof KrankmeldungScalarFieldEnum)[keyof typeof KrankmeldungScalarFieldEnum]
 
 
+export const FreizeitausgleichAntragScalarFieldEnum = {
+  id: 'id',
+  mitarbeiterId: 'mitarbeiterId',
+  von: 'von',
+  bis: 'bis',
+  status: 'status',
+  genehmigtVonId: 'genehmigtVonId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FreizeitausgleichAntragScalarFieldEnum = (typeof FreizeitausgleichAntragScalarFieldEnum)[keyof typeof FreizeitausgleichAntragScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1575,6 +1664,20 @@ export type ListEnumUrlaubsantragStatusFieldRefInput<$PrismaModel> = FieldRefInp
 
 
 /**
+ * Reference to a field of type 'FreizeitausgleichStatus'
+ */
+export type EnumFreizeitausgleichStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FreizeitausgleichStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FreizeitausgleichStatus[]'
+ */
+export type ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FreizeitausgleichStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1693,6 +1796,7 @@ export type GlobalOmitConfig = {
   zeitplan?: Prisma.ZeitplanOmit
   urlaubsantrag?: Prisma.UrlaubsantragOmit
   krankmeldung?: Prisma.KrankmeldungOmit
+  freizeitausgleichAntrag?: Prisma.FreizeitausgleichAntragOmit
 }
 
 /* Types for Logging */

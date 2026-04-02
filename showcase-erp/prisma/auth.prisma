@@ -17,6 +17,7 @@ model User {
   mitarbeiter   Mitarbeiter?
   erstellteZuteilungen Zuteilung[]      @relation("ZuteilungErstelltVon")
   genehmigteUrlaubsantraege Urlaubsantrag[] @relation("UrlaubsantragGenehmigtVon")
+  genehmigteFreizeitausgleichAntraege FreizeitausgleichAntrag[] @relation("FreizeitausgleichGenehmigtVon")
 
   @@unique([email])
   @@map("user")

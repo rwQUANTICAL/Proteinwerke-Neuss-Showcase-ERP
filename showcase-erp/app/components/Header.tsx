@@ -14,6 +14,7 @@ import {
 } from "react-icons/md";
 import { authClient } from "@/app/lib/auth-client";
 import { usePendingUrlaubsantraegeCount } from "@/app/lib/entities/urlaubsantrag/urlaubsantragHooks";
+import { usePendingFreizeitausgleichCount } from "@/app/lib/entities/freizeitausgleich/freizeitausgleichHooks";
 
 const NAV_ITEMS = [
   {
@@ -50,6 +51,10 @@ export default function Header() {
   const { data: pendingCount } = usePendingUrlaubsantraegeCount(
     isAdmin === true,
   );
+  const { data: pendingFzaCount } = usePendingFreizeitausgleichCount(
+    isAdmin === true,
+  );
+  const totalPending = (pendingCount ?? 0) + (pendingFzaCount ?? 0);
 
   const closeMenu = () => menuRef.current?.removeAttribute("open");
 
@@ -67,8 +72,7 @@ export default function Header() {
               const showBadge =
                 item.href === "/abwesenheit" &&
                 isAdmin &&
-                !!pendingCount &&
-                pendingCount > 0;
+                totalPending > 0;
               return (
                 <li key={item.href}>
                   <Link
@@ -80,7 +84,7 @@ export default function Header() {
                     {item.label}
                     {showBadge && (
                       <span className="badge badge-xs badge-warning">
-                        {pendingCount}
+                        {totalPending}
                       </span>
                     )}
                   </Link>
@@ -115,8 +119,7 @@ export default function Header() {
           const showBadge =
             item.href === "/abwesenheit" &&
             isAdmin &&
-            !!pendingCount &&
-            pendingCount > 0;
+            totalPending > 0;
           return (
             <Link
               key={item.href}
@@ -129,7 +132,7 @@ export default function Header() {
               {item.label}
               {showBadge && (
                 <span className="badge badge-xs badge-warning">
-                  {pendingCount}
+                  {totalPending}
                 </span>
               )}
             </Link>

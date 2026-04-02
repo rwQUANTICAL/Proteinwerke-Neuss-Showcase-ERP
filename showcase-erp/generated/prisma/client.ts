@@ -96,3 +96,8 @@ export type Urlaubsantrag = Prisma.UrlaubsantragModel
  * 
  */
 export type Krankmeldung = Prisma.KrankmeldungModel
+/**
+ * Model FreizeitausgleichAntrag
+ * 
+ */
+export type FreizeitausgleichAntrag = Prisma.FreizeitausgleichAntragModel

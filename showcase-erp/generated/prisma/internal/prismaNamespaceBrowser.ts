@@ -61,7 +61,8 @@ export const ModelName = {
   Praemie: 'Praemie',
   Zeitplan: 'Zeitplan',
   Urlaubsantrag: 'Urlaubsantrag',
-  Krankmeldung: 'Krankmeldung'
+  Krankmeldung: 'Krankmeldung',
+  FreizeitausgleichAntrag: 'FreizeitausgleichAntrag'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -236,6 +237,20 @@ export const KrankmeldungScalarFieldEnum = {
 } as const
 
 export type KrankmeldungScalarFieldEnum = (typeof KrankmeldungScalarFieldEnum)[keyof typeof KrankmeldungScalarFieldEnum]
+
+
+export const FreizeitausgleichAntragScalarFieldEnum = {
+  id: 'id',
+  mitarbeiterId: 'mitarbeiterId',
+  von: 'von',
+  bis: 'bis',
+  status: 'status',
+  genehmigtVonId: 'genehmigtVonId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FreizeitausgleichAntragScalarFieldEnum = (typeof FreizeitausgleichAntragScalarFieldEnum)[keyof typeof FreizeitausgleichAntragScalarFieldEnum]
 
 
 export const SortOrder = {

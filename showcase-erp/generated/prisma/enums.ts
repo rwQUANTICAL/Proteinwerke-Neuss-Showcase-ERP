@@ -50,3 +50,12 @@ export const UrlaubsantragStatus = {
 } as const
 
 export type UrlaubsantragStatus = (typeof UrlaubsantragStatus)[keyof typeof UrlaubsantragStatus]
+
+
+export const FreizeitausgleichStatus = {
+  BEANTRAGT: 'BEANTRAGT',
+  GENEHMIGT: 'GENEHMIGT',
+  ABGELEHNT: 'ABGELEHNT'
+} as const
+
+export type FreizeitausgleichStatus = (typeof FreizeitausgleichStatus)[keyof typeof FreizeitausgleichStatus]

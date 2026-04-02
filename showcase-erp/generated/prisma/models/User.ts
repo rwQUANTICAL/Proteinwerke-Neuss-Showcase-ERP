@@ -235,6 +235,7 @@ export type UserWhereInput = {
   mitarbeiter?: Prisma.XOR<Prisma.MitarbeiterNullableScalarRelationFilter, Prisma.MitarbeiterWhereInput> | null
   erstellteZuteilungen?: Prisma.ZuteilungListRelationFilter
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragListRelationFilter
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -254,6 +255,7 @@ export type UserOrderByWithRelationInput = {
   mitarbeiter?: Prisma.MitarbeiterOrderByWithRelationInput
   erstellteZuteilungen?: Prisma.ZuteilungOrderByRelationAggregateInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragOrderByRelationAggregateInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -276,6 +278,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   mitarbeiter?: Prisma.XOR<Prisma.MitarbeiterNullableScalarRelationFilter, Prisma.MitarbeiterWhereInput> | null
   erstellteZuteilungen?: Prisma.ZuteilungListRelationFilter
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragListRelationFilter
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -329,6 +332,7 @@ export type UserCreateInput = {
   mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -348,6 +352,7 @@ export type UserUncheckedCreateInput = {
   mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUpdateInput = {
@@ -367,6 +372,7 @@ export type UserUpdateInput = {
   mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -386,6 +392,7 @@ export type UserUncheckedUpdateInput = {
   mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -580,6 +587,22 @@ export type UserUpdateOneWithoutGenehmigteUrlaubsantraegeNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGenehmigteUrlaubsantraegeInput, Prisma.UserUpdateWithoutGenehmigteUrlaubsantraegeInput>, Prisma.UserUncheckedUpdateWithoutGenehmigteUrlaubsantraegeInput>
 }
 
+export type UserCreateNestedOneWithoutGenehmigteFreizeitausgleichAntraegeInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGenehmigteFreizeitausgleichAntraegeInput, Prisma.UserUncheckedCreateWithoutGenehmigteFreizeitausgleichAntraegeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGenehmigteFreizeitausgleichAntraegeInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutGenehmigteFreizeitausgleichAntraegeNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutGenehmigteFreizeitausgleichAntraegeInput, Prisma.UserUncheckedCreateWithoutGenehmigteFreizeitausgleichAntraegeInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutGenehmigteFreizeitausgleichAntraegeInput
+  upsert?: Prisma.UserUpsertWithoutGenehmigteFreizeitausgleichAntraegeInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGenehmigteFreizeitausgleichAntraegeInput, Prisma.UserUpdateWithoutGenehmigteFreizeitausgleichAntraegeInput>, Prisma.UserUncheckedUpdateWithoutGenehmigteFreizeitausgleichAntraegeInput>
+}
+
 export type UserCreateWithoutSessionsInput = {
   id: string
   name: string
@@ -596,6 +619,7 @@ export type UserCreateWithoutSessionsInput = {
   mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -614,6 +638,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -648,6 +673,7 @@ export type UserUpdateWithoutSessionsInput = {
   mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -666,6 +692,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -684,6 +711,7 @@ export type UserCreateWithoutAccountsInput = {
   mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -702,6 +730,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -736,6 +765,7 @@ export type UserUpdateWithoutAccountsInput = {
   mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -754,6 +784,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserCreateWithoutMitarbeiterInput = {
@@ -772,6 +803,7 @@ export type UserCreateWithoutMitarbeiterInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateWithoutMitarbeiterInput = {
@@ -790,6 +822,7 @@ export type UserUncheckedCreateWithoutMitarbeiterInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserCreateOrConnectWithoutMitarbeiterInput = {
@@ -824,6 +857,7 @@ export type UserUpdateWithoutMitarbeiterInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMitarbeiterInput = {
@@ -842,6 +876,7 @@ export type UserUncheckedUpdateWithoutMitarbeiterInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserCreateWithoutErstellteZuteilungenInput = {
@@ -860,6 +895,7 @@ export type UserCreateWithoutErstellteZuteilungenInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateWithoutErstellteZuteilungenInput = {
@@ -878,6 +914,7 @@ export type UserUncheckedCreateWithoutErstellteZuteilungenInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserCreateOrConnectWithoutErstellteZuteilungenInput = {
@@ -912,6 +949,7 @@ export type UserUpdateWithoutErstellteZuteilungenInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateWithoutErstellteZuteilungenInput = {
@@ -930,6 +968,7 @@ export type UserUncheckedUpdateWithoutErstellteZuteilungenInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
   genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserCreateWithoutGenehmigteUrlaubsantraegeInput = {
@@ -948,6 +987,7 @@ export type UserCreateWithoutGenehmigteUrlaubsantraegeInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserUncheckedCreateWithoutGenehmigteUrlaubsantraegeInput = {
@@ -966,6 +1006,7 @@ export type UserUncheckedCreateWithoutGenehmigteUrlaubsantraegeInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedCreateNestedManyWithoutGenehmigtVonInput
 }
 
 export type UserCreateOrConnectWithoutGenehmigteUrlaubsantraegeInput = {
@@ -1000,6 +1041,7 @@ export type UserUpdateWithoutGenehmigteUrlaubsantraegeInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGenehmigteUrlaubsantraegeInput = {
@@ -1018,6 +1060,99 @@ export type UserUncheckedUpdateWithoutGenehmigteUrlaubsantraegeInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
   erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
+  genehmigteFreizeitausgleichAntraege?: Prisma.FreizeitausgleichAntragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
+}
+
+export type UserCreateWithoutGenehmigteFreizeitausgleichAntraegeInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragCreateNestedManyWithoutGenehmigtVonInput
+}
+
+export type UserUncheckedCreateWithoutGenehmigteFreizeitausgleichAntraegeInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role?: string | null
+  banned?: boolean | null
+  banReason?: string | null
+  banExpires?: Date | string | null
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedCreateNestedOneWithoutUserInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedCreateNestedManyWithoutErstelltVonInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedCreateNestedManyWithoutGenehmigtVonInput
+}
+
+export type UserCreateOrConnectWithoutGenehmigteFreizeitausgleichAntraegeInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutGenehmigteFreizeitausgleichAntraegeInput, Prisma.UserUncheckedCreateWithoutGenehmigteFreizeitausgleichAntraegeInput>
+}
+
+export type UserUpsertWithoutGenehmigteFreizeitausgleichAntraegeInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutGenehmigteFreizeitausgleichAntraegeInput, Prisma.UserUncheckedUpdateWithoutGenehmigteFreizeitausgleichAntraegeInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutGenehmigteFreizeitausgleichAntraegeInput, Prisma.UserUncheckedCreateWithoutGenehmigteFreizeitausgleichAntraegeInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutGenehmigteFreizeitausgleichAntraegeInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutGenehmigteFreizeitausgleichAntraegeInput, Prisma.UserUncheckedUpdateWithoutGenehmigteFreizeitausgleichAntraegeInput>
+}
+
+export type UserUpdateWithoutGenehmigteFreizeitausgleichAntraegeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUpdateManyWithoutGenehmigtVonNestedInput
+}
+
+export type UserUncheckedUpdateWithoutGenehmigteFreizeitausgleichAntraegeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banned?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  banReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banExpires?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  mitarbeiter?: Prisma.MitarbeiterUncheckedUpdateOneWithoutUserNestedInput
+  erstellteZuteilungen?: Prisma.ZuteilungUncheckedUpdateManyWithoutErstelltVonNestedInput
+  genehmigteUrlaubsantraege?: Prisma.UrlaubsantragUncheckedUpdateManyWithoutGenehmigtVonNestedInput
 }
 
 
@@ -1030,6 +1165,7 @@ export type UserCountOutputType = {
   accounts: number
   erstellteZuteilungen: number
   genehmigteUrlaubsantraege: number
+  genehmigteFreizeitausgleichAntraege: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1037,6 +1173,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   erstellteZuteilungen?: boolean | UserCountOutputTypeCountErstellteZuteilungenArgs
   genehmigteUrlaubsantraege?: boolean | UserCountOutputTypeCountGenehmigteUrlaubsantraegeArgs
+  genehmigteFreizeitausgleichAntraege?: boolean | UserCountOutputTypeCountGenehmigteFreizeitausgleichAntraegeArgs
 }
 
 /**
@@ -1077,6 +1214,13 @@ export type UserCountOutputTypeCountGenehmigteUrlaubsantraegeArgs<ExtArgs extend
   where?: Prisma.UrlaubsantragWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountGenehmigteFreizeitausgleichAntraegeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FreizeitausgleichAntragWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1095,6 +1239,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   mitarbeiter?: boolean | Prisma.User$mitarbeiterArgs<ExtArgs>
   erstellteZuteilungen?: boolean | Prisma.User$erstellteZuteilungenArgs<ExtArgs>
   genehmigteUrlaubsantraege?: boolean | Prisma.User$genehmigteUrlaubsantraegeArgs<ExtArgs>
+  genehmigteFreizeitausgleichAntraege?: boolean | Prisma.User$genehmigteFreizeitausgleichAntraegeArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1147,6 +1292,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   mitarbeiter?: boolean | Prisma.User$mitarbeiterArgs<ExtArgs>
   erstellteZuteilungen?: boolean | Prisma.User$erstellteZuteilungenArgs<ExtArgs>
   genehmigteUrlaubsantraege?: boolean | Prisma.User$genehmigteUrlaubsantraegeArgs<ExtArgs>
+  genehmigteFreizeitausgleichAntraege?: boolean | Prisma.User$genehmigteFreizeitausgleichAntraegeArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1160,6 +1306,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     mitarbeiter: Prisma.$MitarbeiterPayload<ExtArgs> | null
     erstellteZuteilungen: Prisma.$ZuteilungPayload<ExtArgs>[]
     genehmigteUrlaubsantraege: Prisma.$UrlaubsantragPayload<ExtArgs>[]
+    genehmigteFreizeitausgleichAntraege: Prisma.$FreizeitausgleichAntragPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1572,6 +1719,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   mitarbeiter<T extends Prisma.User$mitarbeiterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$mitarbeiterArgs<ExtArgs>>): Prisma.Prisma__MitarbeiterClient<runtime.Types.Result.GetResult<Prisma.$MitarbeiterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   erstellteZuteilungen<T extends Prisma.User$erstellteZuteilungenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$erstellteZuteilungenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ZuteilungPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   genehmigteUrlaubsantraege<T extends Prisma.User$genehmigteUrlaubsantraegeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$genehmigteUrlaubsantraegeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UrlaubsantragPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  genehmigteFreizeitausgleichAntraege<T extends Prisma.User$genehmigteFreizeitausgleichAntraegeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$genehmigteFreizeitausgleichAntraegeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FreizeitausgleichAntragPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2117,6 +2265,30 @@ export type User$genehmigteUrlaubsantraegeArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.UrlaubsantragScalarFieldEnum | Prisma.UrlaubsantragScalarFieldEnum[]
+}
+
+/**
+ * User.genehmigteFreizeitausgleichAntraege
+ */
+export type User$genehmigteFreizeitausgleichAntraegeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FreizeitausgleichAntrag
+   */
+  select?: Prisma.FreizeitausgleichAntragSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FreizeitausgleichAntrag
+   */
+  omit?: Prisma.FreizeitausgleichAntragOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FreizeitausgleichAntragInclude<ExtArgs> | null
+  where?: Prisma.FreizeitausgleichAntragWhereInput
+  orderBy?: Prisma.FreizeitausgleichAntragOrderByWithRelationInput | Prisma.FreizeitausgleichAntragOrderByWithRelationInput[]
+  cursor?: Prisma.FreizeitausgleichAntragWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FreizeitausgleichAntragScalarFieldEnum | Prisma.FreizeitausgleichAntragScalarFieldEnum[]
 }
 
 /**

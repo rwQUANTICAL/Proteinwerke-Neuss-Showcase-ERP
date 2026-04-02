@@ -300,6 +300,23 @@ export type EnumUrlaubsantragStatusWithAggregatesFilter<$PrismaModel = never> = 
   _max?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel>
 }
 
+export type EnumFreizeitausgleichStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.FreizeitausgleichStatus | Prisma.EnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FreizeitausgleichStatus[] | Prisma.ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FreizeitausgleichStatus[] | Prisma.ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFreizeitausgleichStatusFilter<$PrismaModel> | $Enums.FreizeitausgleichStatus
+}
+
+export type EnumFreizeitausgleichStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FreizeitausgleichStatus | Prisma.EnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FreizeitausgleichStatus[] | Prisma.ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FreizeitausgleichStatus[] | Prisma.ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFreizeitausgleichStatusWithAggregatesFilter<$PrismaModel> | $Enums.FreizeitausgleichStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFreizeitausgleichStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFreizeitausgleichStatusFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -597,6 +614,23 @@ export type NestedEnumUrlaubsantragStatusWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumUrlaubsantragStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumFreizeitausgleichStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.FreizeitausgleichStatus | Prisma.EnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FreizeitausgleichStatus[] | Prisma.ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FreizeitausgleichStatus[] | Prisma.ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFreizeitausgleichStatusFilter<$PrismaModel> | $Enums.FreizeitausgleichStatus
+}
+
+export type NestedEnumFreizeitausgleichStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.FreizeitausgleichStatus | Prisma.EnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.FreizeitausgleichStatus[] | Prisma.ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.FreizeitausgleichStatus[] | Prisma.ListEnumFreizeitausgleichStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumFreizeitausgleichStatusWithAggregatesFilter<$PrismaModel> | $Enums.FreizeitausgleichStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumFreizeitausgleichStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumFreizeitausgleichStatusFilter<$PrismaModel>
 }
 
 

@@ -43,7 +43,14 @@ export default function ZuteilungCell({
   const isVacationOverride =
     zuteilung.schicht === "URLAUB" && !!zuteilung.originalSchicht;
 
-  const isOverride = isSickOverride || isVacationOverride;
+  const isFreiOverride =
+    zuteilung.schicht === "X_FREI" && !!zuteilung.originalSchicht;
+
+  // "X_FREI" as originalSchicht means FZA on a day with no prior shift — show as FZA but no strikethrough
+  const hasRealOriginal =
+    !!zuteilung.originalSchicht && zuteilung.originalSchicht !== "X_FREI";
+
+  const isOverride = isSickOverride || isVacationOverride || (isFreiOverride && hasRealOriginal);
 
   const colors = isSpringerRole
     ? SCHICHT_TYP_COLORS["SPRINGER"]
@@ -52,18 +59,23 @@ export default function ZuteilungCell({
 
   const title = isSpringerRole
     ? "Springer"
-    : SCHICHT_TYP_LABELS[zuteilung.schicht];
+    : isFreiOverride
+      ? "Freizeitausgleich"
+      : SCHICHT_TYP_LABELS[zuteilung.schicht];
   const shortTitle = isSpringerRole
     ? "Sp"
-    : (SCHICHT_TYP_SHORT[zuteilung.schicht] ?? title);
+    : isFreiOverride
+      ? "FZA"
+      : (SCHICHT_TYP_SHORT[zuteilung.schicht] ?? title);
   const subtitle =
     isSpringerRole && zuteilung.schicht !== "SPRINGER"
       ? SCHICHT_TYP_LABELS[zuteilung.schicht]
       : null;
 
-  const originalLabel = isOverride
-    ? SCHICHT_TYP_LABELS[zuteilung.originalSchicht!]
-    : null;
+  const originalLabel =
+    isOverride && hasRealOriginal
+      ? SCHICHT_TYP_LABELS[zuteilung.originalSchicht!]
+      : null;
 
   return (
     <div

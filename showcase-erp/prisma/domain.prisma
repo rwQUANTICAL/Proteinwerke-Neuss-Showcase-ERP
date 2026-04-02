@@ -37,6 +37,7 @@ model Mitarbeiter {
 	urlaubsantraege       Urlaubsantrag[]
 	praemien              Praemie[]
 	krankmeldungen        Krankmeldung[]
+	freizeitausgleichAntraege FreizeitausgleichAntrag[]
 	createdAt             DateTime         @default(now())
 	updatedAt             DateTime         @updatedAt
 
@@ -144,4 +145,27 @@ model Krankmeldung {
 
 	@@index([mitarbeiterId])
 	@@map("krankmeldung")
+}
+
+enum FreizeitausgleichStatus {
+	BEANTRAGT
+	GENEHMIGT
+	ABGELEHNT
+}
+
+model FreizeitausgleichAntrag {
+	id              String                    @id @default(cuid())
+	mitarbeiterId   String
+	von             DateTime                  @db.Date
+	bis             DateTime                  @db.Date
+	status          FreizeitausgleichStatus   @default(BEANTRAGT)
+	genehmigtVonId  String?
+	mitarbeiter     Mitarbeiter @relation(fields: [mitarbeiterId], references: [id], onDelete: Cascade)
+	genehmigtVon    User?       @relation("FreizeitausgleichGenehmigtVon", fields: [genehmigtVonId], references: [id], onDelete: SetNull)
+	createdAt       DateTime    @default(now())
+	updatedAt       DateTime    @updatedAt
+
+	@@index([mitarbeiterId])
+	@@index([genehmigtVonId])
+	@@map("freizeitausgleich_antrag")
 }
