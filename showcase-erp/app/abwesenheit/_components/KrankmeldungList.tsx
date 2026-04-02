@@ -22,23 +22,26 @@ export default function KrankmeldungList() {
   if (!krankmeldungen?.length) return null;
 
   return (
-    <div className="flex flex-col gap-2 sm:gap-3">
+    <div className="flex flex-col gap-2">
       {krankmeldungen.map((km: Krankmeldung) => {
         const days = dayCount(km.von, km.bis);
 
         return (
-          <div key={km.id} className="card card-border bg-base-100">
-            <div className="card-body p-3 sm:p-6 flex-row items-center gap-3 sm:gap-4">
-              <div className="hidden sm:flex size-10 rounded-full bg-error/10 items-center justify-center shrink-0">
-                <MdLocalHospital className="size-5 text-error" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-base-content/70">
+          <div
+            key={km.id}
+            className="flex items-center gap-3 rounded-lg bg-base-200/40 px-3 py-2"
+          >
+            <div className="hidden sm:flex size-10 rounded-full bg-error/10 items-center justify-center shrink-0">
+              <MdLocalHospital className="size-5 text-error" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 text-xs text-base-content/60">
+                <span>
                   {formatDateDE(km.von)} – {formatDateDE(km.bis)}
-                  <span className="badge badge-sm badge-ghost ml-2">
-                    {days} {days === 1 ? "Tag" : "Tage"}
-                  </span>
-                </p>
+                </span>
+                <span className="badge badge-xs badge-ghost">
+                  {days} {days === 1 ? "Tag" : "Tage"}
+                </span>
               </div>
             </div>
           </div>

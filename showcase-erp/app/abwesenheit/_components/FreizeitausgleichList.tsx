@@ -42,7 +42,7 @@ export default function FreizeitausgleichList() {
   if (!antraege?.length) return null;
 
   return (
-    <div className="flex flex-col gap-2 sm:gap-3">
+    <div className="flex flex-col gap-2">
       {antraege.map((a: FreizeitausgleichAntrag) => {
         const days = dayCount(a.von, a.bis);
         const badge = STATUS_BADGE[a.status];
@@ -50,63 +50,65 @@ export default function FreizeitausgleichList() {
         const isConfirming = confirmId === a.id;
 
         return (
-          <div key={a.id} className="card card-border bg-base-100">
-            <div className="card-body p-3 sm:p-6 flex-row items-center gap-3 sm:gap-4">
-              <div className="hidden sm:flex size-10 rounded-full bg-info/10 items-center justify-center shrink-0">
-                <MdSwapHoriz className="size-5 text-info" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-base-content/70">
-                  {formatDateDE(a.von)} – {formatDateDE(a.bis)}
-                  <span className="badge badge-sm badge-ghost ml-2">
-                    {days} {days === 1 ? "Tag" : "Tage"}
-                  </span>
-                </p>
-                <span className={`badge badge-sm ${badge.className} mt-1`}>
+          <div
+            key={a.id}
+            className="flex items-center gap-3 rounded-lg bg-base-200/40 px-3 py-2"
+          >
+            <div className="hidden sm:flex size-10 rounded-full bg-info/10 items-center justify-center shrink-0">
+              <MdSwapHoriz className="size-5 text-info" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className={`badge badge-xs ${badge.className}`}>
                   {badge.label}
                 </span>
               </div>
+              <div className="flex items-center gap-1.5 mt-0.5 text-xs text-base-content/60">
+                <span>
+                  {formatDateDE(a.von)} – {formatDateDE(a.bis)}
+                </span>
+                <span className="badge badge-xs badge-ghost">
+                  {days} {days === 1 ? "Tag" : "Tage"}
+                </span>
+              </div>
+            </div>
 
-              {canWithdraw && (
-                <div className="shrink-0">
-                  {isConfirming ? (
-                    <div className="flex gap-2 items-center">
-                      <span className="text-sm text-error hidden sm:inline">
-                        Zurückziehen?
-                      </span>
-                      <button
-                        type="button"
-                        className="btn btn-error btn-sm"
-                        onClick={() => handleWithdraw(a.id)}
-                        disabled={deleteMutation.isPending}
-                      >
-                        {deleteMutation.isPending ? (
-                          <span className="loading loading-spinner loading-xs" />
-                        ) : (
-                          "Ja"
-                        )}
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-ghost btn-sm"
-                        onClick={() => setConfirmId(null)}
-                      >
-                        Nein
-                      </button>
-                    </div>
-                  ) : (
+            {canWithdraw && (
+              <div className="shrink-0">
+                {isConfirming ? (
+                  <div className="flex gap-1 items-center">
                     <button
                       type="button"
-                      className="btn btn-ghost btn-sm text-error"
-                      onClick={() => setConfirmId(a.id)}
-                      title="Antrag zurückziehen"
+                      className="btn btn-error btn-xs sm:btn-sm"
+                      onClick={() => handleWithdraw(a.id)}
+                      disabled={deleteMutation.isPending}
                     >
-                      <MdClose className="size-4" />
+                      {deleteMutation.isPending ? (
+                        <span className="loading loading-spinner loading-xs" />
+                      ) : (
+                        "Ja"
+                      )}
                     </button>
-                  )}
-                </div>
-              )}
-            </div>
+                    <button
+                      type="button"
+                      className="btn btn-ghost btn-xs sm:btn-sm"
+                      onClick={() => setConfirmId(null)}
+                    >
+                      Nein
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-xs sm:btn-sm text-error"
+                    onClick={() => setConfirmId(a.id)}
+                    title="Antrag zurückziehen"
+                  >
+                    <MdClose className="size-3.5 sm:size-4" />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         );
       })}
