@@ -56,7 +56,7 @@ export default function AdminUrlaubsantragList() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2">
       {antraege.map((a: Urlaubsantrag) => {
         const days = dayCount(a.von, a.bis);
         const badge = STATUS_BADGE[a.status];
@@ -64,81 +64,92 @@ export default function AdminUrlaubsantragList() {
         const isConfirmingDelete = confirmDeleteId === a.id;
 
         return (
-          <div key={a.id} className="card card-border bg-base-100">
-            <div className="card-body p-4 sm:p-6 flex-row items-center gap-4">
-              <div className="hidden sm:flex size-10 rounded-full bg-success/10 items-center justify-center shrink-0">
-                <MdBeachAccess className="size-5 text-success" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold truncate">{a.mitarbeiter.name}</p>
-                <p className="text-sm text-base-content/70">
-                  {formatDateDE(a.von)} – {formatDateDE(a.bis)}
-                  <span className="badge badge-sm badge-ghost ml-2">
-                    {days} {days === 1 ? "Tag" : "Tage"}
-                  </span>
-                </p>
-                <span className={`badge badge-sm ${badge.className} mt-1`}>
+          <div
+            key={a.id}
+            className={`flex rounded-lg bg-base-200/40 px-3 py-2 ${
+              isPending
+                ? "flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-3"
+                : "items-center gap-3"
+            }`}
+          >
+            <div className="hidden sm:flex size-10 rounded-full bg-success/10 items-center justify-center shrink-0">
+              <MdBeachAccess className="size-5 text-success" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-sm truncate">
+                  {a.mitarbeiter.name}
+                </span>
+                <span className={`badge badge-xs ${badge.className}`}>
                   {badge.label}
                 </span>
               </div>
+              <div className="flex items-center gap-1.5 mt-0.5 text-xs text-base-content/60">
+                <span>
+                  {formatDateDE(a.von)} – {formatDateDE(a.bis)}
+                </span>
+                <span className="badge badge-xs badge-ghost">
+                  {days} {days === 1 ? "Tag" : "Tage"}
+                </span>
+              </div>
+            </div>
 
-              <div className="shrink-0 flex gap-1">
-                {isPending && (
-                  <>
-                    <button
-                      type="button"
-                      className="btn btn-success btn-sm"
-                      onClick={() => handleApprove(a.id)}
-                      disabled={patchMutation.isPending}
-                      title="Genehmigen"
-                    >
-                      <MdCheck className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-error btn-sm"
-                      onClick={() => handleReject(a.id)}
-                      disabled={patchMutation.isPending}
-                      title="Ablehnen"
-                    >
-                      <MdClose className="size-4" />
-                    </button>
-                  </>
-                )}
-
-                {isConfirmingDelete ? (
-                  <div className="flex gap-2 items-center">
-                    <button
-                      type="button"
-                      className="btn btn-error btn-sm"
-                      onClick={() => handleDelete(a.id)}
-                      disabled={deleteMutation.isPending}
-                    >
-                      {deleteMutation.isPending ? (
-                        <span className="loading loading-spinner loading-xs" />
-                      ) : (
-                        "Ja"
-                      )}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm"
-                      onClick={() => setConfirmDeleteId(null)}
-                    >
-                      Nein
-                    </button>
-                  </div>
-                ) : (
+            <div className="shrink-0 flex gap-1">
+              {isPending && (
+                <>
                   <button
                     type="button"
-                    className="btn btn-ghost btn-sm text-error"
-                    onClick={() => setConfirmDeleteId(a.id)}
-                    title="Löschen"
+                    className="btn btn-success btn-xs sm:btn-sm"
+                    onClick={() => handleApprove(a.id)}
+                    disabled={patchMutation.isPending}
+                    title="Genehmigen"
                   >
-                    <MdDelete className="size-4" />
+                    <MdCheck className="size-3.5 sm:size-4" />
                   </button>
-                )}
-              </div>
+                  <button
+                    type="button"
+                    className="btn btn-error btn-xs sm:btn-sm"
+                    onClick={() => handleReject(a.id)}
+                    disabled={patchMutation.isPending}
+                    title="Ablehnen"
+                  >
+                    <MdClose className="size-3.5 sm:size-4" />
+                  </button>
+                </>
+              )}
+
+              {isConfirmingDelete ? (
+                <div className="flex gap-1 items-center">
+                  <button
+                    type="button"
+                    className="btn btn-error btn-xs sm:btn-sm"
+                    onClick={() => handleDelete(a.id)}
+                    disabled={deleteMutation.isPending}
+                  >
+                    {deleteMutation.isPending ? (
+                      <span className="loading loading-spinner loading-xs" />
+                    ) : (
+                      "Ja"
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-ghost btn-xs sm:btn-sm"
+                    onClick={() => setConfirmDeleteId(null)}
+                  >
+                    Nein
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-xs sm:btn-sm text-error"
+                  onClick={() => setConfirmDeleteId(a.id)}
+                  title="Löschen"
+                >
+                  <MdDelete className="size-3.5 sm:size-4" />
+                </button>
+              )}
             </div>
           </div>
         );

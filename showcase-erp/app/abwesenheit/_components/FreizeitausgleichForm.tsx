@@ -69,16 +69,14 @@ export default function FreizeitausgleichForm() {
         </h2>
 
         {/* Saldo overview */}
-        <div className="grid grid-cols-4 gap-2 sm:gap-3">
-          <div className="bg-base-200 rounded-lg p-2 sm:p-3 text-center">
-            <p className="text-[10px] sm:text-xs text-base-content/60">
-              Stundensaldo
-            </p>
+        <div className="grid grid-cols-4 gap-1.5 sm:gap-3">
+          <div className="bg-base-200 rounded-lg px-1.5 py-1 sm:p-3 text-center">
+            <p className="text-[10px] sm:text-xs text-base-content/60">Saldo</p>
             {saldoLoading ? (
               <span className="loading loading-spinner loading-xs" />
             ) : (
               <p
-                className={`text-base sm:text-lg font-bold ${
+                className={`text-sm sm:text-lg font-bold ${
                   (saldoInfo?.saldo ?? 0) >= 0 ? "text-success" : "text-error"
                 }`}
               >
@@ -86,38 +84,32 @@ export default function FreizeitausgleichForm() {
               </p>
             )}
           </div>
-          <div className="bg-success/10 rounded-lg p-2 sm:p-3 text-center">
-            <p className="text-[10px] sm:text-xs text-base-content/60">
-              Genehmigt
-            </p>
+          <div className="bg-success/10 rounded-lg px-1.5 py-1 sm:p-3 text-center">
+            <p className="text-[10px] sm:text-xs text-base-content/60">Genehmigt</p>
             {saldoLoading ? (
               <span className="loading loading-spinner loading-xs" />
             ) : (
-              <p className="text-base sm:text-lg font-bold text-success">
+              <p className="text-sm sm:text-lg font-bold text-success">
                 {saldoInfo?.genehmigtStunden ?? 0}h
               </p>
             )}
           </div>
-          <div className="bg-warning/10 rounded-lg p-2 sm:p-3 text-center">
-            <p className="text-[10px] sm:text-xs text-base-content/60">
-              Beantragt
-            </p>
+          <div className="bg-warning/10 rounded-lg px-1.5 py-1 sm:p-3 text-center">
+            <p className="text-[10px] sm:text-xs text-base-content/60">Beantragt</p>
             {saldoLoading ? (
               <span className="loading loading-spinner loading-xs" />
             ) : (
-              <p className="text-base sm:text-lg font-bold text-warning">
+              <p className="text-sm sm:text-lg font-bold text-warning">
                 {saldoInfo?.beantragtStunden ?? 0}h
               </p>
             )}
           </div>
-          <div className="bg-info/10 rounded-lg p-2 sm:p-3 text-center">
-            <p className="text-[10px] sm:text-xs text-base-content/60">
-              Verfügbar
-            </p>
+          <div className="bg-info/10 rounded-lg px-1.5 py-1 sm:p-3 text-center">
+            <p className="text-[10px] sm:text-xs text-base-content/60">Verfügbar</p>
             {saldoLoading ? (
               <span className="loading loading-spinner loading-xs" />
             ) : (
-              <p className="text-base sm:text-lg font-bold text-info">
+              <p className="text-sm sm:text-lg font-bold text-info">
                 {saldoInfo?.verfuegbareTage ?? 0}{" "}
                 {(saldoInfo?.verfuegbareTage ?? 0) === 1 ? "Tag" : "Tage"}
               </p>

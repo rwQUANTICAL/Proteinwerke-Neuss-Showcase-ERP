@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { MdAccessTime, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import {
   useZeitbuchungenQuery,
   getISOWeekData,
@@ -80,7 +80,10 @@ export default function ZeiterfassungPage() {
 
   return (
     <div className="container mx-auto max-w-6xl flex flex-col gap-5 sm:gap-6">
-      <h1 className="text-xl sm:text-2xl font-bold">Zeiterfassung</h1>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <MdAccessTime className="size-5 sm:size-7 text-primary shrink-0" />
+        <h1 className="text-xl sm:text-2xl font-bold">Zeiterfassung</h1>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
         <ArbeitszeitenRinge
