@@ -70,9 +70,7 @@ export default function Header() {
             {NAV_ITEMS.map((item) => {
               if (item.adminOnly && (isPending || !isAdmin)) return null;
               const showBadge =
-                item.href === "/abwesenheit" &&
-                isAdmin &&
-                totalPending > 0;
+                item.href === "/abwesenheit" && isAdmin && totalPending > 0;
               return (
                 <li key={item.href}>
                   <Link
@@ -117,9 +115,7 @@ export default function Header() {
           if (item.adminOnly && (isPending || !isAdmin)) return null;
           const isActive = pathname === item.href;
           const showBadge =
-            item.href === "/abwesenheit" &&
-            isAdmin &&
-            totalPending > 0;
+            item.href === "/abwesenheit" && isAdmin && totalPending > 0;
           return (
             <Link
               key={item.href}

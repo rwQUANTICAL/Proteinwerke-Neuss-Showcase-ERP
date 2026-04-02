@@ -20,8 +20,7 @@ const STATUS_BADGE: Record<string, { className: string; label: string }> = {
 };
 
 export default function AdminFreizeitausgleichList() {
-  const { data: antraege, isLoading } =
-    useAllFreizeitausgleichAntraegeQuery();
+  const { data: antraege, isLoading } = useAllFreizeitausgleichAntraegeQuery();
   const patchMutation = usePatchFreizeitausgleichMutation();
   const deleteMutation = useDeleteFreizeitausgleichMutation();
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);

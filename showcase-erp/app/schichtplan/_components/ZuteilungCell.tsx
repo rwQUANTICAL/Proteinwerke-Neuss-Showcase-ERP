@@ -50,7 +50,8 @@ export default function ZuteilungCell({
   const hasRealOriginal =
     !!zuteilung.originalSchicht && zuteilung.originalSchicht !== "X_FREI";
 
-  const isOverride = isSickOverride || isVacationOverride || (isFreiOverride && hasRealOriginal);
+  const isOverride =
+    isSickOverride || isVacationOverride || (isFreiOverride && hasRealOriginal);
 
   const colors = isSpringerRole
     ? SCHICHT_TYP_COLORS["SPRINGER"]

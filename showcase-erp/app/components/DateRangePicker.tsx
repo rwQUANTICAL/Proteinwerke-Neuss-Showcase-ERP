@@ -36,9 +36,7 @@ export default function DateRangePicker({
           value={von}
           onChange={handleVonChange}
         />
-        {errorVon && (
-          <p className="text-error text-sm mt-1">{errorVon}</p>
-        )}
+        {errorVon && <p className="text-error text-sm mt-1">{errorVon}</p>}
       </fieldset>
       <fieldset className="fieldset flex-1">
         <legend className="fieldset-legend">Bis</legend>
@@ -49,9 +47,7 @@ export default function DateRangePicker({
           min={von}
           onChange={handleBisChange}
         />
-        {errorBis && (
-          <p className="text-error text-sm mt-1">{errorBis}</p>
-        )}
+        {errorBis && <p className="text-error text-sm mt-1">{errorBis}</p>}
       </fieldset>
     </div>
   );
