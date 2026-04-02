@@ -85,7 +85,9 @@ export default function FreizeitausgleichForm() {
             )}
           </div>
           <div className="bg-success/10 rounded-lg px-1.5 py-1 sm:p-3 text-center">
-            <p className="text-[10px] sm:text-xs text-base-content/60">Genehmigt</p>
+            <p className="text-[10px] sm:text-xs text-base-content/60">
+              Genehmigt
+            </p>
             {saldoLoading ? (
               <span className="loading loading-spinner loading-xs" />
             ) : (
@@ -95,7 +97,9 @@ export default function FreizeitausgleichForm() {
             )}
           </div>
           <div className="bg-warning/10 rounded-lg px-1.5 py-1 sm:p-3 text-center">
-            <p className="text-[10px] sm:text-xs text-base-content/60">Beantragt</p>
+            <p className="text-[10px] sm:text-xs text-base-content/60">
+              Beantragt
+            </p>
             {saldoLoading ? (
               <span className="loading loading-spinner loading-xs" />
             ) : (
@@ -105,7 +109,9 @@ export default function FreizeitausgleichForm() {
             )}
           </div>
           <div className="bg-info/10 rounded-lg px-1.5 py-1 sm:p-3 text-center">
-            <p className="text-[10px] sm:text-xs text-base-content/60">Verfügbar</p>
+            <p className="text-[10px] sm:text-xs text-base-content/60">
+              Verfügbar
+            </p>
             {saldoLoading ? (
               <span className="loading loading-spinner loading-xs" />
             ) : (

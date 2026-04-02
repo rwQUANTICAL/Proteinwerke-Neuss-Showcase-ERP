@@ -213,7 +213,9 @@ export default function AbwesenheitPage() {
               className="flex items-center justify-between w-full p-3 sm:p-4 cursor-pointer"
               onClick={() => toggleSection("krank")}
             >
-              <h2 className="text-base sm:text-lg font-semibold">Krankmeldungen</h2>
+              <h2 className="text-base sm:text-lg font-semibold">
+                Krankmeldungen
+              </h2>
               {openSections.krank ? (
                 <MdExpandLess className="size-5" />
               ) : (
