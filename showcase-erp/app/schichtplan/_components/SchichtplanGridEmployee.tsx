@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { MdAdd, MdEdit, MdContentPaste } from "react-icons/md";
+import { MdAdd, MdEdit, MdContentPaste, MdErrorOutline } from "react-icons/md";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import ZuteilungCell from "./ZuteilungCell";
@@ -12,6 +12,9 @@ import {
   WOCHENTAGE,
   SKILL_SHORT,
   SKILL_LABELS,
+  TEILANLAGE_LABELS,
+  PRODUCTION_TEILANLAGEN,
+  REQUIRED_SHIFTS,
   getWeekDates,
   formatDateShort,
   formatDateISO,
@@ -81,6 +84,30 @@ export default function SchichtplanGridEmployee({
     return map;
   }, [zuteilungen]);
 
+  // Coverage check: for each day, which production facilities are missing shifts?
+  const coverageWarnings = useMemo(() => {
+    if (!isAdmin) return new Map<string, string[]>();
+    const warnings = new Map<string, string[]>();
+    for (const date of weekDates) {
+      const dateKey = formatDateISO(date);
+      const missing: string[] = [];
+      for (const facility of PRODUCTION_TEILANLAGEN) {
+        const coveredShifts = new Set(
+          zuteilungen
+            .filter((z) => z.teilanlage === facility && z.datum.split("T")[0] === dateKey)
+            .map((z) => z.schicht),
+        );
+        for (const shift of REQUIRED_SHIFTS) {
+          if (!coveredShifts.has(shift)) {
+            missing.push(`${TEILANLAGE_LABELS[facility]}: ${shift === "FRUEH" ? "Früh" : shift === "SPAET" ? "Spät" : "Nacht"} fehlt`);
+          }
+        }
+      }
+      if (missing.length > 0) warnings.set(dateKey, missing);
+    }
+    return warnings;
+  }, [isAdmin, weekDates, zuteilungen]);
+
   // Filter employees by shift filter
   const filteredMitarbeiter = useMemo(() => {
     if (schichtFilter.length === 0) return mitarbeiterList;
@@ -117,15 +144,22 @@ export default function SchichtplanGridEmployee({
             </th>
             {weekDates.map((date, i) => {
               const isWeekend = i >= 5;
+              const dateKey = formatDateISO(date);
+              const dayWarnings = coverageWarnings.get(dateKey);
               return (
                 <th
                   key={i}
                   className={`text-center px-0.5 sm:px-2 ${isWeekend ? "bg-base-200/30" : ""}`}
                 >
                   <div
-                    className={`font-bold text-xs sm:text-sm ${isWeekend ? "text-base-content/50" : ""}`}
+                    className={`font-bold text-xs sm:text-sm inline-flex items-center gap-0.5 ${isWeekend ? "text-base-content/50" : ""}`}
                   >
                     {WOCHENTAGE[i]}
+                    {dayWarnings && (
+                      <span className="tooltip tooltip-bottom" data-tip={dayWarnings.join(", ")}>
+                        <MdErrorOutline className="size-3.5 text-warning" />
+                      </span>
+                    )}
                   </div>
                   <div className="text-[10px] sm:text-xs font-normal text-base-content/60 hidden sm:block">
                     {formatDateShort(date)}

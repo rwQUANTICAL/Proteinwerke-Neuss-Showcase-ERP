@@ -1,14 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { authClient } from "@/app/lib/auth-client";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { MdPeople } from "react-icons/md";
 import MitarbeiterTable from "./_components/MitarbeiterTable";
+import MitarbeiterCreateModal from "./_components/MitarbeiterCreateModal";
 
 export default function MitarbeiterverwaltungPage() {
   const { data: session, isPending } = authClient.useSession();
   const router = useRouter();
+  const [showCreate, setShowCreate] = useState(false);
 
   if (isPending) {
     return (
@@ -32,13 +34,13 @@ export default function MitarbeiterverwaltungPage() {
             Mitarbeiterverwaltung
           </h1>
         </div>
-        <Link
-          href="/verwaltung/mitarbeiter/neuen-anlegen"
+        <button
           className="btn btn-primary btn-sm sm:btn-md"
+          onClick={() => setShowCreate(true)}
         >
           <span className="hidden sm:inline">Neuer Mitarbeiter</span>
           <span className="sm:hidden">Neu</span>
-        </Link>
+        </button>
       </div>
 
       <div className="card bg-base-100 shadow-sm">
@@ -46,6 +48,10 @@ export default function MitarbeiterverwaltungPage() {
           <MitarbeiterTable />
         </div>
       </div>
+
+      {showCreate && (
+        <MitarbeiterCreateModal onClose={() => setShowCreate(false)} />
+      )}
     </div>
   );
 }

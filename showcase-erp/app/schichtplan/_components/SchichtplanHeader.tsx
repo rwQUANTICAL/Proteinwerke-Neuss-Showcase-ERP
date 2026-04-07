@@ -282,7 +282,11 @@ export default function SchichtplanHeader({
           return (
             <button
               key={typ}
-              className={`btn btn-xs gap-1.5 ${isActive ? `${colors?.dot ?? ""} text-white border-transparent` : "btn-ghost"}`}
+              className={
+                isActive
+                  ? `btn btn-xs gap-1.5 border ${colors?.bg ?? ""}! ${colors?.text ?? ""}! ${colors?.border ?? ""}! hover:brightness-95`
+                  : "btn btn-xs gap-1.5 btn-ghost"
+              }
               onClick={() =>
                 onSchichtFilterChange(
                   isActive
@@ -292,7 +296,7 @@ export default function SchichtplanHeader({
               }
             >
               <span
-                className={`inline-block w-2.5 h-2.5 rounded-sm ${isActive ? "bg-white/60" : (colors?.dot ?? "bg-base-300")}`}
+                className={`inline-block w-2.5 h-2.5 rounded-sm border ${colors?.bg ?? "bg-base-200"} ${colors?.border ?? "border-base-300"}`}
               />
               {SCHICHT_TYP_LABELS[typ]}
             </button>

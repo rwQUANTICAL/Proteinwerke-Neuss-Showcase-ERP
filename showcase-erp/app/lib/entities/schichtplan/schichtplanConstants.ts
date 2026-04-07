@@ -27,10 +27,10 @@ export const SCHICHT_TYP_COLORS: Record<
     dot: "bg-sky-500",
   },
   SPAET: {
-    bg: "bg-amber-100",
-    text: "text-amber-800",
-    border: "border-amber-200",
-    dot: "bg-amber-500",
+    bg: "bg-yellow-100",
+    text: "text-yellow-800",
+    border: "border-yellow-200",
+    dot: "bg-yellow-500",
   },
   NACHT: {
     bg: "bg-violet-100",
@@ -70,6 +70,18 @@ export const TEILANLAGE_LABELS: Record<string, string> = {
   EXTRAKTION: "Extraktion",
   LECITHIN: "Lecithin",
   SPRINGER: "Springer",
+};
+
+/** Subtle visual differentiation for facility rows in the grid */
+export const TEILANLAGE_COLORS: Record<
+  string,
+  { bg: string; border: string; text: string }
+> = {
+  MUEHLE: { bg: "bg-orange-50", border: "border-l-orange-400", text: "text-orange-900" },
+  WALZE: { bg: "bg-cyan-50", border: "border-l-cyan-400", text: "text-cyan-900" },
+  EXTRAKTION: { bg: "bg-lime-50", border: "border-l-lime-500", text: "text-lime-900" },
+  LECITHIN: { bg: "bg-fuchsia-50", border: "border-l-fuchsia-400", text: "text-fuchsia-900" },
+  SPRINGER: { bg: "bg-base-100", border: "border-l-base-300", text: "text-base-content" },
 };
 
 /** Short readable shift labels for mobile view */
@@ -167,6 +179,9 @@ export const PRODUCTION_TEILANLAGEN = [
   "EXTRAKTION",
   "LECITHIN",
 ] as const;
+
+/** The 3 shifts each production facility must have covered per day */
+export const REQUIRED_SHIFTS = ["FRUEH", "SPAET", "NACHT"] as const;
 
 /** Shift types shown in facility view assignment (Springer can optionally get a facility) */
 export const FACILITY_SCHICHT_TYPEN = ["FRUEH", "SPAET", "NACHT", "SPRINGER"] as const;

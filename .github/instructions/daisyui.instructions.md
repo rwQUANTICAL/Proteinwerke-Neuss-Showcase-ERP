@@ -4,6 +4,7 @@ alwaysApply: true
 applyTo: "\*\*"
 downloadedFrom: https://daisyui.com/llms.txt
 version: 5.5.x
+![alt text](image.png)
 
 ---
 
