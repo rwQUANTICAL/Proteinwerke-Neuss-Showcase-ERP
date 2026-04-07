@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { authClient } from "@/app/lib/auth-client";
 import HeroBackground from "@/app/components/HeroBackground";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import { useState } from "react";
 
 export default function SignOutPage() {
@@ -28,9 +29,7 @@ export default function SignOutPage() {
           onClick={handleSignOut}
           disabled={loading}
         >
-          {loading && (
-            <span className="loading loading-spinner loading-sm"></span>
-          )}
+          {loading && <LoadingLogo size={20} />}
           Abmelden
         </button>
         <button className="btn btn-ghost" onClick={() => router.back()}>

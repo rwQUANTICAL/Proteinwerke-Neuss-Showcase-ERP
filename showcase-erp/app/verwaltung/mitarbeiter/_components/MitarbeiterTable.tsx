@@ -8,6 +8,7 @@ import {
 import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import MitarbeiterEditModal from "@/app/schichtplan/_components/MitarbeiterEditModal";
 import { MdInbox, MdEdit, MdDelete, MdSearch, MdClose } from "react-icons/md";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 const SKILL_LABELS: Record<string, string> = {
   MUEHLE: "M",
@@ -38,7 +39,7 @@ export default function MitarbeiterTable() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <span className="loading loading-spinner loading-lg"></span>
+        <LoadingLogo size={48} />
       </div>
     );
   }

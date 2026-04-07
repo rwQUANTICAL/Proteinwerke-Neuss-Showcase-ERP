@@ -5,6 +5,7 @@ import { useZeitplanQuery } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import { useMitarbeiterQuery } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import {
   useCreateZuteilungMutation,
   useDeleteZuteilungMutation,
@@ -259,7 +260,7 @@ export default function SchichtplanPage() {
         <div className="card-body p-2 sm:p-4">
           {zeitplanQuery.isLoading || mitarbeiterQuery.isLoading ? (
             <div className="flex justify-center py-16">
-              <span className="loading loading-spinner loading-lg" />
+              <LoadingLogo size={48} />
             </div>
           ) : zeitplanQuery.error ? (
             <div role="alert" className="alert alert-error">

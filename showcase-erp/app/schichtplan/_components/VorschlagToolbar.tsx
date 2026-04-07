@@ -1,6 +1,7 @@
 "use client";
 
 import { MdCheck, MdClose } from "react-icons/md";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 interface VorschlagToolbarProps {
   count: number;
@@ -22,11 +23,7 @@ export default function VorschlagToolbar({
         onClick={onAcceptAll}
         disabled={isSaving || count === 0}
       >
-        {isSaving ? (
-          <span className="loading loading-spinner loading-xs" />
-        ) : (
-          <MdCheck className="size-4" />
-        )}
+        {isSaving ? <LoadingLogo size={16} /> : <MdCheck className="size-4" />}
         Alle übernehmen
       </button>
       <button

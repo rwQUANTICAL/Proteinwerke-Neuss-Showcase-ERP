@@ -7,6 +7,7 @@ import { MdClose } from "react-icons/md";
 import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import { useUpdateMitarbeiterMutation } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import { SKILL_LABELS } from "@/app/lib/entities/schichtplan/schichtplanConstants";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 const SKILLS = ["MUEHLE", "WALZE", "EXTRAKTION", "LECITHIN"] as const;
 
@@ -141,9 +142,7 @@ export default function MitarbeiterEditModal({
               type="submit"
               disabled={updateMutation.isPending}
             >
-              {updateMutation.isPending && (
-                <span className="loading loading-spinner loading-xs" />
-              )}
+              {updateMutation.isPending && <LoadingLogo size={16} />}
               Speichern
             </button>
           </div>

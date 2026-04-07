@@ -8,6 +8,7 @@ import {
   getWeekDates,
   ARBEITSTAGE_PRO_WOCHE,
 } from "@/app/lib/entities/zeitbuchung/zeitbuchungHooks";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import { useUrlaubsantraegeQuery } from "@/app/lib/entities/urlaubsantrag/urlaubsantragHooks";
 import { useKrankmeldungenQuery } from "@/app/lib/entities/krankmeldung/krankmeldungHooks";
 import ArbeitszeitenRinge from "./_components/ArbeitszeitenRinge";
@@ -123,7 +124,7 @@ export default function ZeiterfassungPage() {
 
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <span className="loading loading-spinner loading-md" />
+          <LoadingLogo size={32} />
         </div>
       ) : (
         <>

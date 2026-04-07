@@ -6,6 +6,7 @@ import { z } from "zod";
 import { MdClose } from "react-icons/md";
 import { useCreateMitarbeiterMutation } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import { SKILL_LABELS } from "@/app/lib/entities/schichtplan/schichtplanConstants";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 const SKILLS = ["MUEHLE", "WALZE", "EXTRAKTION", "LECITHIN"] as const;
 
@@ -188,9 +189,7 @@ export default function MitarbeiterCreateModal({
               type="submit"
               disabled={mutation.isPending}
             >
-              {mutation.isPending && (
-                <span className="loading loading-spinner loading-xs" />
-              )}
+              {mutation.isPending && <LoadingLogo size={16} />}
               Anlegen
             </button>
           </div>

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useCreateMitarbeiterMutation } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import { SKILL_LABELS } from "@/app/lib/entities/schichtplan/schichtplanConstants";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 const SKILLS = ["MUEHLE", "WALZE", "EXTRAKTION", "LECITHIN"] as const;
 
@@ -198,9 +199,7 @@ export default function MitarbeiterForm({
         className="btn btn-primary"
         disabled={mutation.isPending}
       >
-        {mutation.isPending && (
-          <span className="loading loading-spinner loading-sm"></span>
-        )}
+        {mutation.isPending && <LoadingLogo size={20} />}
         Mitarbeiter anlegen
       </button>
     </form>

@@ -9,6 +9,7 @@ import {
   MdDownload,
   MdAutoAwesome,
 } from "react-icons/md";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import VorschlagToolbar from "./VorschlagToolbar";
 import {
   SCHICHT_TYP_LABELS,

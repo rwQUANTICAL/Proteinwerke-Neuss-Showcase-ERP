@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { MdPeople } from "react-icons/md";
 import MitarbeiterTable from "./_components/MitarbeiterTable";
 import MitarbeiterCreateModal from "./_components/MitarbeiterCreateModal";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 export default function MitarbeiterverwaltungPage() {
   const { data: session, isPending } = authClient.useSession();
@@ -15,7 +16,7 @@ export default function MitarbeiterverwaltungPage() {
   if (isPending) {
     return (
       <div className="flex justify-center py-24">
-        <span className="loading loading-spinner loading-lg"></span>
+        <LoadingLogo size={48} />
       </div>
     );
   }

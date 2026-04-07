@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { MdAdd } from "react-icons/md";
 import { useCreateZeitbuchungMutation } from "@/app/lib/entities/zeitbuchung/zeitbuchungHooks";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 const SCHICHT_OPTIONS = [
   { value: "FRUEH", label: "Frühschicht" },
@@ -192,7 +193,7 @@ export default function ZeiterfassungForm() {
               disabled={mutation.isPending}
             >
               {mutation.isPending ? (
-                <span className="loading loading-spinner loading-xs" />
+                <LoadingLogo size={16} />
               ) : (
                 <MdAdd className="size-4" />
               )}

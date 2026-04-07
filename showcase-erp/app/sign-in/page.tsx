@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/app/lib/auth-client";
 import HeroBackground from "@/app/components/HeroBackground";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import {
   MdPerson,
   MdLock,
@@ -88,9 +89,7 @@ export default function SignInPage() {
         )}
 
         <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading && (
-            <span className="loading loading-spinner loading-sm"></span>
-          )}
+          {loading && <LoadingLogo size={20} />}
           Anmelden
         </button>
       </form>
