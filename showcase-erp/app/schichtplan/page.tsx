@@ -226,21 +226,19 @@ export default function SchichtplanPage() {
 
   return (
     <div className="flex flex-col gap-2 sm:gap-4">
-      <div className="sticky top-0 z-20 bg-base-100 pb-2 sm:pb-4">
-        <SchichtplanHeader
-          jahr={jahr}
-          kw={kw}
-          onKwChange={handleKwChange}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
-          schichtFilter={schichtFilter}
-          onSchichtFilterChange={setSchichtFilter}
-          onDownloadPdf={handleDownloadPdf}
-          isDownloading={isDownloading}
-          isAdmin={isAdmin}
-          vorschlag={vorschlag}
-        />
-      </div>
+      <SchichtplanHeader
+        jahr={jahr}
+        kw={kw}
+        onKwChange={handleKwChange}
+        viewMode={viewMode}
+        onViewModeChange={setViewMode}
+        schichtFilter={schichtFilter}
+        onSchichtFilterChange={setSchichtFilter}
+        onDownloadPdf={handleDownloadPdf}
+        isDownloading={isDownloading}
+        isAdmin={isAdmin}
+        vorschlag={vorschlag}
+      />
 
       {isAdmin && clipboard && (
         <ClipboardIndicator
@@ -283,10 +281,6 @@ export default function SchichtplanPage() {
               onEditEmployee={handleEditEmployee}
               clipboard={isAdmin ? clipboard : null}
               onPaste={handlePaste}
-              vorschlaege={
-                vorschlag.vorschlagMode ? vorschlag.vorschlaege : undefined
-              }
-              onRejectVorschlag={vorschlag.reject}
             />
           ) : (
             <SchichtplanGridFacility
@@ -303,10 +297,6 @@ export default function SchichtplanPage() {
               onDelete={handleDelete}
               onEdit={handleEdit}
               onCopy={handleCopy}
-              vorschlaege={
-                vorschlag.vorschlagMode ? vorschlag.vorschlaege : undefined
-              }
-              onRejectVorschlag={vorschlag.reject}
             />
           )}
         </div>

@@ -137,45 +137,45 @@ export default function SchichtplanHeader({
 
           {/* Actions — desktop only, context-dependent */}
           <div className="hidden sm:flex items-center gap-1">
-          {vorschlag.vorschlagMode ? (
-            <VorschlagToolbar
-              count={vorschlag.vorschlaege.length}
-              onAcceptAll={vorschlag.acceptAll}
-              onCancel={vorschlag.cancel}
-              isSaving={vorschlag.isSaving}
-            />
-          ) : (
-            <div className="flex items-center gap-1">
-              <button
-                className="btn btn-ghost btn-xs sm:btn-sm gap-1"
-                onClick={onDownloadPdf}
-                disabled={isDownloading}
-                aria-label="Als PDF herunterladen"
-              >
-                {isDownloading ? (
-                  <span className="loading loading-spinner loading-xs" />
-                ) : (
-                  <MdDownload className="size-4" />
-                )}
-                <span className="hidden sm:inline">PDF</span>
-              </button>
-              {isAdmin && (
+            {vorschlag.vorschlagMode ? (
+              <VorschlagToolbar
+                count={vorschlag.vorschlaege.length}
+                onAcceptAll={vorschlag.acceptAll}
+                onCancel={vorschlag.cancel}
+                isSaving={vorschlag.isSaving}
+              />
+            ) : (
+              <div className="flex items-center gap-1">
                 <button
                   className="btn btn-ghost btn-xs sm:btn-sm gap-1"
-                  onClick={vorschlag.generate}
-                  disabled={vorschlag.isGenerating}
-                  aria-label="Automatisch zuweisen"
+                  onClick={onDownloadPdf}
+                  disabled={isDownloading}
+                  aria-label="Als PDF herunterladen"
                 >
-                  {vorschlag.isGenerating ? (
+                  {isDownloading ? (
                     <span className="loading loading-spinner loading-xs" />
                   ) : (
-                    <MdAutoAwesome className="size-4 text-amber-500" />
+                    <MdDownload className="size-4" />
                   )}
-                  <span className="hidden sm:inline">Auto</span>
+                  <span className="hidden sm:inline">PDF</span>
                 </button>
-              )}
-            </div>
-          )}
+                {isAdmin && (
+                  <button
+                    className="btn btn-ghost btn-xs sm:btn-sm gap-1"
+                    onClick={vorschlag.generate}
+                    disabled={vorschlag.isGenerating}
+                    aria-label="Automatisch zuweisen"
+                  >
+                    {vorschlag.isGenerating ? (
+                      <span className="loading loading-spinner loading-xs" />
+                    ) : (
+                      <MdAutoAwesome className="size-4 text-amber-500" />
+                    )}
+                    <span className="hidden sm:inline">Auto</span>
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

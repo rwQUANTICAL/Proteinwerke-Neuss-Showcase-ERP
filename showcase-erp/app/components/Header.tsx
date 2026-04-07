@@ -59,7 +59,7 @@ export default function Header() {
   const closeMenu = () => menuRef.current?.removeAttribute("open");
 
   return (
-    <header className="navbar bg-base-100 border-b border-base-300 px-4">
+    <header className="navbar bg-base-100 border-b border-base-300 px-4 sticky top-0 z-50">
       {/* Mobile hamburger */}
       <div className="flex-none md:hidden">
         <details className="dropdown" ref={menuRef}>
