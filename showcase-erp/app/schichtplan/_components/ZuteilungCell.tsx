@@ -65,9 +65,7 @@ export default function ZuteilungCell({
     ? "FZA"
     : (SCHICHT_TYP_SHORT[zuteilung.schicht] ?? title);
   const subtitle =
-    isSpringerRole && zuteilung.schicht !== "SPRINGER"
-      ? "Springer"
-      : null;
+    isSpringerRole && zuteilung.schicht !== "SPRINGER" ? "Springer" : null;
 
   const originalLabel =
     isOverride && hasRealOriginal
