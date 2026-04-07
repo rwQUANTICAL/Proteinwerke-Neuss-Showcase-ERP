@@ -131,9 +131,7 @@ export default function MitarbeiterCreateModal({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="label text-sm font-medium">
-                Wochenstunden
-              </label>
+              <label className="label text-sm font-medium">Wochenstunden</label>
               <input
                 type="number"
                 step="0.5"

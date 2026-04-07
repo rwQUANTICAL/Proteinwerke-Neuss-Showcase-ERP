@@ -108,7 +108,9 @@ export default function SchichtplanGridFacility({
         const coveredShifts = new Set(cellZuts.map((z) => z.schicht));
         for (const shift of REQUIRED_SHIFTS) {
           if (!coveredShifts.has(shift)) {
-            missing.push(`${TEILANLAGE_LABELS[facility]}: ${shift === "FRUEH" ? "Früh" : shift === "SPAET" ? "Spät" : "Nacht"} fehlt`);
+            missing.push(
+              `${TEILANLAGE_LABELS[facility]}: ${shift === "FRUEH" ? "Früh" : shift === "SPAET" ? "Spät" : "Nacht"} fehlt`,
+            );
           }
         }
       }
@@ -145,7 +147,10 @@ export default function SchichtplanGridFacility({
                   >
                     {WOCHENTAGE[i]}
                     {dayWarnings && (
-                      <span className="tooltip tooltip-bottom" data-tip={dayWarnings.join(", ")}>
+                      <span
+                        className="tooltip tooltip-bottom"
+                        data-tip={dayWarnings.join(", ")}
+                      >
                         <MdErrorOutline className="size-3.5 text-warning" />
                       </span>
                     )}
@@ -162,125 +167,130 @@ export default function SchichtplanGridFacility({
           {ALL_TEILANLAGEN.map((anlage) => {
             const colors = TEILANLAGE_COLORS[anlage];
             return (
-            <tr key={anlage} className="hover border-b-2 border-base-200">
-              {/* Facility header cell */}
-              <td className={`sticky left-0 z-10 border-r border-base-200 font-medium text-[10px] sm:text-sm px-1 sm:px-2 border-l-3 ${colors?.bg ?? "bg-base-100"} ${colors?.border ?? ""} ${colors?.text ?? ""}`}>
-                {TEILANLAGE_LABELS[anlage]}
-              </td>
+              <tr key={anlage} className="hover border-b-2 border-base-200">
+                {/* Facility header cell */}
+                <td
+                  className={`sticky left-0 z-10 border-r border-base-200 font-medium text-[10px] sm:text-sm px-1 sm:px-2 border-l-3 ${colors?.bg ?? "bg-base-100"} ${colors?.border ?? ""} ${colors?.text ?? ""}`}
+                >
+                  {TEILANLAGE_LABELS[anlage]}
+                </td>
 
-              {/* Day cells */}
-              {weekDates.map((date, i) => {
-                const dateKey = formatDateISO(date);
-                const cellZuteilungen =
-                  zuteilungMap.get(`${anlage}:${dateKey}`) ?? [];
-                const isWeekend = i >= 5;
-                const isActive =
-                  activeCell?.datumISO === dateKey &&
-                  activeCell?.teilanlage === anlage;
+                {/* Day cells */}
+                {weekDates.map((date, i) => {
+                  const dateKey = formatDateISO(date);
+                  const cellZuteilungen =
+                    zuteilungMap.get(`${anlage}:${dateKey}`) ?? [];
+                  const isWeekend = i >= 5;
+                  const isActive =
+                    activeCell?.datumISO === dateKey &&
+                    activeCell?.teilanlage === anlage;
 
-                // Available employees for this facility + day
-                const availableEmps = isActive
-                  ? mitarbeiterList.filter((ma) => {
-                      const required = TEILANLAGE_TO_SKILL[anlage];
-                      if (required && !ma.skills.includes(required))
-                        return false;
-                      return !zuteilungen.some(
-                        (z) =>
-                          z.mitarbeiterId === ma.id &&
-                          z.datum.split("T")[0] === dateKey,
-                      );
-                    })
-                  : [];
-
-                return (
-                  <td
-                    key={i}
-                    className={`p-0.5 sm:p-1 align-top ${isWeekend ? "bg-base-200/15" : ""}`}
-                  >
-                    <div className="flex flex-col gap-1">
-                      {cellZuteilungen.map((z) => {
-                        const dimmed =
-                          schichtFilter.length > 0 &&
-                          !schichtFilter.some((f) =>
-                            f === "SPRINGER"
-                              ? z.teilanlage === "SPRINGER"
-                              : z.schicht === f,
-                          );
-                        return (
-                          <ZuteilungCell
-                            key={z.id}
-                            zuteilung={z}
-                            showEmployee={true}
-                            showFacility={false}
-                            showSkills={isAdmin}
-                            onDelete={isAdmin ? onDelete : undefined}
-                            onEdit={isAdmin ? onEdit : undefined}
-                            onCopy={isAdmin ? onCopy : undefined}
-                            dimmed={dimmed}
-                          />
+                  // Available employees for this facility + day
+                  const availableEmps = isActive
+                    ? mitarbeiterList.filter((ma) => {
+                        const required = TEILANLAGE_TO_SKILL[anlage];
+                        if (required && !ma.skills.includes(required))
+                          return false;
+                        return !zuteilungen.some(
+                          (z) =>
+                            z.mitarbeiterId === ma.id &&
+                            z.datum.split("T")[0] === dateKey,
                         );
-                      })}
-                      {isActive ? (
-                        <InlineAssigner
-                          mode="facility"
-                          teilanlage={anlage}
-                          availableEmployees={availableEmps.map((m) => ({
-                            id: m.id,
-                            name: m.name,
-                          }))}
-                          onAssign={(d) =>
-                            onAssign({
-                              ...d,
-                              teilanlage: anlage,
-                              datum: dateKey,
-                            })
-                          }
-                          onCancel={onCancel}
-                        />
-                      ) : isAdmin ? (
-                        <>
-                          {vorschlaege
-                            ?.filter(
-                              (v) =>
-                                v.teilanlage === anlage &&
-                                v.datum === dateKey &&
-                                !["X_FREI", "URLAUB", "KRANK"].includes(
-                                  v.schicht,
-                                ),
-                            )
-                            .sort(
-                              (a, b) =>
-                                (SCHICHT_SORT_ORDER[a.schicht] ?? 99) -
-                                (SCHICHT_SORT_ORDER[b.schicht] ?? 99),
-                            )
-                            .map((v) => (
-                              <VorschlagCell
-                                key={`vs-${v.mitarbeiterId}-${v.datum}`}
-                                vorschlag={v}
-                                showEmployee={true}
-                                onReject={() =>
-                                  onRejectVorschlag?.(v.mitarbeiterId, v.datum)
-                                }
-                              />
-                            ))}
-                          <button
-                            type="button"
-                            className="flex items-center justify-center w-full h-8 rounded-lg
+                      })
+                    : [];
+
+                  return (
+                    <td
+                      key={i}
+                      className={`p-0.5 sm:p-1 align-top ${isWeekend ? "bg-base-200/15" : ""}`}
+                    >
+                      <div className="flex flex-col gap-1">
+                        {cellZuteilungen.map((z) => {
+                          const dimmed =
+                            schichtFilter.length > 0 &&
+                            !schichtFilter.some((f) =>
+                              f === "SPRINGER"
+                                ? z.teilanlage === "SPRINGER"
+                                : z.schicht === f,
+                            );
+                          return (
+                            <ZuteilungCell
+                              key={z.id}
+                              zuteilung={z}
+                              showEmployee={true}
+                              showFacility={false}
+                              showSkills={isAdmin}
+                              onDelete={isAdmin ? onDelete : undefined}
+                              onEdit={isAdmin ? onEdit : undefined}
+                              onCopy={isAdmin ? onCopy : undefined}
+                              dimmed={dimmed}
+                            />
+                          );
+                        })}
+                        {isActive ? (
+                          <InlineAssigner
+                            mode="facility"
+                            teilanlage={anlage}
+                            availableEmployees={availableEmps.map((m) => ({
+                              id: m.id,
+                              name: m.name,
+                            }))}
+                            onAssign={(d) =>
+                              onAssign({
+                                ...d,
+                                teilanlage: anlage,
+                                datum: dateKey,
+                              })
+                            }
+                            onCancel={onCancel}
+                          />
+                        ) : isAdmin ? (
+                          <>
+                            {vorschlaege
+                              ?.filter(
+                                (v) =>
+                                  v.teilanlage === anlage &&
+                                  v.datum === dateKey &&
+                                  !["X_FREI", "URLAUB", "KRANK"].includes(
+                                    v.schicht,
+                                  ),
+                              )
+                              .sort(
+                                (a, b) =>
+                                  (SCHICHT_SORT_ORDER[a.schicht] ?? 99) -
+                                  (SCHICHT_SORT_ORDER[b.schicht] ?? 99),
+                              )
+                              .map((v) => (
+                                <VorschlagCell
+                                  key={`vs-${v.mitarbeiterId}-${v.datum}`}
+                                  vorschlag={v}
+                                  showEmployee={true}
+                                  onReject={() =>
+                                    onRejectVorschlag?.(
+                                      v.mitarbeiterId,
+                                      v.datum,
+                                    )
+                                  }
+                                />
+                              ))}
+                            <button
+                              type="button"
+                              className="flex items-center justify-center w-full h-8 rounded-lg
                             border border-dashed border-base-300/60 text-base-content/20
                             hover:border-primary/40 hover:text-primary/60 hover:bg-primary/5
                             transition-all cursor-pointer"
-                            onClick={() => onCellClick(date, anlage)}
-                            aria-label={`Zuteilung für ${TEILANLAGE_LABELS[anlage]} am ${WOCHENTAGE[i]}`}
-                          >
-                            <MdAdd className="size-4" />
-                          </button>
-                        </>
-                      ) : null}
-                    </div>
-                  </td>
-                );
-              })}
-            </tr>
+                              onClick={() => onCellClick(date, anlage)}
+                              aria-label={`Zuteilung für ${TEILANLAGE_LABELS[anlage]} am ${WOCHENTAGE[i]}`}
+                            >
+                              <MdAdd className="size-4" />
+                            </button>
+                          </>
+                        ) : null}
+                      </div>
+                    </td>
+                  );
+                })}
+              </tr>
             );
           })}
         </tbody>

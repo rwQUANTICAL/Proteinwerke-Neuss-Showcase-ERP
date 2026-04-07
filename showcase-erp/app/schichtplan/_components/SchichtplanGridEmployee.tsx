@@ -94,12 +94,17 @@ export default function SchichtplanGridEmployee({
       for (const facility of PRODUCTION_TEILANLAGEN) {
         const coveredShifts = new Set(
           zuteilungen
-            .filter((z) => z.teilanlage === facility && z.datum.split("T")[0] === dateKey)
+            .filter(
+              (z) =>
+                z.teilanlage === facility && z.datum.split("T")[0] === dateKey,
+            )
             .map((z) => z.schicht),
         );
         for (const shift of REQUIRED_SHIFTS) {
           if (!coveredShifts.has(shift)) {
-            missing.push(`${TEILANLAGE_LABELS[facility]}: ${shift === "FRUEH" ? "Früh" : shift === "SPAET" ? "Spät" : "Nacht"} fehlt`);
+            missing.push(
+              `${TEILANLAGE_LABELS[facility]}: ${shift === "FRUEH" ? "Früh" : shift === "SPAET" ? "Spät" : "Nacht"} fehlt`,
+            );
           }
         }
       }
@@ -156,7 +161,10 @@ export default function SchichtplanGridEmployee({
                   >
                     {WOCHENTAGE[i]}
                     {dayWarnings && (
-                      <span className="tooltip tooltip-bottom" data-tip={dayWarnings.join(", ")}>
+                      <span
+                        className="tooltip tooltip-bottom"
+                        data-tip={dayWarnings.join(", ")}
+                      >
                         <MdErrorOutline className="size-3.5 text-warning" />
                       </span>
                     )}
