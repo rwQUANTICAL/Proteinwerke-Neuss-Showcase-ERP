@@ -127,10 +127,10 @@ export function useUrlaubsKonto(
 ): UrlaubsKonto {
   const genehmigt = (antraege ?? [])
     .filter((a) => a.status === "GENEHMIGT")
-    .reduce((sum, a) => sum + dayCountISO(a.von, a.bis), 0);
+    .reduce((sum: number, a) => sum + dayCountISO(a.von, a.bis), 0);
   const beantragt = (antraege ?? [])
     .filter((a) => a.status === "BEANTRAGT")
-    .reduce((sum, a) => sum + dayCountISO(a.von, a.bis), 0);
+    .reduce((sum: number, a) => sum + dayCountISO(a.von, a.bis), 0);
 
   return {
     anspruch,

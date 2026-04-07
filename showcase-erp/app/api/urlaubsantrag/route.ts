@@ -124,11 +124,11 @@ export async function POST(request: NextRequest) {
   });
 
   const usedDays = approvedAntraege.reduce(
-    (sum, a) => sum + dayCount(a.von, a.bis),
+    (sum: number, a) => sum + dayCount(a.von, a.bis),
     0
   );
   const pendingDays = pendingAntraege.reduce(
-    (sum, a) => sum + dayCount(a.von, a.bis),
+    (sum: number, a) => sum + dayCount(a.von, a.bis),
     0
   );
   const remaining = mitarbeiter.urlaubsAnspruch - usedDays - pendingDays;
