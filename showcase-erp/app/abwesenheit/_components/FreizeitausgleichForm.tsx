@@ -9,6 +9,7 @@ import {
   hasOverlap,
 } from "@/app/lib/entities/freizeitausgleich/freizeitausgleichValidation";
 import DateRangePicker from "@/app/components/DateRangePicker";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import {
   useFreizeitausgleichAntraegeQuery,
   useCreateFreizeitausgleichMutation,
@@ -73,7 +74,7 @@ export default function FreizeitausgleichForm() {
           <div className="bg-base-200 rounded-lg px-1.5 py-1 sm:p-3 text-center">
             <p className="text-[10px] sm:text-xs text-base-content/60">Saldo</p>
             {saldoLoading ? (
-              <span className="loading loading-spinner loading-xs" />
+              <LoadingLogo size={16} />
             ) : (
               <p
                 className={`text-sm sm:text-lg font-bold ${
@@ -89,7 +90,7 @@ export default function FreizeitausgleichForm() {
               Genehmigt
             </p>
             {saldoLoading ? (
-              <span className="loading loading-spinner loading-xs" />
+              <LoadingLogo size={16} />
             ) : (
               <p className="text-sm sm:text-lg font-bold text-success">
                 {saldoInfo?.genehmigtStunden ?? 0}h
@@ -101,7 +102,7 @@ export default function FreizeitausgleichForm() {
               Beantragt
             </p>
             {saldoLoading ? (
-              <span className="loading loading-spinner loading-xs" />
+              <LoadingLogo size={16} />
             ) : (
               <p className="text-sm sm:text-lg font-bold text-warning">
                 {saldoInfo?.beantragtStunden ?? 0}h
@@ -113,7 +114,7 @@ export default function FreizeitausgleichForm() {
               Verfügbar
             </p>
             {saldoLoading ? (
-              <span className="loading loading-spinner loading-xs" />
+              <LoadingLogo size={16} />
             ) : (
               <p className="text-sm sm:text-lg font-bold text-info">
                 {saldoInfo?.verfuegbareTage ?? 0}{" "}
@@ -155,7 +156,7 @@ export default function FreizeitausgleichForm() {
               }
             >
               {createMutation.isPending ? (
-                <span className="loading loading-spinner loading-sm" />
+                <LoadingLogo size={20} />
               ) : (
                 <MdSend className="size-4" />
               )}

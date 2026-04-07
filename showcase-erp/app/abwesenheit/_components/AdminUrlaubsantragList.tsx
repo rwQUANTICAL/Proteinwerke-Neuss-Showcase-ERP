@@ -1,6 +1,7 @@
 "use client";
 
 import { MdCheck, MdClose, MdDelete, MdBeachAccess } from "react-icons/md";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import { useState } from "react";
 import {
   formatDateDE,
@@ -42,7 +43,7 @@ export default function AdminUrlaubsantragList() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <span className="loading loading-spinner loading-md" />
+        <LoadingLogo size={32} />
       </div>
     );
   }
@@ -127,7 +128,7 @@ export default function AdminUrlaubsantragList() {
                     disabled={deleteMutation.isPending}
                   >
                     {deleteMutation.isPending ? (
-                      <span className="loading loading-spinner loading-xs" />
+                      <LoadingLogo size={16} />
                     ) : (
                       "Ja"
                     )}

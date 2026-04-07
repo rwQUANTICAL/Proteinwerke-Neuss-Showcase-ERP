@@ -13,6 +13,7 @@ import {
   useKrankmeldungenQuery,
 } from "@/app/lib/entities/krankmeldung/krankmeldungHooks";
 import DateRangePicker from "@/app/components/DateRangePicker";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 export default function KrankmeldungForm() {
   const { data: existing = [] } = useKrankmeldungenQuery();
@@ -87,7 +88,7 @@ export default function KrankmeldungForm() {
               disabled={isSubmitting || createMutation.isPending}
             >
               {createMutation.isPending ? (
-                <span className="loading loading-spinner loading-sm" />
+                <LoadingLogo size={20} />
               ) : (
                 <MdSend className="size-4" />
               )}

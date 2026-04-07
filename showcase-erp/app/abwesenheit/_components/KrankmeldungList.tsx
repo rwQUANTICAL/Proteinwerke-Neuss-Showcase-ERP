@@ -1,6 +1,7 @@
 "use client";
 
 import { MdLocalHospital } from "react-icons/md";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import {
   useKrankmeldungenQuery,
   formatDateDE,
@@ -14,7 +15,7 @@ export default function KrankmeldungList() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <span className="loading loading-spinner loading-md" />
+        <LoadingLogo size={32} />
       </div>
     );
   }

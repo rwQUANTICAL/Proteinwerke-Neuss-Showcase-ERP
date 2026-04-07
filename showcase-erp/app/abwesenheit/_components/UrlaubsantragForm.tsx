@@ -16,6 +16,7 @@ import {
   useUrlaubsKonto,
 } from "@/app/lib/entities/urlaubsantrag/urlaubsantragHooks";
 import DateRangePicker from "@/app/components/DateRangePicker";
+import LoadingLogo from "@/app/components/LoadingLogo";
 
 export default function UrlaubsantragForm() {
   const { data: session } = authClient.useSession();
@@ -131,7 +132,7 @@ export default function UrlaubsantragForm() {
               disabled={isSubmitting || createMutation.isPending}
             >
               {createMutation.isPending ? (
-                <span className="loading loading-spinner loading-sm" />
+                <LoadingLogo size={20} />
               ) : (
                 <MdSend className="size-4" />
               )}

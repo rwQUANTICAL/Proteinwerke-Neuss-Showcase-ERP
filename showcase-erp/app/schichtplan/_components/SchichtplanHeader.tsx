@@ -154,7 +154,7 @@ export default function SchichtplanHeader({
                   aria-label="Als PDF herunterladen"
                 >
                   {isDownloading ? (
-                    <span className="loading loading-spinner loading-xs" />
+                    <LoadingLogo size={16} />
                   ) : (
                     <MdDownload className="size-4" />
                   )}
@@ -168,7 +168,7 @@ export default function SchichtplanHeader({
                     aria-label="Automatisch zuweisen"
                   >
                     {vorschlag.isGenerating ? (
-                      <span className="loading loading-spinner loading-xs" />
+                      <LoadingLogo size={16} />
                     ) : (
                       <MdAutoAwesome className="size-4 text-amber-500" />
                     )}
@@ -242,7 +242,7 @@ export default function SchichtplanHeader({
                 aria-label="Als PDF herunterladen"
               >
                 {isDownloading ? (
-                  <span className="loading loading-spinner loading-xs" />
+                  <LoadingLogo size={16} />
                 ) : (
                   <MdDownload className="size-4" />
                 )}
@@ -255,7 +255,7 @@ export default function SchichtplanHeader({
                   aria-label="Automatisch zuweisen"
                 >
                   {vorschlag.isGenerating ? (
-                    <span className="loading loading-spinner loading-xs" />
+                    <LoadingLogo size={16} />
                   ) : (
                     <MdAutoAwesome className="size-4 text-amber-500" />
                   )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { MdSwapHoriz, MdClose } from "react-icons/md";
+import LoadingLogo from "@/app/components/LoadingLogo";
 import {
   formatDateDE,
   dayCount,
@@ -34,7 +35,7 @@ export default function FreizeitausgleichList() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <span className="loading loading-spinner loading-md" />
+        <LoadingLogo size={32} />
       </div>
     );
   }
@@ -84,7 +85,7 @@ export default function FreizeitausgleichList() {
                       disabled={deleteMutation.isPending}
                     >
                       {deleteMutation.isPending ? (
-                        <span className="loading loading-spinner loading-xs" />
+                        <LoadingLogo size={16} />
                       ) : (
                         "Ja"
                       )}
