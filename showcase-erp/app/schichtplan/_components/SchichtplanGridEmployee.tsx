@@ -231,7 +231,7 @@ export default function SchichtplanGridEmployee({
                         zuteilung={zuteilung}
                         showEmployee={false}
                         showFacility={true}
-                        showSkills={isAdmin}
+                        showSkills={false}
                         onDelete={isAdmin ? onDelete : undefined}
                         onEdit={isAdmin ? onEdit : undefined}
                         onCopy={isAdmin ? onCopy : undefined}

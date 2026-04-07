@@ -225,19 +225,21 @@ export default function SchichtplanPage() {
 
   return (
     <div className="flex flex-col gap-2 sm:gap-4">
-      <SchichtplanHeader
-        jahr={jahr}
-        kw={kw}
-        onKwChange={handleKwChange}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        schichtFilter={schichtFilter}
-        onSchichtFilterChange={setSchichtFilter}
-        employeeSearch={employeeSearch}
-        onEmployeeSearchChange={setEmployeeSearch}
-        onDownloadPdf={handleDownloadPdf}
-        isDownloading={isDownloading}
-      />
+      <div className="sticky top-0 z-20 bg-base-100 pb-2 sm:pb-4">
+        <SchichtplanHeader
+          jahr={jahr}
+          kw={kw}
+          onKwChange={handleKwChange}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
+          schichtFilter={schichtFilter}
+          onSchichtFilterChange={setSchichtFilter}
+          employeeSearch={employeeSearch}
+          onEmployeeSearchChange={setEmployeeSearch}
+          onDownloadPdf={handleDownloadPdf}
+          isDownloading={isDownloading}
+        />
+      </div>
 
       {isAdmin && clipboard && (
         <ClipboardIndicator

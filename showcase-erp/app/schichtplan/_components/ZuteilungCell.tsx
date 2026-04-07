@@ -54,23 +54,19 @@ export default function ZuteilungCell({
     isSickOverride || isVacationOverride || (isFreiOverride && hasRealOriginal);
 
   const colors = isSpringerRole
-    ? SCHICHT_TYP_COLORS["SPRINGER"]
+    ? (SCHICHT_TYP_COLORS[zuteilung.schicht] ?? SCHICHT_TYP_COLORS["SPRINGER"])
     : SCHICHT_TYP_COLORS[zuteilung.schicht];
   const pattern = SCHICHT_TYP_PATTERNS[zuteilung.schicht];
 
-  const title = isSpringerRole
-    ? "Springer"
-    : isFreiOverride
-      ? "Freizeitausgleich"
-      : SCHICHT_TYP_LABELS[zuteilung.schicht];
-  const shortTitle = isSpringerRole
-    ? "Sp"
-    : isFreiOverride
-      ? "FZA"
-      : (SCHICHT_TYP_SHORT[zuteilung.schicht] ?? title);
+  const title = isFreiOverride
+    ? "Freizeitausgleich"
+    : SCHICHT_TYP_LABELS[zuteilung.schicht];
+  const shortTitle = isFreiOverride
+    ? "FZA"
+    : (SCHICHT_TYP_SHORT[zuteilung.schicht] ?? title);
   const subtitle =
     isSpringerRole && zuteilung.schicht !== "SPRINGER"
-      ? SCHICHT_TYP_LABELS[zuteilung.schicht]
+      ? "Springer"
       : null;
 
   const originalLabel =
@@ -136,7 +132,12 @@ export default function ZuteilungCell({
         </div>
       )}
       {subtitle && (
-        <div className="truncate opacity-70 hidden sm:block">{subtitle}</div>
+        <>
+          <div className="truncate opacity-70 hidden sm:block">{subtitle}</div>
+          <div className="truncate opacity-70 sm:hidden text-[7px] leading-tight">
+            Sp
+          </div>
+        </>
       )}
       {showFacility &&
         !isSpringerRole &&
@@ -155,7 +156,8 @@ export default function ZuteilungCell({
         <div className="sm:hidden text-[7px] leading-tight">&nbsp;</div>
       )}
       {showFacility &&
-        (isSpringerRole || zuteilung.teilanlage === "SPRINGER") && (
+        (isSpringerRole || zuteilung.teilanlage === "SPRINGER") &&
+        !subtitle && (
           <div className="sm:hidden text-[7px] leading-tight">&nbsp;</div>
         )}
       {isSpringerRole && showSkills && (
