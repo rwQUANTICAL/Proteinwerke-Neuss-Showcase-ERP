@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Öl & Protein Werke Neuss",
+  title: "Protein und Ölwerk Neuss",
   description: "Showcase ERP",
 };
 

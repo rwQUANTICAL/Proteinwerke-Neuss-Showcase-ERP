@@ -58,6 +58,8 @@ export default function Header() {
 
   const closeMenu = () => menuRef.current?.removeAttribute("open");
 
+  if (pathname === "/sign-in") return null;
+
   return (
     <header className="navbar bg-base-100 border-b border-base-300 px-4 sticky top-0 z-50">
       {/* Mobile hamburger */}
@@ -104,7 +106,7 @@ export default function Header() {
             priority
           />
           <span className="text-lg font-semibold tracking-tight text-base-content">
-            Öl &amp; Proteinwerke Neuss
+            Protein und Ölwerk Neuss
           </span>
         </Link>
       </div>

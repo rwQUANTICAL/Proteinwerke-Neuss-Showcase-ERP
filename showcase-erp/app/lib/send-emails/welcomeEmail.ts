@@ -20,7 +20,7 @@ export async function sendWelcomeEmail({
     to,
     from: {
       email: "noreply.erp@quantical.com",
-      name: "Öl & Proteinwerke Neuss",
+      name: "Protein und Ölwerk Neuss",
     },
     subject: "Ihr Benutzerkonto wurde erstellt",
     html,
@@ -76,7 +76,7 @@ function buildWelcomeHtml({
                 style="display:inline-block;vertical-align:middle;margin-right:14px;"
               />
               <span style="color:${headerText};font-size:18px;font-weight:600;vertical-align:middle;letter-spacing:0.01em;">
-                Öl &amp; Proteinwerke Neuss
+                Protein und Ölwerk Neuss
               </span>
             </td>
           </tr>
@@ -144,7 +144,7 @@ function buildWelcomeHtml({
           <tr>
             <td style="padding:24px 40px 28px;text-align:center;">
               <p style="margin:0;font-size:12px;color:${textMuted};line-height:1.6;">
-                &copy; ${new Date().getFullYear()} Öl &amp; Proteinwerke Neuss &mdash; Showcase ERP
+                &copy; ${new Date().getFullYear()} Protein und Ölwerk Neuss &mdash; Showcase ERP
               </p>
             </td>
           </tr>

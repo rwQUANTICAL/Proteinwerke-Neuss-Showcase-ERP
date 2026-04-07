@@ -36,12 +36,12 @@ export default function SignInPage() {
       return;
     }
 
-    router.push("/");
+    router.push("/schichtplan");
     router.refresh();
   }
 
   return (
-    <HeroBackground>
+    <HeroBackground fullScreen>
       <h1 className="mb-5 text-3xl font-bold text-primary">Anmelden</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">

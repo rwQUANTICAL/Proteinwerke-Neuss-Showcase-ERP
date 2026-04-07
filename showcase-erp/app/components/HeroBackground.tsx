@@ -1,11 +1,15 @@
 export default function HeroBackground({
   children,
+  fullScreen = false,
 }: {
   children: React.ReactNode;
+  fullScreen?: boolean;
 }) {
   return (
     <div
-      className="hero min-h-[calc(100vh-4rem)]"
+      className={`hero -m-6 w-[calc(100%+3rem)] ${
+        fullScreen ? "h-screen" : "h-[calc(100vh-4rem)]"
+      }`}
       style={{ backgroundImage: "url(/hero_background.jpg)" }}
     >
       <div className="hero-overlay bg-neutral/70"></div>
