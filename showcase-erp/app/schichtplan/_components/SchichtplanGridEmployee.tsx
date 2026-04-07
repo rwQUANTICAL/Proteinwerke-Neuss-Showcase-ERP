@@ -5,7 +5,9 @@ import { MdAdd, MdEdit, MdContentPaste } from "react-icons/md";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import ZuteilungCell from "./ZuteilungCell";
+import VorschlagCell from "./VorschlagCell";
 import InlineAssigner from "./InlineAssigner";
+import type { VorschlagItem } from "@/app/lib/entities/zuteilung/vorschlagTypes";
 import {
   WOCHENTAGE,
   SKILL_SHORT,
@@ -43,6 +45,8 @@ interface SchichtplanGridEmployeeProps {
   onEditEmployee: (mitarbeiter: MitarbeiterWithUser) => void;
   clipboard: { schicht: string; teilanlage: string } | null;
   onPaste: (mitarbeiterId: string, datum: string) => void;
+  vorschlaege?: VorschlagItem[];
+  onRejectVorschlag?: (mitarbeiterId: string, datum: string) => void;
 }
 
 export default function SchichtplanGridEmployee({
@@ -62,6 +66,8 @@ export default function SchichtplanGridEmployee({
   onEditEmployee,
   clipboard,
   onPaste,
+  vorschlaege,
+  onRejectVorschlag,
 }: SchichtplanGridEmployeeProps) {
   const weekDates = useMemo(() => getWeekDates(jahr, kw), [jahr, kw]);
 
@@ -77,11 +83,9 @@ export default function SchichtplanGridEmployee({
 
   // Filter employees by shift filter
   const filteredMitarbeiter = useMemo(() => {
-    const list = mitarbeiterList;
-
-    if (schichtFilter.length === 0) return list;
+    if (schichtFilter.length === 0) return mitarbeiterList;
     const NON_WORKING = ["X_FREI", "URLAUB", "KRANK"];
-    return list.filter((ma) =>
+    return mitarbeiterList.filter((ma) =>
       zuteilungen.some((z) => {
         if (z.mitarbeiterId !== ma.id) return false;
         return schichtFilter.some((f) => {
@@ -99,6 +103,12 @@ export default function SchichtplanGridEmployee({
   return (
     <div className="-mx-2 sm:mx-0">
       <table className="table table-xs sm:table-sm table-fixed w-full">
+        <colgroup>
+          <col className="w-[70px] sm:w-[210px]" />
+          {weekDates.map((_, i) => (
+            <col key={i} />
+          ))}
+        </colgroup>
         <thead>
           <tr>
             <th className="w-[70px] sm:w-[210px] sticky left-0 z-10 border-r border-base-200 bg-base-100 px-1 sm:px-2">
@@ -188,6 +198,9 @@ export default function SchichtplanGridEmployee({
               {weekDates.map((date, i) => {
                 const dateKey = formatDateISO(date);
                 const zuteilung = zuteilungMap.get(`${ma.id}:${dateKey}`);
+                const matchingVorschlag = vorschlaege?.find(
+                  (v) => v.mitarbeiterId === ma.id && v.datum === dateKey,
+                );
                 const dimmed =
                   schichtFilter.length > 0 &&
                   zuteilung !== undefined &&
@@ -231,32 +244,40 @@ export default function SchichtplanGridEmployee({
                         dimmed={dimmed}
                       />
                     ) : isAdmin ? (
-                      <div className="flex gap-0.5 sm:gap-1 min-h-[1.5rem] sm:min-h-[3rem]">
-                        <button
-                          type="button"
-                          className="flex items-center justify-center flex-1 rounded-lg
+                      matchingVorschlag ? (
+                        <VorschlagCell
+                          vorschlag={matchingVorschlag}
+                          showEmployee={false}
+                          onReject={() => onRejectVorschlag?.(ma.id, dateKey)}
+                        />
+                      ) : (
+                        <div className="flex gap-0.5 sm:gap-1 min-h-[1.5rem] sm:min-h-[3rem]">
+                          <button
+                            type="button"
+                            className="flex items-center justify-center flex-1 rounded-lg
                             border border-dashed border-base-300/60 text-base-content/20
                             hover:border-primary/40 hover:text-primary/60 hover:bg-primary/5
                             transition-all cursor-pointer"
-                          onClick={() => onCellClick(date, ma.id)}
-                          aria-label={`Zuteilung für ${ma.name} am ${WOCHENTAGE[i]}`}
-                        >
-                          <MdAdd className="size-3 sm:size-5" />
-                        </button>
-                        {clipboard && (
-                          <button
-                            type="button"
-                            className="flex items-center justify-center w-8 rounded-lg
+                            onClick={() => onCellClick(date, ma.id)}
+                            aria-label={`Zuteilung für ${ma.name} am ${WOCHENTAGE[i]}`}
+                          >
+                            <MdAdd className="size-3 sm:size-5" />
+                          </button>
+                          {clipboard && (
+                            <button
+                              type="button"
+                              className="flex items-center justify-center w-8 rounded-lg
                               border border-dashed border-info/40 text-info/40
                               hover:border-info hover:text-info hover:bg-info/5
                               transition-all cursor-pointer"
-                            onClick={() => onPaste(ma.id, dateKey)}
-                            aria-label="Einfügen"
-                          >
-                            <MdContentPaste className="size-4" />
-                          </button>
-                        )}
-                      </div>
+                              onClick={() => onPaste(ma.id, dateKey)}
+                              aria-label="Einfügen"
+                            >
+                              <MdContentPaste className="size-4" />
+                            </button>
+                          )}
+                        </div>
+                      )
                     ) : (
                       <div className="min-h-[1.5rem] sm:min-h-[3rem]" />
                     )}
@@ -269,7 +290,7 @@ export default function SchichtplanGridEmployee({
           {filteredMitarbeiter.length === 0 && (
             <tr>
               <td colSpan={8} className="text-center py-8 text-base-content/50">
-                {schichtFilter.length > 0
+                {schichtFilter
                   ? "Keine Mitarbeiter mit diesem Schichttyp in dieser Woche"
                   : "Keine Mitarbeiter vorhanden"}
               </td>

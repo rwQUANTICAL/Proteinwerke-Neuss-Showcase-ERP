@@ -13,15 +13,18 @@ interface Employee {
 
 /**
  * Assigns employees to facilities for each day+shift based on skills.
- * - Each production facility gets 1 employee per active shift.
+ * - Uses most-constrained-first: facilities with fewer qualified candidates
+ *   are assigned first so rare skills (e.g. LECITHIN) aren't stolen by
+ *   facilities that have many candidates (e.g. MUEHLE).
+ * - Respects already-covered facility slots from existing assignments.
  * - Overflow employees go to SPRINGER.
- * - Respects skill constraints.
  */
 export function assignFacilities(
   rotationPlan: Map<string, RotationEntry[]>,
   employees: Employee[],
   unavailable: Map<string, Set<string>>,
-  alreadyAssigned: Set<string>
+  alreadyAssigned: Set<string>,
+  existingFacilityCoverage: Map<string, Set<string>>
 ): VorschlagItem[] {
   const empById = new Map(employees.map((e) => [e.id, e]));
   const results: VorschlagItem[] = [];
@@ -63,14 +66,33 @@ export function assignFacilities(
     const [datum, schicht] = key.split(":");
     const assigned = new Set<string>();
 
-    // First pass: assign one employee per production facility
-    for (const facility of PRODUCTION_TEILANLAGEN) {
-      const requiredSkill = TEILANLAGE_TO_SKILL[facility];
-      // Find an unassigned employee with the required skill
+    // Check which facilities already have coverage from existing assignments
+    const coveredKey = `${datum}:${schicht}`;
+    const coveredFacilities = existingFacilityCoverage.get(coveredKey) ?? new Set();
+
+    // Only assign to facilities that don't already have someone
+    const uncoveredFacilities = PRODUCTION_TEILANLAGEN.filter(
+      (f) => !coveredFacilities.has(f)
+    );
+
+    // Sort by most-constrained-first: facilities with fewer qualified candidates first
+    const sortedFacilities = [...uncoveredFacilities].sort((a, b) => {
+      const skillA = TEILANLAGE_TO_SKILL[a]!;
+      const skillB = TEILANLAGE_TO_SKILL[b]!;
+      const countA = empIds.filter((id) => empById.get(id)!.skills.includes(skillA)).length;
+      const countB = empIds.filter((id) => empById.get(id)!.skills.includes(skillB)).length;
+      return countA - countB;
+    });
+
+    // Assign one employee per uncovered production facility
+    for (const facility of sortedFacilities) {
+      const requiredSkill = TEILANLAGE_TO_SKILL[facility]!;
+      // Prefer employees whose only remaining unassigned-facility match is this one
+      // (i.e., don't waste a specialist on a facility that has many candidates)
       const candidate = empIds.find(
         (id) =>
           !assigned.has(id) &&
-          empById.get(id)!.skills.includes(requiredSkill!)
+          empById.get(id)!.skills.includes(requiredSkill)
       );
       if (candidate) {
         assigned.add(candidate);
@@ -88,7 +110,7 @@ export function assignFacilities(
       }
     }
 
-    // Second pass: remaining employees go to SPRINGER
+    // Remaining employees go to SPRINGER
     for (const empId of empIds) {
       if (assigned.has(empId)) continue;
       const emp = empById.get(empId)!;

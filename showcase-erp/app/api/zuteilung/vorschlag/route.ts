@@ -56,6 +56,19 @@ export async function POST(request: NextRequest) {
   const unavailable = await getUnavailableDates(mitarbeiterIds, startDate, endDate);
   const alreadyAssigned = await getExistingAssignments(startDate, endDate);
 
+  // Build existing facility coverage: which facilities already have someone per day+shift
+  const existingZuteilungen = await prisma.zuteilung.findMany({
+    where: { datum: { gte: startDate, lte: endDate } },
+    select: { datum: true, schicht: true, teilanlage: true },
+  });
+  const existingFacilityCoverage = new Map<string, Set<string>>();
+  for (const z of existingZuteilungen) {
+    const dateStr = z.datum.toISOString().split("T")[0];
+    const key = `${dateStr}:${z.schicht}`;
+    if (!existingFacilityCoverage.has(key)) existingFacilityCoverage.set(key, new Set());
+    existingFacilityCoverage.get(key)!.add(z.teilanlage);
+  }
+
   // Detect cycle offsets from previous week
   const prevWeekDates = getWeekDates(
     kw > 1 ? jahr : jahr - 1,
@@ -98,7 +111,8 @@ export async function POST(request: NextRequest) {
     rotationPlan,
     employees.map((e) => ({ id: e.id, name: e.name, skills: e.skills as string[] })),
     unavailable,
-    alreadyAssigned
+    alreadyAssigned,
+    existingFacilityCoverage
   );
 
   // Post-validate: check skills and mark confidence
