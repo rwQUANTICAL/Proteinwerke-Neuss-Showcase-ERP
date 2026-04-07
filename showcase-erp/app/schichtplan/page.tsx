@@ -51,7 +51,6 @@ export default function SchichtplanPage() {
     schicht: string;
     teilanlage: string;
   } | null>(null);
-  const [employeeSearch, setEmployeeSearch] = useState("");
   const [isDownloading, setIsDownloading] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -236,8 +235,6 @@ export default function SchichtplanPage() {
           onViewModeChange={setViewMode}
           schichtFilter={schichtFilter}
           onSchichtFilterChange={setSchichtFilter}
-          employeeSearch={employeeSearch}
-          onEmployeeSearchChange={setEmployeeSearch}
           onDownloadPdf={handleDownloadPdf}
           isDownloading={isDownloading}
           isAdmin={isAdmin}
@@ -275,7 +272,6 @@ export default function SchichtplanPage() {
               zuteilungen={zeitplanQuery.data?.zuteilungen ?? []}
               mitarbeiterList={mitarbeiterQuery.data ?? []}
               schichtFilter={schichtFilter}
-              employeeSearch={employeeSearch}
               isAdmin={isAdmin}
               activeCell={isAdmin ? activeCellEmp : null}
               onCellClick={handleEmployeeCellClick}
@@ -287,7 +283,9 @@ export default function SchichtplanPage() {
               onEditEmployee={handleEditEmployee}
               clipboard={isAdmin ? clipboard : null}
               onPaste={handlePaste}
-              vorschlaege={vorschlag.vorschlagMode ? vorschlag.vorschlaege : undefined}
+              vorschlaege={
+                vorschlag.vorschlagMode ? vorschlag.vorschlaege : undefined
+              }
               onRejectVorschlag={vorschlag.reject}
             />
           ) : (
@@ -305,7 +303,9 @@ export default function SchichtplanPage() {
               onDelete={handleDelete}
               onEdit={handleEdit}
               onCopy={handleCopy}
-              vorschlaege={vorschlag.vorschlagMode ? vorschlag.vorschlaege : undefined}
+              vorschlaege={
+                vorschlag.vorschlagMode ? vorschlag.vorschlaege : undefined
+              }
               onRejectVorschlag={vorschlag.reject}
             />
           )}

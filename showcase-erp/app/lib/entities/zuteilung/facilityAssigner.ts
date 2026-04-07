@@ -62,7 +62,6 @@ export function assignFacilities(
   for (const [key, empIds] of dayShiftMap) {
     const [datum, schicht] = key.split(":");
     const assigned = new Set<string>();
-    const facilityAssigned = new Set<string>();
 
     // First pass: assign one employee per production facility
     for (const facility of PRODUCTION_TEILANLAGEN) {
@@ -75,7 +74,6 @@ export function assignFacilities(
       );
       if (candidate) {
         assigned.add(candidate);
-        facilityAssigned.add(facility);
         const emp = empById.get(candidate)!;
         results.push({
           mitarbeiterId: candidate,

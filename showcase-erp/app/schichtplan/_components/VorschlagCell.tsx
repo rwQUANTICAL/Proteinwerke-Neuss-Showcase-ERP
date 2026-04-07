@@ -27,7 +27,8 @@ export default function VorschlagCell({
   onReject,
   showEmployee = true,
 }: VorschlagCellProps) {
-  const colors = SCHICHT_TYP_COLORS[vorschlag.schicht] ?? SCHICHT_TYP_COLORS.FRUEH;
+  const colors =
+    SCHICHT_TYP_COLORS[vorschlag.schicht] ?? SCHICHT_TYP_COLORS.FRUEH;
 
   return (
     <div
@@ -39,12 +40,17 @@ export default function VorschlagCell({
           <span className={`font-semibold ${colors.text}`}>
             {SCHICHT_TYP_LABELS[vorschlag.schicht]}
           </span>
-          <span className={`inline-block size-1.5 rounded-full ${CONFIDENCE_DOT[vorschlag.confidence]}`} />
+          <span
+            className={`inline-block size-1.5 rounded-full ${CONFIDENCE_DOT[vorschlag.confidence]}`}
+          />
         </div>
         <div className="flex gap-0.5">
           {onAccept && (
             <button
-              onClick={(e) => { e.stopPropagation(); onAccept(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onAccept();
+              }}
               className="btn btn-ghost btn-xs btn-circle text-success"
               title="Übernehmen"
             >
@@ -53,7 +59,10 @@ export default function VorschlagCell({
           )}
           {onReject && (
             <button
-              onClick={(e) => { e.stopPropagation(); onReject(); }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onReject();
+              }}
               className="btn btn-ghost btn-xs btn-circle text-error"
               title="Ablehnen"
             >
@@ -63,7 +72,9 @@ export default function VorschlagCell({
         </div>
       </div>
       <span className="text-base-content/60 text-[10px]">
-        {vorschlag.teilanlage !== "SPRINGER" ? TEILANLAGE_LABELS[vorschlag.teilanlage] : "\u00A0"}
+        {vorschlag.teilanlage !== "SPRINGER"
+          ? TEILANLAGE_LABELS[vorschlag.teilanlage]
+          : "\u00A0"}
       </span>
       {showEmployee && (
         <span className="truncate text-base-content/80 text-[10px]">

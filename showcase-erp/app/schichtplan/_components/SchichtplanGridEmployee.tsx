@@ -29,7 +29,6 @@ interface SchichtplanGridEmployeeProps {
   zuteilungen: ZuteilungWithRelations[];
   mitarbeiterList: MitarbeiterWithUser[];
   schichtFilter: SchichtFilter;
-  employeeSearch: string;
   isAdmin: boolean;
   activeCell: ActiveCellEmployee | null;
   onCellClick: (datum: Date, mitarbeiterId: string) => void;
@@ -56,7 +55,6 @@ export default function SchichtplanGridEmployee({
   zuteilungen,
   mitarbeiterList,
   schichtFilter,
-  employeeSearch,
   isAdmin,
   activeCell,
   onCellClick,
@@ -83,18 +81,11 @@ export default function SchichtplanGridEmployee({
     return map;
   }, [zuteilungen]);
 
-  // Filter employees: by search term and/or shift filter
+  // Filter employees by shift filter
   const filteredMitarbeiter = useMemo(() => {
-    let list = mitarbeiterList;
-
-    if (employeeSearch.trim()) {
-      const q = employeeSearch.toLowerCase();
-      list = list.filter((ma) => ma.name.toLowerCase().includes(q));
-    }
-
-    if (schichtFilter.length === 0) return list;
+    if (schichtFilter.length === 0) return mitarbeiterList;
     const NON_WORKING = ["X_FREI", "URLAUB", "KRANK"];
-    return list.filter((ma) =>
+    return mitarbeiterList.filter((ma) =>
       zuteilungen.some((z) => {
         if (z.mitarbeiterId !== ma.id) return false;
         return schichtFilter.some((f) => {
@@ -107,7 +98,7 @@ export default function SchichtplanGridEmployee({
         });
       }),
     );
-  }, [mitarbeiterList, employeeSearch, schichtFilter, zuteilungen]);
+  }, [mitarbeiterList, schichtFilter, zuteilungen]);
 
   return (
     <div className="-mx-2 sm:mx-0">
@@ -250,39 +241,47 @@ export default function SchichtplanGridEmployee({
                         dimmed={dimmed}
                       />
                     ) : isAdmin ? (
-                      vorschlaege?.find((v) => v.mitarbeiterId === ma.id && v.datum === dateKey) ? (
+                      vorschlaege?.find(
+                        (v) => v.mitarbeiterId === ma.id && v.datum === dateKey,
+                      ) ? (
                         <VorschlagCell
-                          vorschlag={vorschlaege.find((v) => v.mitarbeiterId === ma.id && v.datum === dateKey)!}
+                          vorschlag={
+                            vorschlaege.find(
+                              (v) =>
+                                v.mitarbeiterId === ma.id &&
+                                v.datum === dateKey,
+                            )!
+                          }
                           showEmployee={false}
                           onReject={() => onRejectVorschlag?.(ma.id, dateKey)}
                         />
                       ) : (
-                      <div className="flex gap-0.5 sm:gap-1 min-h-[1.5rem] sm:min-h-[3rem]">
-                        <button
-                          type="button"
-                          className="flex items-center justify-center flex-1 rounded-lg
+                        <div className="flex gap-0.5 sm:gap-1 min-h-[1.5rem] sm:min-h-[3rem]">
+                          <button
+                            type="button"
+                            className="flex items-center justify-center flex-1 rounded-lg
                             border border-dashed border-base-300/60 text-base-content/20
                             hover:border-primary/40 hover:text-primary/60 hover:bg-primary/5
                             transition-all cursor-pointer"
-                          onClick={() => onCellClick(date, ma.id)}
-                          aria-label={`Zuteilung für ${ma.name} am ${WOCHENTAGE[i]}`}
-                        >
-                          <MdAdd className="size-3 sm:size-5" />
-                        </button>
-                        {clipboard && (
-                          <button
-                            type="button"
-                            className="flex items-center justify-center w-8 rounded-lg
+                            onClick={() => onCellClick(date, ma.id)}
+                            aria-label={`Zuteilung für ${ma.name} am ${WOCHENTAGE[i]}`}
+                          >
+                            <MdAdd className="size-3 sm:size-5" />
+                          </button>
+                          {clipboard && (
+                            <button
+                              type="button"
+                              className="flex items-center justify-center w-8 rounded-lg
                               border border-dashed border-info/40 text-info/40
                               hover:border-info hover:text-info hover:bg-info/5
                               transition-all cursor-pointer"
-                            onClick={() => onPaste(ma.id, dateKey)}
-                            aria-label="Einfügen"
-                          >
-                            <MdContentPaste className="size-4" />
-                          </button>
-                        )}
-                      </div>
+                              onClick={() => onPaste(ma.id, dateKey)}
+                              aria-label="Einfügen"
+                            >
+                              <MdContentPaste className="size-4" />
+                            </button>
+                          )}
+                        </div>
                       )
                     ) : (
                       <div className="min-h-[1.5rem] sm:min-h-[3rem]" />

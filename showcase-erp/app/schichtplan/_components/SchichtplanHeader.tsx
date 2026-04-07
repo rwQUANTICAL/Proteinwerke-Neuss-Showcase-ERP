@@ -6,12 +6,9 @@ import {
   MdCalendarMonth,
   MdPeople,
   MdFactory,
-  MdSearch,
-  MdClose,
   MdDownload,
   MdAutoAwesome,
 } from "react-icons/md";
-import { useState } from "react";
 import VorschlagToolbar from "./VorschlagToolbar";
 import {
   SCHICHT_TYP_LABELS,
@@ -33,8 +30,6 @@ interface SchichtplanHeaderProps {
   onViewModeChange: (mode: ViewMode) => void;
   schichtFilter: SchichtFilter;
   onSchichtFilterChange: (filter: SchichtFilter) => void;
-  employeeSearch: string;
-  onEmployeeSearchChange: (search: string) => void;
   onDownloadPdf: () => void;
   isDownloading: boolean;
   isAdmin: boolean;
@@ -68,14 +63,11 @@ export default function SchichtplanHeader({
   onViewModeChange,
   schichtFilter,
   onSchichtFilterChange,
-  employeeSearch,
-  onEmployeeSearchChange,
   onDownloadPdf,
   isDownloading,
   isAdmin,
   vorschlag,
 }: SchichtplanHeaderProps) {
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const dates = getWeekDates(jahr, kw);
   const startStr = formatDateShort(dates[0]);
   const endStr = formatDateShort(dates[6]);
@@ -121,30 +113,7 @@ export default function SchichtplanHeader({
           <h1 className="text-lg sm:text-2xl font-bold">Schichtplan</h1>
         </div>
 
-        <div className="flex items-center gap-2 ml-auto">
-          {/* Search — employee view, desktop only */}
-          {viewMode === "employee" && (
-            <label className="hidden sm:flex input input-bordered input-xs items-center gap-1.5 w-40">
-              <MdSearch className="size-3.5 text-base-content/40" />
-              <input
-                type="text"
-                className="grow"
-                placeholder="Suchen\u2026"
-                value={employeeSearch}
-                onChange={(e) => onEmployeeSearchChange(e.target.value)}
-              />
-              {employeeSearch && (
-                <button
-                  type="button"
-                  className="btn btn-ghost btn-circle btn-xs"
-                  onClick={() => onEmployeeSearchChange("")}
-                >
-                  <MdClose className="size-3" />
-                </button>
-              )}
-            </label>
-          )}
-
+        <div className="flex flex-wrap items-center gap-2 ml-auto">
           {/* Segmented control — view toggle */}
           <div className="bg-base-200 rounded-lg p-0.5 flex">
             <button
@@ -163,10 +132,11 @@ export default function SchichtplanHeader({
             </button>
           </div>
 
-          {/* Separator */}
+          {/* Separator — desktop only */}
           <div className="hidden sm:block w-px h-6 bg-base-300" />
 
-          {/* Actions — context-dependent */}
+          {/* Actions — desktop only, context-dependent */}
+          <div className="hidden sm:flex items-center gap-1">
           {vorschlag.vorschlagMode ? (
             <VorschlagToolbar
               count={vorschlag.vorschlaege.length}
@@ -206,6 +176,7 @@ export default function SchichtplanHeader({
               )}
             </div>
           )}
+          </div>
         </div>
       </div>
 
@@ -252,78 +223,81 @@ export default function SchichtplanHeader({
           {startStr} – {endStr} {jahr}
         </span>
 
-        {/* Mobile search toggle */}
-        {viewMode === "employee" && (
-          <div className="sm:hidden ml-auto">
-            {mobileSearchOpen ? (
-              <label className="flex input input-bordered input-xs items-center gap-1.5 w-28">
-                <MdSearch className="size-3.5 text-base-content/40 shrink-0" />
-                <input
-                  type="text"
-                  className="grow min-w-0"
-                  placeholder="Suchen…"
-                  value={employeeSearch}
-                  onChange={(e) => onEmployeeSearchChange(e.target.value)}
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  className="btn btn-ghost btn-circle btn-xs"
-                  onClick={() => {
-                    onEmployeeSearchChange("");
-                    setMobileSearchOpen(false);
-                  }}
-                >
-                  <MdClose className="size-3" />
-                </button>
-              </label>
-            ) : (
+        {/* Mobile-only actions */}
+        <div className="sm:hidden ml-auto flex items-center gap-1">
+          {vorschlag.vorschlagMode ? (
+            <VorschlagToolbar
+              count={vorschlag.vorschlaege.length}
+              onAcceptAll={vorschlag.acceptAll}
+              onCancel={vorschlag.cancel}
+              isSaving={vorschlag.isSaving}
+            />
+          ) : (
+            <>
               <button
-                type="button"
-                className="btn btn-ghost btn-xs btn-square"
-                onClick={() => setMobileSearchOpen(true)}
-                aria-label="Mitarbeiter suchen"
+                className="btn btn-ghost btn-xs gap-1"
+                onClick={onDownloadPdf}
+                disabled={isDownloading}
+                aria-label="Als PDF herunterladen"
               >
-                <MdSearch className="size-4" />
+                {isDownloading ? (
+                  <span className="loading loading-spinner loading-xs" />
+                ) : (
+                  <MdDownload className="size-4" />
+                )}
               </button>
-            )}
-          </div>
-        )}
+              {isAdmin && (
+                <button
+                  className="btn btn-ghost btn-xs gap-1"
+                  onClick={vorschlag.generate}
+                  disabled={vorschlag.isGenerating}
+                  aria-label="Automatisch zuweisen"
+                >
+                  {vorschlag.isGenerating ? (
+                    <span className="loading loading-spinner loading-xs" />
+                  ) : (
+                    <MdAutoAwesome className="size-4 text-amber-500" />
+                  )}
+                </button>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
-      {/* Row 3: Combined legend + filters — hidden on mobile */}
+      {/* Row 3: Filters — hidden on mobile */}
       <div className="hidden sm:flex items-center gap-1.5 flex-wrap">
-          <button
-            className={`btn btn-xs gap-1 ${schichtFilter.length === 0 ? "btn-neutral btn-soft" : "btn-ghost"}`}
-            onClick={() => onSchichtFilterChange([])}
-          >
-            Alle
-          </button>
-          {(viewMode === "facility"
-            ? FACILITY_FILTER_TYPEN
-            : ALL_SCHICHT_TYPEN
-          ).map((typ) => {
-            const colors = SCHICHT_TYP_COLORS[typ];
-            const isActive = schichtFilter.includes(typ);
-            return (
-              <button
-                key={typ}
-                className={`btn btn-xs gap-1.5 ${isActive ? `${colors?.dot ?? ""} text-white border-transparent` : "btn-ghost"}`}
-                onClick={() =>
-                  onSchichtFilterChange(
-                    isActive
-                      ? schichtFilter.filter((f) => f !== typ)
-                      : [...schichtFilter, typ],
-                  )
-                }
-              >
-                <span
-                  className={`inline-block w-2.5 h-2.5 rounded-sm ${isActive ? "bg-white/60" : (colors?.dot ?? "bg-base-300")}`}
-                />
-                {SCHICHT_TYP_LABELS[typ]}
-              </button>
-            );
-          })}
+        <button
+          className={`btn btn-xs gap-1 ${schichtFilter.length === 0 ? "btn-neutral btn-soft" : "btn-ghost"}`}
+          onClick={() => onSchichtFilterChange([])}
+        >
+          Alle
+        </button>
+        {(viewMode === "facility"
+          ? FACILITY_FILTER_TYPEN
+          : ALL_SCHICHT_TYPEN
+        ).map((typ) => {
+          const colors = SCHICHT_TYP_COLORS[typ];
+          const isActive = schichtFilter.includes(typ);
+          return (
+            <button
+              key={typ}
+              className={`btn btn-xs gap-1.5 ${isActive ? `${colors?.dot ?? ""} text-white border-transparent` : "btn-ghost"}`}
+              onClick={() =>
+                onSchichtFilterChange(
+                  isActive
+                    ? schichtFilter.filter((f) => f !== typ)
+                    : [...schichtFilter, typ],
+                )
+              }
+            >
+              <span
+                className={`inline-block w-2.5 h-2.5 rounded-sm ${isActive ? "bg-white/60" : (colors?.dot ?? "bg-base-300")}`}
+              />
+              {SCHICHT_TYP_LABELS[typ]}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

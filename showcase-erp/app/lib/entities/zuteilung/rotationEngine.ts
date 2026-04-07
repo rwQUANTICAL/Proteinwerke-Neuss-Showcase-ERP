@@ -1,7 +1,5 @@
 import { getWeekDates } from "@/app/lib/entities/schichtplan/schichtplanConstants";
 
-const NON_WORKING = ["URLAUB", "KRANK", "X_FREI"];
-
 /**
  * 8-day rotation cycle:
  *   0,1 = FRUEH | 2,3 = SPAET | 4,5 = NACHT | 6,7 = OFF

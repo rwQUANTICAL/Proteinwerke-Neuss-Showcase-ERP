@@ -207,35 +207,40 @@ export default function SchichtplanGridFacility({
                       ) : isAdmin ? (
                         <>
                           {vorschlaege
-                            ?.filter((v) =>
-                              v.teilanlage === anlage &&
-                              v.datum === dateKey &&
-                              !["X_FREI", "URLAUB", "KRANK"].includes(v.schicht)
+                            ?.filter(
+                              (v) =>
+                                v.teilanlage === anlage &&
+                                v.datum === dateKey &&
+                                !["X_FREI", "URLAUB", "KRANK"].includes(
+                                  v.schicht,
+                                ),
                             )
                             .sort(
                               (a, b) =>
                                 (SCHICHT_SORT_ORDER[a.schicht] ?? 99) -
-                                (SCHICHT_SORT_ORDER[b.schicht] ?? 99)
+                                (SCHICHT_SORT_ORDER[b.schicht] ?? 99),
                             )
                             .map((v) => (
                               <VorschlagCell
                                 key={`vs-${v.mitarbeiterId}-${v.datum}`}
                                 vorschlag={v}
                                 showEmployee={true}
-                                onReject={() => onRejectVorschlag?.(v.mitarbeiterId, v.datum)}
+                                onReject={() =>
+                                  onRejectVorschlag?.(v.mitarbeiterId, v.datum)
+                                }
                               />
                             ))}
                           <button
-                          type="button"
-                          className="flex items-center justify-center w-full h-8 rounded-lg
+                            type="button"
+                            className="flex items-center justify-center w-full h-8 rounded-lg
                             border border-dashed border-base-300/60 text-base-content/20
                             hover:border-primary/40 hover:text-primary/60 hover:bg-primary/5
                             transition-all cursor-pointer"
-                          onClick={() => onCellClick(date, anlage)}
-                          aria-label={`Zuteilung für ${TEILANLAGE_LABELS[anlage]} am ${WOCHENTAGE[i]}`}
-                        >
-                          <MdAdd className="size-4" />
-                        </button>
+                            onClick={() => onCellClick(date, anlage)}
+                            aria-label={`Zuteilung für ${TEILANLAGE_LABELS[anlage]} am ${WOCHENTAGE[i]}`}
+                          >
+                            <MdAdd className="size-4" />
+                          </button>
                         </>
                       ) : null}
                     </div>
