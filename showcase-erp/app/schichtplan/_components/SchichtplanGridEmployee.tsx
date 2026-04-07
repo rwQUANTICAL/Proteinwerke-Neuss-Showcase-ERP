@@ -5,7 +5,9 @@ import { MdAdd, MdEdit, MdContentPaste } from "react-icons/md";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import ZuteilungCell from "./ZuteilungCell";
+import VorschlagCell from "./VorschlagCell";
 import InlineAssigner from "./InlineAssigner";
+import type { VorschlagItem } from "@/app/lib/entities/zuteilung/vorschlagTypes";
 import {
   WOCHENTAGE,
   SKILL_SHORT,
@@ -44,6 +46,8 @@ interface SchichtplanGridEmployeeProps {
   onEditEmployee: (mitarbeiter: MitarbeiterWithUser) => void;
   clipboard: { schicht: string; teilanlage: string } | null;
   onPaste: (mitarbeiterId: string, datum: string) => void;
+  vorschlaege?: VorschlagItem[];
+  onRejectVorschlag?: (mitarbeiterId: string, datum: string) => void;
 }
 
 export default function SchichtplanGridEmployee({
@@ -64,6 +68,8 @@ export default function SchichtplanGridEmployee({
   onEditEmployee,
   clipboard,
   onPaste,
+  vorschlaege,
+  onRejectVorschlag,
 }: SchichtplanGridEmployeeProps) {
   const weekDates = useMemo(() => getWeekDates(jahr, kw), [jahr, kw]);
 
@@ -106,6 +112,12 @@ export default function SchichtplanGridEmployee({
   return (
     <div className="-mx-2 sm:mx-0">
       <table className="table table-xs sm:table-sm table-fixed w-full">
+        <colgroup>
+          <col className="w-[70px] sm:w-[210px]" />
+          {weekDates.map((_, i) => (
+            <col key={i} />
+          ))}
+        </colgroup>
         <thead>
           <tr>
             <th className="w-[70px] sm:w-[210px] sticky left-0 z-10 border-r border-base-200 bg-base-100 px-1 sm:px-2">
@@ -238,6 +250,13 @@ export default function SchichtplanGridEmployee({
                         dimmed={dimmed}
                       />
                     ) : isAdmin ? (
+                      vorschlaege?.find((v) => v.mitarbeiterId === ma.id && v.datum === dateKey) ? (
+                        <VorschlagCell
+                          vorschlag={vorschlaege.find((v) => v.mitarbeiterId === ma.id && v.datum === dateKey)!}
+                          showEmployee={false}
+                          onReject={() => onRejectVorschlag?.(ma.id, dateKey)}
+                        />
+                      ) : (
                       <div className="flex gap-0.5 sm:gap-1 min-h-[1.5rem] sm:min-h-[3rem]">
                         <button
                           type="button"
@@ -264,6 +283,7 @@ export default function SchichtplanGridEmployee({
                           </button>
                         )}
                       </div>
+                      )
                     ) : (
                       <div className="min-h-[1.5rem] sm:min-h-[3rem]" />
                     )}

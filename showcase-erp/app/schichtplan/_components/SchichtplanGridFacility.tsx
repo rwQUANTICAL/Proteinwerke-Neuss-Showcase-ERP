@@ -5,7 +5,9 @@ import { MdAdd } from "react-icons/md";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import ZuteilungCell from "./ZuteilungCell";
+import VorschlagCell from "./VorschlagCell";
 import InlineAssigner from "./InlineAssigner";
+import type { VorschlagItem } from "@/app/lib/entities/zuteilung/vorschlagTypes";
 import {
   WOCHENTAGE,
   ALL_TEILANLAGEN,
@@ -42,6 +44,8 @@ interface SchichtplanGridFacilityProps {
   onDelete: (id: string) => void;
   onEdit: (zuteilung: ZuteilungWithRelations) => void;
   onCopy: (zuteilung: ZuteilungWithRelations) => void;
+  vorschlaege?: VorschlagItem[];
+  onRejectVorschlag?: (mitarbeiterId: string, datum: string) => void;
 }
 
 export default function SchichtplanGridFacility({
@@ -58,6 +62,8 @@ export default function SchichtplanGridFacility({
   onDelete,
   onEdit,
   onCopy,
+  vorschlaege,
+  onRejectVorschlag,
 }: SchichtplanGridFacilityProps) {
   const weekDates = useMemo(() => getWeekDates(jahr, kw), [jahr, kw]);
 
@@ -90,6 +96,12 @@ export default function SchichtplanGridFacility({
   return (
     <div className="-mx-2 sm:mx-0">
       <table className="table table-xs sm:table-sm table-fixed w-full">
+        <colgroup>
+          <col className="w-[60px] sm:w-[140px]" />
+          {weekDates.map((_, i) => (
+            <col key={i} />
+          ))}
+        </colgroup>
         <thead>
           <tr>
             <th className="w-[60px] sm:w-[140px] sticky left-0 z-10 border-r border-base-200 bg-base-100 px-1 sm:px-2 text-[10px] sm:text-sm">
@@ -193,7 +205,27 @@ export default function SchichtplanGridFacility({
                           onCancel={onCancel}
                         />
                       ) : isAdmin ? (
-                        <button
+                        <>
+                          {vorschlaege
+                            ?.filter((v) =>
+                              v.teilanlage === anlage &&
+                              v.datum === dateKey &&
+                              !["X_FREI", "URLAUB", "KRANK"].includes(v.schicht)
+                            )
+                            .sort(
+                              (a, b) =>
+                                (SCHICHT_SORT_ORDER[a.schicht] ?? 99) -
+                                (SCHICHT_SORT_ORDER[b.schicht] ?? 99)
+                            )
+                            .map((v) => (
+                              <VorschlagCell
+                                key={`vs-${v.mitarbeiterId}-${v.datum}`}
+                                vorschlag={v}
+                                showEmployee={true}
+                                onReject={() => onRejectVorschlag?.(v.mitarbeiterId, v.datum)}
+                              />
+                            ))}
+                          <button
                           type="button"
                           className="flex items-center justify-center w-full h-8 rounded-lg
                             border border-dashed border-base-300/60 text-base-content/20
@@ -204,6 +236,7 @@ export default function SchichtplanGridFacility({
                         >
                           <MdAdd className="size-4" />
                         </button>
+                        </>
                       ) : null}
                     </div>
                   </td>

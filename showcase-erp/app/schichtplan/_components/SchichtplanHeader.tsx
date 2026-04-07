@@ -9,8 +9,10 @@ import {
   MdSearch,
   MdClose,
   MdDownload,
+  MdAutoAwesome,
 } from "react-icons/md";
 import { useState } from "react";
+import VorschlagToolbar from "./VorschlagToolbar";
 import {
   SCHICHT_TYP_LABELS,
   SCHICHT_TYP_COLORS,
@@ -35,6 +37,16 @@ interface SchichtplanHeaderProps {
   onEmployeeSearchChange: (search: string) => void;
   onDownloadPdf: () => void;
   isDownloading: boolean;
+  isAdmin: boolean;
+  vorschlag: {
+    vorschlagMode: boolean;
+    vorschlaege: unknown[];
+    generate: () => void;
+    cancel: () => void;
+    acceptAll: () => void;
+    isGenerating: boolean;
+    isSaving: boolean;
+  };
 }
 
 function getMaxKw(year: number): number {
@@ -60,6 +72,8 @@ export default function SchichtplanHeader({
   onEmployeeSearchChange,
   onDownloadPdf,
   isDownloading,
+  isAdmin,
+  vorschlag,
 }: SchichtplanHeaderProps) {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const dates = getWeekDates(jahr, kw);
@@ -100,24 +114,48 @@ export default function SchichtplanHeader({
 
   return (
     <div className="flex flex-col gap-1.5 sm:gap-3">
-      {/* Row 1: Title + View Toggle + PDF Download */}
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 sm:gap-3">
+      {/* Row 1: Title + Controls + Actions */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <MdCalendarMonth className="size-5 sm:size-8 text-primary" />
           <h1 className="text-lg sm:text-2xl font-bold">Schichtplan</h1>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="join">
+        <div className="flex items-center gap-2 ml-auto">
+          {/* Search — employee view, desktop only */}
+          {viewMode === "employee" && (
+            <label className="hidden sm:flex input input-bordered input-xs items-center gap-1.5 w-40">
+              <MdSearch className="size-3.5 text-base-content/40" />
+              <input
+                type="text"
+                className="grow"
+                placeholder="Suchen\u2026"
+                value={employeeSearch}
+                onChange={(e) => onEmployeeSearchChange(e.target.value)}
+              />
+              {employeeSearch && (
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-circle btn-xs"
+                  onClick={() => onEmployeeSearchChange("")}
+                >
+                  <MdClose className="size-3" />
+                </button>
+              )}
+            </label>
+          )}
+
+          {/* Segmented control — view toggle */}
+          <div className="bg-base-200 rounded-lg p-0.5 flex">
             <button
-              className={`btn join-item btn-xs sm:btn-sm ${viewMode === "employee" ? "btn-primary" : "btn-ghost"}`}
+              className={`btn btn-xs sm:btn-sm border-none ${viewMode === "employee" ? "bg-base-100 shadow-sm" : "btn-ghost"}`}
               onClick={() => onViewModeChange("employee")}
             >
               <MdPeople className="size-4" />
               <span className="hidden sm:inline">Mitarbeiter</span>
             </button>
             <button
-              className={`btn join-item btn-xs sm:btn-sm ${viewMode === "facility" ? "btn-primary" : "btn-ghost"}`}
+              className={`btn btn-xs sm:btn-sm border-none ${viewMode === "facility" ? "bg-base-100 shadow-sm" : "btn-ghost"}`}
               onClick={() => onViewModeChange("facility")}
             >
               <MdFactory className="size-4" />
@@ -125,19 +163,49 @@ export default function SchichtplanHeader({
             </button>
           </div>
 
-          <button
-            className="btn btn-outline btn-xs sm:btn-sm gap-1"
-            onClick={onDownloadPdf}
-            disabled={isDownloading}
-            aria-label="Als PDF herunterladen"
-          >
-            {isDownloading ? (
-              <span className="loading loading-spinner loading-xs" />
-            ) : (
-              <MdDownload className="size-4" />
-            )}
-            <span className="hidden sm:inline">PDF</span>
-          </button>
+          {/* Separator */}
+          <div className="hidden sm:block w-px h-6 bg-base-300" />
+
+          {/* Actions — context-dependent */}
+          {vorschlag.vorschlagMode ? (
+            <VorschlagToolbar
+              count={vorschlag.vorschlaege.length}
+              onAcceptAll={vorschlag.acceptAll}
+              onCancel={vorschlag.cancel}
+              isSaving={vorschlag.isSaving}
+            />
+          ) : (
+            <div className="flex items-center gap-1">
+              <button
+                className="btn btn-ghost btn-xs sm:btn-sm gap-1"
+                onClick={onDownloadPdf}
+                disabled={isDownloading}
+                aria-label="Als PDF herunterladen"
+              >
+                {isDownloading ? (
+                  <span className="loading loading-spinner loading-xs" />
+                ) : (
+                  <MdDownload className="size-4" />
+                )}
+                <span className="hidden sm:inline">PDF</span>
+              </button>
+              {isAdmin && (
+                <button
+                  className="btn btn-ghost btn-xs sm:btn-sm gap-1"
+                  onClick={vorschlag.generate}
+                  disabled={vorschlag.isGenerating}
+                  aria-label="Automatisch zuweisen"
+                >
+                  {vorschlag.isGenerating ? (
+                    <span className="loading loading-spinner loading-xs" />
+                  ) : (
+                    <MdAutoAwesome className="size-4 text-amber-500" />
+                  )}
+                  <span className="hidden sm:inline">Auto</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -223,11 +291,10 @@ export default function SchichtplanHeader({
         )}
       </div>
 
-      {/* Row 3: Combined legend + filters + Search — hidden on mobile */}
-      <div className="hidden sm:flex items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 flex-wrap">
+      {/* Row 3: Combined legend + filters — hidden on mobile */}
+      <div className="hidden sm:flex items-center gap-1.5 flex-wrap">
           <button
-            className={`btn btn-xs gap-1 ${schichtFilter.length === 0 ? "btn-primary" : "btn-ghost"}`}
+            className={`btn btn-xs gap-1 ${schichtFilter.length === 0 ? "btn-neutral btn-soft" : "btn-ghost"}`}
             onClick={() => onSchichtFilterChange([])}
           >
             Alle
@@ -257,29 +324,6 @@ export default function SchichtplanHeader({
               </button>
             );
           })}
-        </div>
-
-        {viewMode === "employee" && (
-          <label className="flex input input-bordered input-xs items-center gap-1.5 w-44 shrink-0">
-            <MdSearch className="size-3.5 text-base-content/40" />
-            <input
-              type="text"
-              className="grow"
-              placeholder="Suchen…"
-              value={employeeSearch}
-              onChange={(e) => onEmployeeSearchChange(e.target.value)}
-            />
-            {employeeSearch && (
-              <button
-                type="button"
-                className="btn btn-ghost btn-circle btn-xs"
-                onClick={() => onEmployeeSearchChange("")}
-              >
-                <MdClose className="size-3" />
-              </button>
-            )}
-          </label>
-        )}
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ import type { ActiveCellFacility } from "./_components/SchichtplanGridFacility";
 import EditModal from "./_components/EditModal";
 import MitarbeiterEditModal from "./_components/MitarbeiterEditModal";
 import ClipboardIndicator from "./_components/ClipboardIndicator";
+import { useVorschlagState } from "./_components/useVorschlagState";
 
 const initialKw = getKwForDate(new Date());
 
@@ -58,6 +59,7 @@ export default function SchichtplanPage() {
   const mitarbeiterQuery = useMitarbeiterQuery();
   const createMutation = useCreateZuteilungMutation(jahr, kw);
   const deleteMutation = useDeleteZuteilungMutation(jahr, kw);
+  const vorschlag = useVorschlagState(jahr, kw, zeitplanQuery.data?.id);
 
   const handleKwChange = useCallback((newJahr: number, newKw: number) => {
     setJahr(newJahr);
@@ -238,6 +240,8 @@ export default function SchichtplanPage() {
           onEmployeeSearchChange={setEmployeeSearch}
           onDownloadPdf={handleDownloadPdf}
           isDownloading={isDownloading}
+          isAdmin={isAdmin}
+          vorschlag={vorschlag}
         />
       </div>
 
@@ -283,6 +287,8 @@ export default function SchichtplanPage() {
               onEditEmployee={handleEditEmployee}
               clipboard={isAdmin ? clipboard : null}
               onPaste={handlePaste}
+              vorschlaege={vorschlag.vorschlagMode ? vorschlag.vorschlaege : undefined}
+              onRejectVorschlag={vorschlag.reject}
             />
           ) : (
             <SchichtplanGridFacility
@@ -299,6 +305,8 @@ export default function SchichtplanPage() {
               onDelete={handleDelete}
               onEdit={handleEdit}
               onCopy={handleCopy}
+              vorschlaege={vorschlag.vorschlagMode ? vorschlag.vorschlaege : undefined}
+              onRejectVorschlag={vorschlag.reject}
             />
           )}
         </div>
