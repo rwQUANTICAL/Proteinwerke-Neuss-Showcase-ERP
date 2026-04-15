@@ -147,12 +147,21 @@ export default function SchichtplanGridFacility({
                   >
                     {WOCHENTAGE[i]}
                     {dayWarnings && (
-                      <span
-                        className="tooltip tooltip-bottom"
-                        data-tip={dayWarnings.join(", ")}
-                      >
-                        <MdErrorOutline className="size-3.5 text-warning" />
-                      </span>
+                      <div className={`dropdown dropdown-hover dropdown-bottom ${i <= 1 ? "dropdown-start" : i >= 5 ? "dropdown-end" : "dropdown-center"}`}>
+                        <div tabIndex={0} role="button" className="cursor-pointer">
+                          <MdErrorOutline className="size-3.5 text-warning" />
+                        </div>
+                        <ul
+                          tabIndex={0}
+                          className="dropdown-content z-50 menu menu-xs bg-base-100 rounded-lg shadow-lg border border-base-300 p-2 w-48 sm:w-56"
+                        >
+                          {dayWarnings.map((w, wi) => (
+                            <li key={wi} className="text-[10px] sm:text-xs text-warning py-0.5">
+                              <span className="px-1">{w}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                   <div className="text-[10px] sm:text-xs font-normal text-base-content/60 hidden sm:block">
@@ -246,33 +255,35 @@ export default function SchichtplanGridFacility({
                           />
                         ) : isAdmin ? (
                           <>
-                            {vorschlaege
-                              ?.filter(
-                                (v) =>
-                                  v.teilanlage === anlage &&
-                                  v.datum === dateKey &&
-                                  !["X_FREI", "URLAUB", "KRANK"].includes(
-                                    v.schicht,
-                                  ),
-                              )
-                              .sort(
-                                (a, b) =>
-                                  (SCHICHT_SORT_ORDER[a.schicht] ?? 99) -
-                                  (SCHICHT_SORT_ORDER[b.schicht] ?? 99),
-                              )
-                              .map((v) => (
-                                <VorschlagCell
-                                  key={`vs-${v.mitarbeiterId}-${v.datum}`}
-                                  vorschlag={v}
-                                  showEmployee={true}
-                                  onReject={() =>
-                                    onRejectVorschlag?.(
-                                      v.mitarbeiterId,
-                                      v.datum,
-                                    )
-                                  }
-                                />
-                              ))}
+                            <div className="hidden sm:contents">
+                              {vorschlaege
+                                ?.filter(
+                                  (v) =>
+                                    v.teilanlage === anlage &&
+                                    v.datum === dateKey &&
+                                    !["X_FREI", "URLAUB", "KRANK"].includes(
+                                      v.schicht,
+                                    ),
+                                )
+                                .sort(
+                                  (a, b) =>
+                                    (SCHICHT_SORT_ORDER[a.schicht] ?? 99) -
+                                    (SCHICHT_SORT_ORDER[b.schicht] ?? 99),
+                                )
+                                .map((v) => (
+                                  <VorschlagCell
+                                    key={`vs-${v.mitarbeiterId}-${v.datum}`}
+                                    vorschlag={v}
+                                    showEmployee={true}
+                                    onReject={() =>
+                                      onRejectVorschlag?.(
+                                        v.mitarbeiterId,
+                                        v.datum,
+                                      )
+                                    }
+                                  />
+                                ))}
+                            </div>
                             <button
                               type="button"
                               className="flex items-center justify-center w-full h-8 rounded-lg

@@ -161,12 +161,21 @@ export default function SchichtplanGridEmployee({
                   >
                     {WOCHENTAGE[i]}
                     {dayWarnings && (
-                      <span
-                        className="tooltip tooltip-bottom"
-                        data-tip={dayWarnings.join(", ")}
-                      >
-                        <MdErrorOutline className="size-3.5 text-warning" />
-                      </span>
+                      <div className={`dropdown dropdown-hover dropdown-bottom ${i <= 1 ? "dropdown-start" : i >= 5 ? "dropdown-end" : "dropdown-center"}`}>
+                        <div tabIndex={0} role="button" className="cursor-pointer">
+                          <MdErrorOutline className="size-3.5 text-warning" />
+                        </div>
+                        <ul
+                          tabIndex={0}
+                          className="dropdown-content z-50 menu menu-xs bg-base-100 rounded-lg shadow-lg border border-base-300 p-2 w-48 sm:w-56"
+                        >
+                          {dayWarnings.map((w, wi) => (
+                            <li key={wi} className="text-[10px] sm:text-xs text-warning py-0.5">
+                              <span className="px-1">{w}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
                   </div>
                   <div className="text-[10px] sm:text-xs font-normal text-base-content/60 hidden sm:block">
@@ -287,11 +296,13 @@ export default function SchichtplanGridEmployee({
                       />
                     ) : isAdmin ? (
                       matchingVorschlag ? (
-                        <VorschlagCell
-                          vorschlag={matchingVorschlag}
-                          showEmployee={false}
-                          onReject={() => onRejectVorschlag?.(ma.id, dateKey)}
-                        />
+                        <div className="hidden sm:block">
+                          <VorschlagCell
+                            vorschlag={matchingVorschlag}
+                            showEmployee={false}
+                            onReject={() => onRejectVorschlag?.(ma.id, dateKey)}
+                          />
+                        </div>
                       ) : (
                         <div className="flex gap-0.5 sm:gap-1 min-h-[1.5rem] sm:min-h-[3rem]">
                           <button
