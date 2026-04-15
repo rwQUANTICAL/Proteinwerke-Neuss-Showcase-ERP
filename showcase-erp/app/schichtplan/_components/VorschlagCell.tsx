@@ -40,7 +40,8 @@ export default function VorschlagCell({
           <MdAutoAwesome className="size-3 text-accent shrink-0" />
           <span className={`font-semibold truncate ${colors.text}`}>
             <span className="sm:hidden text-[10px]">
-              {SCHICHT_TYP_SHORT[vorschlag.schicht] ?? SCHICHT_TYP_LABELS[vorschlag.schicht]}
+              {SCHICHT_TYP_SHORT[vorschlag.schicht] ??
+                SCHICHT_TYP_LABELS[vorschlag.schicht]}
             </span>
             <span className="hidden sm:inline">
               {SCHICHT_TYP_LABELS[vorschlag.schicht]}
@@ -87,9 +88,7 @@ export default function VorschlagCell({
           <span className="sm:hidden">
             {vorschlag.mitarbeiterName?.split(" ").pop()}
           </span>
-          <span className="hidden sm:inline">
-            {vorschlag.mitarbeiterName}
-          </span>
+          <span className="hidden sm:inline">{vorschlag.mitarbeiterName}</span>
         </span>
       )}
     </div>
