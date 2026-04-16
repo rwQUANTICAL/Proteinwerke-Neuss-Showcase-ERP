@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useZeitplanQuery } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import { useMitarbeiterQuery } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
@@ -34,8 +34,19 @@ export default function SchichtplanPage() {
 
   const [jahr, setJahr] = useState(initialKw.jahr);
   const [kw, setKw] = useState(initialKw.kw);
-  const [viewMode, setViewMode] = useState<ViewMode>("employee");
+  const [viewMode, setViewMode] = useState<ViewMode>(
+    isAdmin ? "facility" : "employee",
+  );
   const [schichtFilter, setSchichtFilter] = useState<SchichtFilter>([]);
+
+  // Switch to facility view once admin session loads
+  const initialViewApplied = useRef(false);
+  useEffect(() => {
+    if (isAdmin && !initialViewApplied.current) {
+      setViewMode("facility");
+      initialViewApplied.current = true;
+    }
+  }, [isAdmin]);
   const [activeCellEmp, setActiveCellEmp] = useState<ActiveCellEmployee | null>(
     null,
   );
