@@ -23,6 +23,9 @@ export default function MitarbeiterTable() {
   const [editTarget, setEditTarget] = useState<MitarbeiterWithUser | null>(
     null,
   );
+  const [deleteTarget, setDeleteTarget] = useState<MitarbeiterWithUser | null>(
+    null,
+  );
   const [search, setSearch] = useState("");
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
@@ -180,8 +183,7 @@ export default function MitarbeiterTable() {
                       </button>
                       <button
                         className="btn btn-ghost btn-xs btn-square text-error"
-                        onClick={() => deleteMutation.mutate(ma.id)}
-                        disabled={deleteMutation.isPending}
+                        onClick={() => setDeleteTarget(ma)}
                         aria-label="Löschen"
                       >
                         <MdDelete className="size-4" />
@@ -238,8 +240,7 @@ export default function MitarbeiterTable() {
                 </button>
                 <button
                   className="btn btn-ghost btn-xs btn-square text-error"
-                  onClick={() => deleteMutation.mutate(ma.id)}
-                  disabled={deleteMutation.isPending}
+                  onClick={() => setDeleteTarget(ma)}
                   aria-label="Löschen"
                 >
                   <MdDelete className="size-4" />
@@ -255,6 +256,55 @@ export default function MitarbeiterTable() {
           mitarbeiter={editTarget}
           onClose={() => setEditTarget(null)}
         />
+      )}
+
+      {deleteTarget && (
+        <dialog className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Mitarbeiter löschen</h3>
+            <p className="py-4">
+              Möchten Sie <strong>{deleteTarget.name}</strong> (
+              {deleteTarget.referenzNummer}) wirklich löschen?
+              {deleteTarget.user && (
+                <>
+                  {" "}
+                  Das zugehörige Benutzerkonto (
+                  <span className="text-success">
+                    {deleteTarget.user.email}
+                  </span>
+                  ) wird ebenfalls gelöscht.
+                </>
+              )}
+            </p>
+            <div className="modal-action">
+              <button
+                className="btn btn-ghost"
+                onClick={() => setDeleteTarget(null)}
+                disabled={deleteMutation.isPending}
+              >
+                Abbrechen
+              </button>
+              <button
+                className="btn btn-error"
+                disabled={deleteMutation.isPending}
+                onClick={() =>
+                  deleteMutation.mutate(deleteTarget.id, {
+                    onSuccess: () => setDeleteTarget(null),
+                  })
+                }
+              >
+                {deleteMutation.isPending ? (
+                  <span className="loading loading-spinner loading-xs" />
+                ) : (
+                  "Löschen"
+                )}
+              </button>
+            </div>
+          </div>
+          <form method="dialog" className="modal-backdrop">
+            <button onClick={() => setDeleteTarget(null)}>close</button>
+          </form>
+        </dialog>
       )}
     </div>
   );

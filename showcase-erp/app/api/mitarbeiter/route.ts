@@ -81,14 +81,26 @@ export async function POST(request: NextRequest) {
       crypto.randomBytes(12).toString("base64url").slice(0, 16) + "!A1";
 
     // Create user account via Better Auth admin API
-    const created = await auth.api.createUser({
-      body: {
-        email: account.email,
-        password: generatedPassword,
-        name: account.name,
-        role: "user",
-      },
-    });
+    let created;
+    try {
+      created = await auth.api.createUser({
+        body: {
+          email: account.email,
+          password: generatedPassword,
+          name: account.name,
+          role: "user",
+        },
+      });
+    } catch (err: unknown) {
+      const apiErr = err as { body?: { code?: string } };
+      if (apiErr.body?.code === "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL") {
+        return NextResponse.json(
+          { error: "Ein Benutzerkonto mit dieser E-Mail existiert bereits." },
+          { status: 409 }
+        );
+      }
+      throw err;
+    }
 
     if (!created?.user) {
       return NextResponse.json(
