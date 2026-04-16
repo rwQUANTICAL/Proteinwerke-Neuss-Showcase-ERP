@@ -224,45 +224,20 @@ export default function SchichtplanHeader({
           {startStr} – {endStr} {jahr}
         </span>
 
-        {/* Mobile-only actions */}
+        {/* Mobile-only actions (no auto-generation on mobile) */}
         <div className="sm:hidden ml-auto flex items-center gap-1">
-          {vorschlag.vorschlagMode ? (
-            <VorschlagToolbar
-              count={vorschlag.vorschlaege.length}
-              onAcceptAll={vorschlag.acceptAll}
-              onCancel={vorschlag.cancel}
-              isSaving={vorschlag.isSaving}
-            />
-          ) : (
-            <>
-              <button
-                className="btn btn-ghost btn-xs gap-1"
-                onClick={onDownloadPdf}
-                disabled={isDownloading}
-                aria-label="Als PDF herunterladen"
-              >
-                {isDownloading ? (
-                  <LoadingLogo size={16} />
-                ) : (
-                  <MdDownload className="size-4" />
-                )}
-              </button>
-              {isAdmin && (
-                <button
-                  className="btn btn-ghost btn-xs gap-1"
-                  onClick={vorschlag.generate}
-                  disabled={vorschlag.isGenerating}
-                  aria-label="Automatisch zuweisen"
-                >
-                  {vorschlag.isGenerating ? (
-                    <LoadingLogo size={16} />
-                  ) : (
-                    <MdAutoAwesome className="size-4 text-amber-500" />
-                  )}
-                </button>
-              )}
-            </>
-          )}
+          <button
+            className="btn btn-ghost btn-xs gap-1"
+            onClick={onDownloadPdf}
+            disabled={isDownloading}
+            aria-label="Als PDF herunterladen"
+          >
+            {isDownloading ? (
+              <LoadingLogo size={16} />
+            ) : (
+              <MdDownload className="size-4" />
+            )}
+          </button>
         </div>
       </div>
 
