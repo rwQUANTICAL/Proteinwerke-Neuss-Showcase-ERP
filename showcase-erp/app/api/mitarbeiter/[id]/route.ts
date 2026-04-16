@@ -86,7 +86,10 @@ export async function DELETE(
 
   // Also delete the linked Better Auth user account
   if (existing.userId) {
-    await auth.api.removeUser({ body: { userId: existing.userId } });
+    await auth.api.removeUser({
+      headers: await headers(),
+      body: { userId: existing.userId },
+    });
   }
 
   return NextResponse.json({ success: true });
