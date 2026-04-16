@@ -84,5 +84,10 @@ export async function DELETE(
 
   await prisma.mitarbeiter.delete({ where: { id } });
 
+  // Also delete the linked Better Auth user account
+  if (existing.userId) {
+    await auth.api.removeUser({ body: { userId: existing.userId } });
+  }
+
   return NextResponse.json({ success: true });
 }
