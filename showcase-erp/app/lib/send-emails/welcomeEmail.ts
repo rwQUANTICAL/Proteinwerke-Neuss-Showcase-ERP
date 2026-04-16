@@ -24,6 +24,9 @@ export async function sendWelcomeEmail({
     },
     subject: "Ihr Benutzerkonto wurde erstellt",
     html,
+    trackingSettings: {
+      clickTracking: { enable: false, enableText: false },
+    },
   });
 }
 

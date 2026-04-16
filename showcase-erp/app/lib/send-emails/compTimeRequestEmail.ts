@@ -48,6 +48,9 @@ export async function sendCompTimeRequestEmail({
     },
     subject: `Freizeitausgleich: ${escapeHtml(employeeName)} (${formatDateDE(von)} – ${formatDateDE(bis)})`,
     html,
+    trackingSettings: {
+      clickTracking: { enable: false, enableText: false },
+    },
   });
 }
 

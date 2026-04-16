@@ -43,6 +43,9 @@ export async function sendSickReportEmail({
     },
     subject: `Krankmeldung: ${escapeHtml(employeeName)} (${formatDateDE(von)} – ${formatDateDE(bis)})`,
     html,
+    trackingSettings: {
+      clickTracking: { enable: false, enableText: false },
+    },
   });
 }
 
