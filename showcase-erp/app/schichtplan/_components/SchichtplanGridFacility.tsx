@@ -12,7 +12,6 @@ import {
   WOCHENTAGE,
   ALL_TEILANLAGEN,
   TEILANLAGE_LABELS,
-  TEILANLAGE_COLORS,
   TEILANLAGE_TO_SKILL,
   SCHICHT_SORT_ORDER,
   PRODUCTION_TEILANLAGEN,
@@ -182,13 +181,13 @@ export default function SchichtplanGridFacility({
           </tr>
         </thead>
         <tbody>
-          {ALL_TEILANLAGEN.map((anlage) => {
-            const colors = TEILANLAGE_COLORS[anlage];
+          {ALL_TEILANLAGEN.map((anlage, anlageIdx) => {
+            const rowBg = anlageIdx % 2 === 0 ? "bg-base-100" : "bg-base-200/40";
             return (
-              <tr key={anlage} className="hover border-b-2 border-base-200">
+              <tr key={anlage} className={`hover border-b border-base-200 ${rowBg}`}>
                 {/* Facility header cell */}
                 <td
-                  className={`sticky left-0 z-10 border-r border-base-200 font-medium text-[10px] sm:text-sm px-1 sm:px-2 border-l-3 ${colors?.bg ?? "bg-base-100"} ${colors?.border ?? ""} ${colors?.text ?? ""}`}
+                  className={`sticky left-0 z-10 border-r border-base-200 font-medium text-[10px] sm:text-sm px-1 sm:px-2 ${rowBg}`}
                 >
                   {TEILANLAGE_LABELS[anlage]}
                 </td>

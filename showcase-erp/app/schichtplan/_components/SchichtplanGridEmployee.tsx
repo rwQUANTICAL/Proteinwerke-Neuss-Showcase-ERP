@@ -232,11 +232,7 @@ export default function SchichtplanGridEmployee({
                       </span>
                     </>
                   )}
-                  {isAdmin && (
-                    <span className="hidden sm:inline text-[10px] text-base-content/30 whitespace-nowrap shrink-0">
-                      Ü: 0h
-                    </span>
-                  )}
+
                 </div>
                 {/* Line 2: Skills abbreviated (admin only) */}
                 {isAdmin && (

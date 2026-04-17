@@ -72,17 +72,8 @@ export const TEILANLAGE_LABELS: Record<string, string> = {
   SPRINGER: "Springer",
 };
 
-/** Subtle visual differentiation for facility rows in the grid */
-export const TEILANLAGE_COLORS: Record<
-  string,
-  { bg: string; border: string; text: string }
-> = {
-  MUEHLE: { bg: "bg-orange-50", border: "border-l-orange-400", text: "text-orange-900" },
-  WALZE: { bg: "bg-cyan-50", border: "border-l-cyan-400", text: "text-cyan-900" },
-  EXTRAKTION: { bg: "bg-lime-50", border: "border-l-lime-500", text: "text-lime-900" },
-  LECITHIN: { bg: "bg-fuchsia-50", border: "border-l-fuchsia-400", text: "text-fuchsia-900" },
-  SPRINGER: { bg: "bg-base-100", border: "border-l-base-300", text: "text-base-content" },
-};
+/** No longer used – facility rows now use alternating light/dark styling */
+// TEILANLAGE_COLORS removed in favour of index-based alternating rows
 
 /** Short readable shift labels for mobile view */
 export const SCHICHT_TYP_SHORT: Record<string, string> = {
