@@ -72,9 +72,6 @@ export const TEILANLAGE_LABELS: Record<string, string> = {
   SPRINGER: "Springer",
 };
 
-/** No longer used – facility rows now use alternating light/dark styling */
-// TEILANLAGE_COLORS removed in favour of index-based alternating rows
-
 /** Short readable shift labels for mobile view */
 export const SCHICHT_TYP_SHORT: Record<string, string> = {
   FRUEH: "Früh",
