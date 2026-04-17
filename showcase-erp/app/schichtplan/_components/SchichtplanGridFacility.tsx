@@ -182,9 +182,13 @@ export default function SchichtplanGridFacility({
         </thead>
         <tbody>
           {ALL_TEILANLAGEN.map((anlage, anlageIdx) => {
-            const rowBg = anlageIdx % 2 === 0 ? "bg-base-100" : "bg-base-200/40";
+            const rowBg =
+              anlageIdx % 2 === 0 ? "bg-base-100" : "bg-base-200/40";
             return (
-              <tr key={anlage} className={`hover border-b border-base-200 ${rowBg}`}>
+              <tr
+                key={anlage}
+                className={`hover border-b border-base-200 ${rowBg}`}
+              >
                 {/* Facility header cell */}
                 <td
                   className={`sticky left-0 z-10 border-r border-base-200 font-medium text-[10px] sm:text-sm px-1 sm:px-2 ${rowBg}`}

@@ -232,7 +232,6 @@ export default function SchichtplanGridEmployee({
                       </span>
                     </>
                   )}
-
                 </div>
                 {/* Line 2: Skills abbreviated (admin only) */}
                 {isAdmin && (
