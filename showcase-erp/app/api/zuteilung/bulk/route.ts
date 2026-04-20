@@ -5,6 +5,8 @@ import { prisma } from "@/app/lib/prisma";
 import { headers } from "next/headers";
 import { validateSkillForTeilanlage } from "@/app/lib/entities/zuteilung/zuteilungValidation";
 
+export const maxDuration = 30;
+
 const TEILANLAGEN = [
   "MUEHLE", "WALZE", "EXTRAKTION", "LECITHIN", "SPRINGER",
 ] as const;
@@ -50,51 +52,42 @@ export async function POST(request: NextRequest) {
   });
   const empMap = new Map(employees.map((e) => [e.id, e]));
 
-  const created: string[] = [];
+  // Pre-filter: validate skills before hitting the database
   const skipped: { datum: string; mitarbeiterId: string; reason: string }[] = [];
+  const validItems: typeof zuteilungen = [];
 
-  // Use a transaction for atomicity
-  await prisma.$transaction(async (tx) => {
-    for (const item of zuteilungen) {
-      const emp = empMap.get(item.mitarbeiterId);
-      if (!emp) {
-        skipped.push({ datum: item.datum, mitarbeiterId: item.mitarbeiterId, reason: "Mitarbeiter nicht gefunden" });
-        continue;
-      }
-
-      const skillCheck = validateSkillForTeilanlage(emp.skills as string[], item.teilanlage);
-      if (!skillCheck.valid) {
-        skipped.push({ datum: item.datum, mitarbeiterId: item.mitarbeiterId, reason: skillCheck.message! });
-        continue;
-      }
-
-      try {
-        const z = await tx.zuteilung.create({
-          data: {
-            mitarbeiterId: item.mitarbeiterId,
-            teilanlage: item.teilanlage,
-            datum: new Date(item.datum + "T00:00:00Z"),
-            schicht: item.schicht,
-            zeitplanId,
-            erstelltVonId: session.user.id,
-          },
-        });
-        created.push(z.id);
-      } catch (err: unknown) {
-        if (
-          typeof err === "object" && err !== null && "code" in err &&
-          (err as { code: string }).code === "P2002"
-        ) {
-          skipped.push({ datum: item.datum, mitarbeiterId: item.mitarbeiterId, reason: "Bereits zugewiesen" });
-        } else {
-          throw err;
-        }
-      }
+  for (const item of zuteilungen) {
+    const emp = empMap.get(item.mitarbeiterId);
+    if (!emp) {
+      skipped.push({ datum: item.datum, mitarbeiterId: item.mitarbeiterId, reason: "Mitarbeiter nicht gefunden" });
+      continue;
     }
+    const skillCheck = validateSkillForTeilanlage(emp.skills as string[], item.teilanlage);
+    if (!skillCheck.valid) {
+      skipped.push({ datum: item.datum, mitarbeiterId: item.mitarbeiterId, reason: skillCheck.message! });
+      continue;
+    }
+    validItems.push(item);
+  }
+
+  // Single INSERT with ON CONFLICT DO NOTHING — avoids per-row round-trips
+  const result = await prisma.zuteilung.createMany({
+    data: validItems.map((item) => ({
+      mitarbeiterId: item.mitarbeiterId,
+      teilanlage: item.teilanlage,
+      datum: new Date(item.datum + "T00:00:00Z"),
+      schicht: item.schicht,
+      zeitplanId,
+      erstelltVonId: session.user.id,
+    })),
+    skipDuplicates: true,
   });
 
+  const duplicatesSkipped = validItems.length - result.count;
+
   return NextResponse.json({
-    created: created.length,
+    created: result.count,
     skipped,
+    duplicatesSkipped,
   }, { status: 201 });
 }

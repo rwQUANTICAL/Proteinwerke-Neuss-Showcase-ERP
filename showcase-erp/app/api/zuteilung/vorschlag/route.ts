@@ -16,6 +16,8 @@ import { assignFacilities } from "@/app/lib/entities/zuteilung/facilityAssigner"
 import { validateSkillForTeilanlage } from "@/app/lib/entities/zuteilung/zuteilungValidation";
 import type { VorschlagItem } from "@/app/lib/entities/zuteilung/vorschlagTypes";
 
+export const maxDuration = 30;
+
 const requestSchema = z.object({
   jahr: z.number().int().min(2020).max(2100),
   kw: z.number().int().min(1).max(53),

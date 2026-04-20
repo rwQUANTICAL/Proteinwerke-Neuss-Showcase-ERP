@@ -67,5 +67,6 @@ export function useVorschlagState(jahr: number, kw: number, zeitplanId: string |
     acceptAll,
     isGenerating: vorschlagMutation.isPending,
     isSaving: bulkMutation.isPending,
+    savingError: bulkMutation.error,
   };
 }

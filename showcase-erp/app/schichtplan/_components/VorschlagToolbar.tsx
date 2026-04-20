@@ -1,6 +1,6 @@
 "use client";
 
-import { MdCheck, MdClose } from "react-icons/md";
+import { MdCheck, MdClose, MdErrorOutline } from "react-icons/md";
 import LoadingLogo from "@/app/components/LoadingLogo";
 
 interface VorschlagToolbarProps {
@@ -8,6 +8,7 @@ interface VorschlagToolbarProps {
   onAcceptAll: () => void;
   onCancel: () => void;
   isSaving: boolean;
+  savingError?: Error | null;
 }
 
 export default function VorschlagToolbar({
@@ -15,9 +16,16 @@ export default function VorschlagToolbar({
   onAcceptAll,
   onCancel,
   isSaving,
+  savingError,
 }: VorschlagToolbarProps) {
   return (
     <div className="flex items-center gap-2">
+      {savingError && (
+        <span className="text-error text-xs flex items-center gap-1">
+          <MdErrorOutline className="size-4" />
+          {savingError.message}
+        </span>
+      )}
       <button
         className="btn btn-primary btn-xs sm:btn-sm gap-1"
         onClick={onAcceptAll}

@@ -42,6 +42,7 @@ interface SchichtplanHeaderProps {
     acceptAll: () => void;
     isGenerating: boolean;
     isSaving: boolean;
+    savingError?: Error | null;
   };
 }
 
@@ -144,6 +145,7 @@ export default function SchichtplanHeader({
                 onAcceptAll={vorschlag.acceptAll}
                 onCancel={vorschlag.cancel}
                 isSaving={vorschlag.isSaving}
+                savingError={vorschlag.savingError}
               />
             ) : (
               <div className="flex items-center gap-1">
