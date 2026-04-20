@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { MdAdd, MdErrorOutline } from "react-icons/md";
+import { MdAdd, MdError } from "react-icons/md";
 import type { ZuteilungWithRelations } from "@/app/lib/entities/zeitplan/zeitplanHooks";
 import type { MitarbeiterWithUser } from "@/app/lib/entities/mitarbeiter/mitarbeiterHooks";
 import ZuteilungCell from "./ZuteilungCell";
@@ -154,7 +154,7 @@ export default function SchichtplanGridFacility({
                           role="button"
                           className="cursor-pointer"
                         >
-                          <MdErrorOutline className="size-3.5 text-warning" />
+                          <MdError className="size-4 text-warning drop-shadow-sm" />
                         </div>
                         <ul
                           tabIndex={0}
