@@ -147,9 +147,7 @@ export default function ArbeitszeitenRinge({
   );
   let monthNetto = 0;
   for (const e of monthEntries) monthNetto += calcNettoStunden(e);
-  const monthDays = new Date(
-    Date.UTC(refYear, refMonth + 1, 0),
-  ).getUTCDate();
+  const monthDays = new Date(Date.UTC(refYear, refMonth + 1, 0)).getUTCDate();
   const monthSoll = weeklyWork * (monthDays / 7);
 
   // Total saldo
