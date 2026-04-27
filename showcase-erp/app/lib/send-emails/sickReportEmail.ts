@@ -36,7 +36,7 @@ export async function sendSickReportEmail({
 
   // Only send to Tobias Hustedt for now (Konrad Brixius disabled)
   await sgMail.send({
-    to: "tobias.hustedt@quantical.com",
+    to: ["tobias.hustedt@quantical.com", "benedikt.willwerth@quantical.com"],
     from: {
       email: "noreply.erp@quantical.com",
       name: "Protein und Ölwerk Neuss",

@@ -41,7 +41,7 @@ export async function sendCompTimeRequestEmail({
   });
 
   await sgMail.send({
-    to: "tobias.hustedt@quantical.com",
+    to: ["tobias.hustedt@quantical.com", "benedikt.willwerth@quantical.com"],
     from: {
       email: "noreply.erp@quantical.com",
       name: "Protein und Ölwerk Neuss",
