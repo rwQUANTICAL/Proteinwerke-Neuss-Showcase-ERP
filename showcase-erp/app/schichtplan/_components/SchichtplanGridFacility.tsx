@@ -70,16 +70,22 @@ export default function SchichtplanGridFacility({
   const weekDates = useMemo(() => getWeekDates(jahr, kw), [jahr, kw]);
 
   // Index zuteilungen by teilanlage + date, sorted by shift type
-  // For SPRINGER row: exclude Frei/Urlaub/Krank (show only Springer assignments)
+  // KRANK/URLAUB/X_FREI entries have teilanlage="SPRINGER" but originalTeilanlage
+  // set to the real facility — show them under the original facility.
   const zuteilungMap = useMemo(() => {
-    const NON_SPRINGER = ["X_FREI", "URLAUB", "KRANK"];
+    const NON_WORKING = ["X_FREI", "URLAUB", "KRANK"];
     const map = new Map<string, ZuteilungWithRelations[]>();
     for (const z of zuteilungen) {
       const dateKey = z.datum.split("T")[0];
-      const key = `${z.teilanlage}:${dateKey}`;
-      if (z.teilanlage === "SPRINGER" && NON_SPRINGER.includes(z.schicht)) {
+      const isAbsence = NON_WORKING.includes(z.schicht);
+      // Place absence entries under their original facility
+      const facility =
+        isAbsence && z.originalTeilanlage ? z.originalTeilanlage : z.teilanlage;
+      // Skip absence entries without a real original facility
+      if (isAbsence && !z.originalTeilanlage) {
         continue;
       }
+      const key = `${facility}:${dateKey}`;
       const existing = map.get(key) ?? [];
       existing.push(z);
       map.set(key, existing);

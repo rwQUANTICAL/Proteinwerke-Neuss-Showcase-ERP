@@ -127,12 +127,15 @@ export const ALL_SCHICHT_TYPEN = [
   "KRANK",
 ] as const;
 
-/** Shift types relevant for facility view filtering (no Urlaub/Krank/Frei — those are never facility-assigned) */
+/** Shift types relevant for facility view filtering */
 export const FACILITY_FILTER_TYPEN = [
   "FRUEH",
   "SPAET",
   "NACHT",
   "SPRINGER",
+  "X_FREI",
+  "URLAUB",
+  "KRANK",
 ] as const;
 
 /** Sort order for shifts within a facility cell */
