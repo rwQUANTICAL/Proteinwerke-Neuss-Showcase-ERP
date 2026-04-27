@@ -56,7 +56,7 @@ export default function ZeiterfassungPage() {
   }, [weekRaw, weekDates]);
 
   const todayStr = new Date().toISOString().split("T")[0];
-  const todayEntry = weekEntries.find(
+  const todayEntry = (allEntries ?? []).find(
     (e) => new Date(e.datum).toISOString().split("T")[0] === todayStr,
   );
 
