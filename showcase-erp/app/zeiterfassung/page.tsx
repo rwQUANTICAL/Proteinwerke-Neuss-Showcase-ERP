@@ -14,7 +14,6 @@ import { useKrankmeldungenQuery } from "@/app/lib/entities/krankmeldung/krankmel
 import ArbeitszeitenRinge from "./_components/ArbeitszeitenRinge";
 import MonatsUebersicht from "./_components/MonatsUebersicht";
 import ZeiterfassungWochenTabelle from "./_components/ZeiterfassungWochenTabelle";
-import ZeiterfassungForm from "./_components/ZeiterfassungForm";
 
 function getCurrentWeek() {
   const d = new Date();
@@ -95,12 +94,14 @@ export default function ZeiterfassungPage() {
           weeklyWork={weeklyWork}
           urlaub={urlaub}
           krank={krank}
+          weekDates={weekDates}
         />
         <MonatsUebersicht
           allEntries={allEntries ?? []}
           urlaub={urlaub}
           krank={krank}
           sollProTag={sollProTag}
+          weekDates={weekDates}
         />
       </div>
 
@@ -134,7 +135,6 @@ export default function ZeiterfassungPage() {
             kw={kw}
             sollProTag={sollProTag}
           />
-          <ZeiterfassungForm />
         </>
       )}
     </div>

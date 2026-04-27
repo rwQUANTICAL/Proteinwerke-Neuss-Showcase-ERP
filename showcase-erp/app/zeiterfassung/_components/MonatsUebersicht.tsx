@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 import {
   ZeitbuchungEntry,
@@ -17,6 +17,7 @@ interface Props {
   urlaub: AbwesenheitRange[];
   krank: AbwesenheitRange[];
   sollProTag: number;
+  weekDates: string[];
 }
 
 type DayType = "over" | "under" | "urlaub" | "krank" | null;
@@ -70,10 +71,19 @@ export default function MonatsUebersicht({
   urlaub,
   krank,
   sollProTag,
+  weekDates,
 }: Props) {
-  const now = new Date();
-  const [year, setYear] = useState(now.getFullYear());
-  const [month, setMonth] = useState(now.getMonth());
+  // Derive month from selected week (Thursday = weekDates[3])
+  const refDate = new Date(weekDates[3] + "T00:00:00Z");
+  const [year, setYear] = useState(refDate.getUTCFullYear());
+  const [month, setMonth] = useState(refDate.getUTCMonth());
+
+  // Sync month when selected week changes
+  useEffect(() => {
+    const d = new Date(weekDates[3] + "T00:00:00Z");
+    setYear(d.getUTCFullYear());
+    setMonth(d.getUTCMonth());
+  }, [weekDates]);
 
   const entryMap = useMemo(() => {
     const map = new Map<string, number>();
@@ -90,7 +100,7 @@ export default function MonatsUebersicht({
   const krankSet = useMemo(() => buildRangeSet(krank), [krank]);
 
   const cells = useMemo(() => getMonthGrid(year, month), [year, month]);
-  const todayStr = now.toISOString().split("T")[0];
+  const todayStr = new Date().toISOString().split("T")[0];
 
   const monthName = new Date(Date.UTC(year, month, 1)).toLocaleDateString(
     "de-DE",

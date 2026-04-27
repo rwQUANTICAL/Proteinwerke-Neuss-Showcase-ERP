@@ -19,6 +19,7 @@ interface Props {
   weeklyWork: number;
   urlaub: AbwesenheitRange[];
   krank: AbwesenheitRange[];
+  weekDates: string[];
 }
 
 function fmtHM(hours: number): string {
@@ -125,15 +126,18 @@ export default function ArbeitszeitenRinge({
   weeklyWork,
   urlaub,
   krank,
+  weekDates,
 }: Props) {
   const todayNetto = todayEntry ? calcNettoStunden(todayEntry) : 0;
 
   let weekNetto = 0;
   for (const e of weekEntries) weekNetto += calcNettoStunden(e);
 
-  // Month hours
-  const now = new Date();
-  const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  // Month hours — derive month from selected week (Thursday = weekDates[3])
+  const refDate = new Date(weekDates[3] + "T00:00:00Z");
+  const refYear = refDate.getUTCFullYear();
+  const refMonth = refDate.getUTCMonth();
+  const monthKey = `${refYear}-${String(refMonth + 1).padStart(2, "0")}`;
   const monthEntries = useMemo(
     () =>
       allEntries.filter((e) =>
@@ -144,7 +148,7 @@ export default function ArbeitszeitenRinge({
   let monthNetto = 0;
   for (const e of monthEntries) monthNetto += calcNettoStunden(e);
   const monthDays = new Date(
-    Date.UTC(now.getFullYear(), now.getMonth() + 1, 0),
+    Date.UTC(refYear, refMonth + 1, 0),
   ).getUTCDate();
   const monthSoll = weeklyWork * (monthDays / 7);
 
