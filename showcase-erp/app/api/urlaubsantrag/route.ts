@@ -152,13 +152,13 @@ export async function POST(request: NextRequest) {
   });
 
   // Send notification email (fire-and-forget)
-  const origin = (await headers()).get("origin") ?? "";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://protein-und-oelwerke-neuss-showcase.vercel.app";
   sendVacationRequestEmail({
     employeeName: mitarbeiter.name,
     von,
     bis,
     days: requestedDays,
-    abwesenheitUrl: `${origin}/abwesenheit`,
+    abwesenheitUrl: `${baseUrl}/abwesenheit`,
   }).catch((err) => console.error("Vacation request email failed:", err));
 
   return NextResponse.json(antrag, { status: 201 });

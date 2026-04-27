@@ -243,7 +243,7 @@ export async function POST(request: NextRequest) {
   });
 
   // Send email notification (fire-and-forget)
-  const origin = (await headers()).get("origin") ?? "";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://protein-und-oelwerke-neuss-showcase.vercel.app";
   sendCompTimeRequestEmail({
     employeeName: mitarbeiter.name,
     von,
@@ -251,7 +251,7 @@ export async function POST(request: NextRequest) {
     days: requestedDays,
     saldo,
     affectedShifts,
-    abwesenheitUrl: `${origin}/abwesenheit`,
+    abwesenheitUrl: `${baseUrl}/abwesenheit`,
   }).catch((err) => console.error("Comp time request email failed:", err));
 
   return NextResponse.json(antrag, { status: 201 });

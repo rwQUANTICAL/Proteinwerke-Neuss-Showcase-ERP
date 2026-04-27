@@ -226,7 +226,7 @@ export async function POST(request: NextRequest) {
 
   // Send email notification (fire-and-forget, don't block response)
   const firstWeek = getISOWeek(von);
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://protein-und-oelwerke-neuss-showcase.vercel.app";
   const schichtplanUrl = `${baseUrl}/schichtplan`;
 
   sendSickReportEmail({

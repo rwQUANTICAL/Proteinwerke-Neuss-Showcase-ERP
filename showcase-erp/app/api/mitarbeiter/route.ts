@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
     userId = created.user.id;
 
     // Send welcome email with credentials
-    const baseUrl = process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://protein-und-oelwerke-neuss-showcase.vercel.app";
     await sendWelcomeEmail({
       to: account.email,
       name: account.name,
